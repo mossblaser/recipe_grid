@@ -446,7 +446,7 @@ def test_valid_cases(source: str, exp_ast: Recipe) -> None:
                 At line 1 column 7:
                     a = b = c
                           ^
-                Expected '(' or ','
+                Expected '(' or ',' or <text>
             """,
         ),
         # Incomplete fraction
@@ -484,7 +484,7 @@ def test_valid_cases(source: str, exp_ast: Recipe) -> None:
                 At line 1 column 5:
                     foo /= bar
                         ^
-                Expected '(' or ',' or '=' or ':='
+                Expected '(' or ',' or '=' or ':=' or <text>
             """,
         ),
         # Trailing comma on assignment
@@ -533,7 +533,7 @@ def test_valid_cases(source: str, exp_ast: Recipe) -> None:
                 At line 1 column 5:
                     (foo
                         ^
-                Expected '(' or ')' or ','
+                Expected '(' or ')' or ',' or <text>
             """,
         ),
         (
@@ -542,7 +542,7 @@ def test_valid_cases(source: str, exp_ast: Recipe) -> None:
                 At line 1 column 4:
                     foo)
                        ^
-                Expected '(' or ',' or '=' or ':='
+                Expected '(' or ',' or '=' or ':=' or <text>
             """,
         ),
         # Empty step
@@ -581,7 +581,7 @@ def test_valid_cases(source: str, exp_ast: Recipe) -> None:
                 At line 1 column 8:
                     foo(bar
                            ^
-                Expected '(' or ')' or ','
+                Expected '(' or ')' or ',' or <text>
             """,
         ),
         # Ingredient without name
@@ -591,7 +591,7 @@ def test_valid_cases(source: str, exp_ast: Recipe) -> None:
                 At line 1 column 5:
                     500g
                         ^
-                Expected '(' or ',' or '=' or ':=' or <ingredient>
+                Expected '(' or ',' or '=' or ':=' or <ingredient> or <text>
             """,
         ),
         # Explicit quantity without closing bracket
@@ -646,6 +646,6 @@ def test_valid_cases(source: str, exp_ast: Recipe) -> None:
 def test_invalid_cases(source: str, exp_error: str) -> None:
     with pytest.raises(ParseError) as exc_info:
         parse_to_ast(source)
-    error = str(prettify_parse_error(exc_info.value))
+    error = str(exc_info.value)
 
     assert error == dedent(exp_error).strip()

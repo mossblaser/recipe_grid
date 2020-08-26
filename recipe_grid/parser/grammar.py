@@ -68,8 +68,6 @@ def prettify_parse_error(parse_error: ParseError) -> ParseError:
     parse_error.last_resort_exprs = {
         RuleExpr("eof"),
         RuleExpr("eol"),
-        RuleExpr("string"),
-        RuleExpr("static_string"),
         RegexExpr(r"\\"),
     }
     return parse_error
