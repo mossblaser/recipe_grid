@@ -12,6 +12,8 @@ import os
 
 from peggie import compile_grammar, ParseError, RuleExpr, RegexExpr
 
+from recipe_grid.units import ALL_UNITS_REGEX_LITERAL
+
 __all__ = [
     "grammar",
     "grammar_source",
@@ -21,7 +23,7 @@ __all__ = [
 grammar_source_path = os.path.join(os.path.dirname(__file__), "grammar.peg")
 
 with open(grammar_source_path) as f:
-    grammar_source = f.read()
+    grammar_source = f.read().replace("@KNOWN_UNITS@", ALL_UNITS_REGEX_LITERAL)
     """
     The recipe syntax :py:mod:`peggie` grammar source in a string.
     """

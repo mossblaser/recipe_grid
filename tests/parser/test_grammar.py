@@ -226,6 +226,10 @@ def parse_to_ast(source: str) -> Recipe:
             Recipe([Stmt(Reference(String("spam"), Quantity(0, 1.23, String("kg"))))]),
         ),
         (
+            "1.23 Kg spam",  # Note case of unit
+            Recipe([Stmt(Reference(String("spam"), Quantity(0, 1.23, String("Kg"))))]),
+        ),
+        (
             "2/3 kg spam",
             Recipe(
                 [

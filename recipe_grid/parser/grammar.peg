@@ -37,8 +37,9 @@ proportion    <- remainder
                / number hsp? ("%" (hsp? "*")? / "*")
 remainder     <- r"(?i)(remaining|remainder(\s+of)?|rest(\s+of)?)[ \t]"
 
-# Units
-known_unit    <- r"(?i)g|kg|cup|l|ml"  # Etc...
+# Units (n.b. @KNOWN_UNITS@ is substituted for a regex matching all units
+# supported by this software).
+known_unit    <- r"(?i)@KNOWN_UNITS@"
 freeform_unit <- static_string
 
 # Strings
