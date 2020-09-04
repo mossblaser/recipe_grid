@@ -26,10 +26,10 @@ class MultiOutputSubRecipeUsedAsNonRootNodeError(RecipeInvariantError):
     """
 
 
-class UnknownOutputNameError(RecipeInvariantError):
+class OutputIndexError(RecipeInvariantError):
     """
-    Thrown when a :py:class:`Reference` refers to output name not defined by
-    the referenced :py:class:`SubRecipe`.
+    Thrown when a :py:class:`Reference` refers to output which does not exist
+    in the referenced :py:class:`SubRecipe`.
     """
 
 
@@ -138,9 +138,9 @@ class Reference(RecipeTreeNode):
     """
 
     sub_recipe: "SubRecipe"
-    output_name: ScaledValueString
+    output_index: int = 0
     """
-    The :py:class:`SubRecipe` and output name being referenced. Only sub
+    The :py:class:`SubRecipe` and output index being referenced. Only sub
     recipes which form the root of a recipe tree may be referenced.
     """
 
@@ -150,8 +150,8 @@ class Reference(RecipeTreeNode):
     """
 
     def __post_init__(self) -> None:
-        if self.output_name not in self.sub_recipe.output_names:
-            raise UnknownOutputNameError(self.sub_recipe, self.output_name)
+        if self.output_index >= len(self.sub_recipe.output_names):
+            raise OutputIndexError(self.sub_recipe, self.output_index)
 
     def iter_children(self) -> Iterable[RecipeTreeNode]:
         yield self.sub_recipe

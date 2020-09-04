@@ -4,7 +4,7 @@ from recipe_grid.scaled_value_string import ScaledValueString as SVS
 
 from recipe_grid.recipe import (
     MultiOutputSubRecipeUsedAsNonRootNodeError,
-    UnknownOutputNameError,
+    OutputIndexError,
     ZeroOutputSubRecipeError,
     ReferenceToInvalidSubRecipeError,
     Ingredient,
@@ -17,14 +17,16 @@ from recipe_grid.recipe import (
 
 class TestReference:
     def test_name_validation(self) -> None:
-        sr = SubRecipe(Ingredient(SVS("spam")), [SVS("foo")])
+        sr = SubRecipe(Ingredient(SVS("spam")), [SVS("foo"), SVS("bar")])
 
         # Should work
-        Reference(sr, SVS("foo"))
+        Reference(sr)
+        Reference(sr, 0)
+        Reference(sr, 1)
 
         # Unknown name
-        with pytest.raises(UnknownOutputNameError):
-            Reference(sr, SVS("bar"))
+        with pytest.raises(OutputIndexError):
+            Reference(sr, 2)
 
 
 class TestSubRecipe:
@@ -51,14 +53,14 @@ class TestSubRecipe:
 class TestRecipe:
     def test_reference_to_sub_recipe_not_in_recipe(self) -> None:
         external_sr = SubRecipe(Ingredient(SVS("eggs")), [SVS("foo")])
-        ref = Reference(external_sr, SVS("foo"))
+        ref = Reference(external_sr)
 
         with pytest.raises(ReferenceToInvalidSubRecipeError):
             Recipe([ref])
 
     def test_reference_to_sub_recipe_later_in_recipe(self) -> None:
         later_sr = SubRecipe(Ingredient(SVS("eggs")), [SVS("foo")])
-        ref = Reference(later_sr, SVS("foo"))
+        ref = Reference(later_sr)
 
         with pytest.raises(ReferenceToInvalidSubRecipeError):
             Recipe([ref, later_sr])
@@ -67,14 +69,14 @@ class TestRecipe:
         nested_sr = SubRecipe(Ingredient(SVS("eggs")), [SVS("foo")])
         step = Step(SVS("scramble"), [nested_sr])
 
-        ref = Reference(nested_sr, SVS("foo"))
+        ref = Reference(nested_sr)
 
         with pytest.raises(ReferenceToInvalidSubRecipeError):
             Recipe([step, ref])
 
     def test_nested_reference_to_sub_recipe_not_in_recipe(self) -> None:
         external_sr = SubRecipe(Ingredient(SVS("eggs")), [SVS("foo")])
-        ref = Reference(external_sr, SVS("foo"))
+        ref = Reference(external_sr)
         step = Step(SVS("bar"), [ref])
 
         with pytest.raises(ReferenceToInvalidSubRecipeError):
@@ -82,7 +84,7 @@ class TestRecipe:
 
     def test_valid_references(self) -> None:
         sr = SubRecipe(Ingredient(SVS("eggs")), [SVS("foo")])
-        ref = Reference(sr, SVS("foo"))
+        ref = Reference(sr)
 
         # Shouldn't fail
         Recipe([sr, ref])
