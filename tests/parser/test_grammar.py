@@ -1,16 +1,13 @@
 import pytest
 
-from typing import cast
-
 from fractions import Fraction
 
 from textwrap import dedent
 
-from peggie import Parser, ParseError
+from peggie import ParseError
 
-from recipe_grid.parser.grammar import grammar, prettify_parse_error
+from recipe_grid.parser import parse
 from recipe_grid.parser.ast import (
-    RecipeTransformer,
     Recipe,
     Stmt,
     Step,
@@ -21,15 +18,6 @@ from recipe_grid.parser.ast import (
     Substring,
     InterpolatedValue,
 )
-
-
-def parse_to_ast(source: str) -> Recipe:
-    parser = Parser(grammar)
-    try:
-        parse_tree = parser.parse(source)
-    except ParseError as e:
-        raise prettify_parse_error(e)
-    return cast(Recipe, RecipeTransformer().transform(parse_tree))
 
 
 @pytest.mark.parametrize(
@@ -417,7 +405,7 @@ def parse_to_ast(source: str) -> Recipe:
     ],
 )
 def test_valid_cases(source: str, exp_ast: Recipe) -> None:
-    ast = parse_to_ast(source)
+    ast = parse(source)
     assert ast == exp_ast
 
 
@@ -649,7 +637,7 @@ def test_valid_cases(source: str, exp_ast: Recipe) -> None:
 )
 def test_invalid_cases(source: str, exp_error: str) -> None:
     with pytest.raises(ParseError) as exc_info:
-        parse_to_ast(source)
+        parse(source)
     error = str(exc_info.value)
 
     assert error == dedent(exp_error).strip()
