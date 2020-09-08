@@ -90,6 +90,18 @@ class RecipeTreeNode:
         """Iterate over the children of this node."""
         return iter(())
 
+    def substitute(
+        self, old: "RecipeTreeNode", new: "RecipeTreeNode"
+    ) -> "RecipeTreeNode":
+        """
+        Return a copy of this recipe tree with the node ``old`` replaced with
+        ``new``. (The old tree will remain intact).
+        """
+        if self == old:
+            return new
+        else:
+            return self
+
 
 @dataclass(frozen=True)
 class Ingredient(RecipeTreeNode):
@@ -129,6 +141,15 @@ class Step(RecipeTreeNode):
 
     def iter_children(self) -> Iterable[RecipeTreeNode]:
         return iter(self.inputs)
+
+    def substitute(self, old: RecipeTreeNode, new: RecipeTreeNode) -> RecipeTreeNode:
+        if self == old:
+            return new
+        else:
+            return Step(
+                description=self.description,
+                inputs=[node.substitute(old, new) for node in self.inputs],
+            )
 
 
 @dataclass(frozen=True)
@@ -202,6 +223,15 @@ class SubRecipe(RecipeTreeNode):
     def _assert_can_be_child_node(self) -> None:
         if len(self.output_names) > 1:
             raise MultiOutputSubRecipeUsedAsNonRootNodeError()
+
+    def substitute(self, old: RecipeTreeNode, new: RecipeTreeNode) -> RecipeTreeNode:
+        if self == old:
+            return new
+        else:
+            return SubRecipe(
+                sub_tree=self.sub_tree.substitute(old, new),
+                output_names=self.output_names,
+            )
 
 
 @dataclass(frozen=True)

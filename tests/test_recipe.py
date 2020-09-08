@@ -15,6 +15,20 @@ from recipe_grid.recipe import (
 )
 
 
+class TestStep:
+    def test_substitute(self) -> None:
+        a = Ingredient(SVS("a"))
+        b = Ingredient(SVS("b"))
+        c = Ingredient(SVS("c"))
+        d = Ingredient(SVS("d"))
+
+        orig = Step(SVS("stir"), [a, b])
+
+        assert orig.substitute(a, c) == Step(SVS("stir"), [c, b])
+        assert orig.substitute(orig, c) == c
+        assert orig.substitute(d, c) == orig
+
+
 class TestReference:
     def test_name_validation(self) -> None:
         sr = SubRecipe(Ingredient(SVS("spam")), [SVS("foo"), SVS("bar")])
@@ -48,6 +62,17 @@ class TestSubRecipe:
     def test_at_least_one_output(self) -> None:
         with pytest.raises(ZeroOutputSubRecipeError):
             SubRecipe(Ingredient(SVS("spam")), [])
+
+    def test_substitute(self) -> None:
+        a = Ingredient(SVS("a"))
+        b = Ingredient(SVS("b"))
+        c = Ingredient(SVS("c"))
+
+        orig = SubRecipe(a, [SVS("foo")])
+
+        assert orig.substitute(a, b) == SubRecipe(b, [SVS("foo")])
+        assert orig.substitute(orig, b) == b
+        assert orig.substitute(c, b) == orig
 
 
 class TestRecipe:
