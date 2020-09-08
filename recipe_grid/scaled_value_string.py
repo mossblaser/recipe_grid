@@ -97,3 +97,34 @@ class ScaledValueString:
 
     def __eq__(self, other: Any) -> bool:
         return isinstance(other, ScaledValueString) and self._string == other._string
+
+    def lower(self) -> "ScaledValueString":
+        return ScaledValueString(
+            [part.lower() if isinstance(part, str) else part for part in self._string]
+        )
+
+    def upper(self) -> "ScaledValueString":
+        return ScaledValueString(
+            [part.upper() if isinstance(part, str) else part for part in self._string]
+        )
+
+    def lstrip(self) -> "ScaledValueString":
+        return ScaledValueString(
+            [
+                part.lstrip() if isinstance(part, str) and i == 0 else part
+                for i, part in enumerate(self._string)
+            ]
+        )
+
+    def rstrip(self) -> "ScaledValueString":
+        return ScaledValueString(
+            [
+                part.rstrip()
+                if isinstance(part, str) and i == len(self._string) - 1
+                else part
+                for i, part in enumerate(self._string)
+            ]
+        )
+
+    def strip(self) -> "ScaledValueString":
+        return self.lstrip().rstrip()

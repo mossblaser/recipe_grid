@@ -128,3 +128,39 @@ def test_concat(
     exp: ScaledValueString,
 ) -> None:
     assert (a + b) == exp
+
+
+def test_lower() -> None:
+    assert ScaledValueString(["Foo", 123]).lower() == ScaledValueString(["foo", 123])
+
+
+def test_upper() -> None:
+    assert ScaledValueString(["Foo", 123]).upper() == ScaledValueString(["FOO", 123])
+
+
+def test_lstrip() -> None:
+    assert ScaledValueString(["  Foo ", 123]).lstrip() == ScaledValueString(
+        ["Foo ", 123]
+    )
+    assert ScaledValueString([123, "  Foo "]).lstrip() == ScaledValueString(
+        [123, "  Foo "]
+    )
+
+
+def test_rstrip() -> None:
+    assert ScaledValueString(["  Foo ", 123]).rstrip() == ScaledValueString(
+        ["  Foo ", 123]
+    )
+    assert ScaledValueString([123, "  Foo "]).rstrip() == ScaledValueString(
+        [123, "  Foo"]
+    )
+
+
+def test_strip() -> None:
+    assert ScaledValueString(["  Foo ", 123]).strip() == ScaledValueString(
+        ["Foo ", 123]
+    )
+    assert ScaledValueString([123, "  Foo "]).strip() == ScaledValueString(
+        [123, "  Foo"]
+    )
+    assert ScaledValueString(["  Foo "]).strip() == ScaledValueString(["Foo"])
