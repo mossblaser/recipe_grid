@@ -109,7 +109,20 @@ class TestRecipe:
 
     def test_valid_references(self) -> None:
         sr = SubRecipe(Ingredient(SVS("eggs")), (SVS("foo"),))
-        ref = Reference(sr)
+        ref1 = Reference(sr)
 
         # Shouldn't fail
-        Recipe((sr, ref))
+        rec1 = Recipe((sr, ref1))
+
+        # Also shouldn't fail (since marked as follows)
+        ref2 = Reference(sr)
+        rec2 = Recipe((ref2,), follows=rec1)
+
+        # Chained references
+        ref3 = Reference(sr)
+        Recipe((ref3,), follows=rec2)
+
+        # Should fail: not referenced
+        ref4 = Reference(sr)
+        with pytest.raises(ReferenceToInvalidSubRecipeError):
+            Recipe((ref4,))

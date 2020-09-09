@@ -250,11 +250,28 @@ class Recipe:
 
     recipe_trees: Tuple[RecipeTreeNode, ...]
 
+    follows: Optional["Recipe"] = None
+    r"""
+    If this recipe contains :py:class:`Reference`\ s to :py:class:`SubRecipe`\
+    s in another :py:class:`Recipe`, this parameter should be set accordingly.
+    (References are looked for recursively.
+    """
+
     def __post_init__(self) -> None:
         # Check the consistency of all References (i.e. that they only refer to
         # SubRecipes which appear as roots of recipe trees prior to the tree
         # containing the Reference.
         previous_sub_recipe_roots: Set[SubRecipe] = set()
+
+        next_recipe = self.follows
+        while next_recipe is not None:
+            previous_sub_recipe_roots.update(
+                recipe_tree
+                for recipe_tree in next_recipe.recipe_trees
+                if isinstance(recipe_tree, SubRecipe)
+            )
+            next_recipe = next_recipe.follows
+
         for tree_root in self.recipe_trees:
             to_visit = [tree_root]
             while to_visit:
