@@ -3,11 +3,11 @@ A data structure which defines a recipe.
 """
 
 
-from typing import Union, Optional, Iterable, List
+from typing import Union, Optional, Iterable, Tuple, Set
 
 from fractions import Fraction
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from recipe_grid.scaled_value_string import ScaledValueString
 
@@ -63,6 +63,8 @@ class Quantity:
     in. When None, a unit-less quantity is given (e.g. it is a count, e.g. 3
     apples).
     """
+
+    # TODO: Implement unit-converting equality check(?)
 
 
 @dataclass(frozen=True)
@@ -132,7 +134,7 @@ class Step(RecipeTreeNode):
     description: ScaledValueString
     """A description of the step to be carried out."""
 
-    inputs: List[RecipeTreeNode]
+    inputs: Tuple[RecipeTreeNode, ...]
     """The inputs to (i.e. children) of this step."""
 
     def __post_init__(self) -> None:
@@ -146,9 +148,8 @@ class Step(RecipeTreeNode):
         if self == old:
             return new
         else:
-            return Step(
-                description=self.description,
-                inputs=[node.substitute(old, new) for node in self.inputs],
+            return replace(
+                self, inputs=tuple(node.substitute(old, new) for node in self.inputs),
             )
 
 
@@ -190,7 +191,7 @@ class SubRecipe(RecipeTreeNode):
     sub_tree: RecipeTreeNode
     """The steps describing this sub-recipe."""
 
-    output_names: List[ScaledValueString]
+    output_names: Tuple[ScaledValueString, ...]
     """
     One or more names given to the outputs of this sub recipe.
 
@@ -214,6 +215,14 @@ class SubRecipe(RecipeTreeNode):
         root of a recipe tree.
     """
 
+    show_output_names: bool = True
+    """
+    Specifies whether the output name(s) for this subrecipe should be rendered.
+    For example when a sub-recipe consists of a single ingredient (e.g. '300g
+    spam') with a single output (e.g. 'spam'), adding extra labelling would
+    just be a distraction.
+    """
+
     def __post_init__(self) -> None:
         self.sub_tree._assert_can_be_child_node()
 
@@ -228,10 +237,7 @@ class SubRecipe(RecipeTreeNode):
         if self == old:
             return new
         else:
-            return SubRecipe(
-                sub_tree=self.sub_tree.substitute(old, new),
-                output_names=self.output_names,
-            )
+            return replace(self, sub_tree=self.sub_tree.substitute(old, new),)
 
 
 @dataclass(frozen=True)
@@ -242,13 +248,13 @@ class Recipe:
     Graph (DAG) structure describing a recipe.
     """
 
-    recipe_trees: List[RecipeTreeNode]
+    recipe_trees: Tuple[RecipeTreeNode, ...]
 
     def __post_init__(self) -> None:
         # Check the consistency of all References (i.e. that they only refer to
         # SubRecipes which appear as roots of recipe trees prior to the tree
         # containing the Reference.
-        previous_sub_recipe_roots = []
+        previous_sub_recipe_roots: Set[SubRecipe] = set()
         for tree_root in self.recipe_trees:
             to_visit = [tree_root]
             while to_visit:
@@ -259,4 +265,4 @@ class Recipe:
                 to_visit.extend(node.iter_children())
 
             if isinstance(tree_root, SubRecipe):
-                previous_sub_recipe_roots.append(tree_root)
+                previous_sub_recipe_roots.add(tree_root)

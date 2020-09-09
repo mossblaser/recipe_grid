@@ -22,16 +22,16 @@ class TestStep:
         c = Ingredient(SVS("c"))
         d = Ingredient(SVS("d"))
 
-        orig = Step(SVS("stir"), [a, b])
+        orig = Step(SVS("stir"), (a, b))
 
-        assert orig.substitute(a, c) == Step(SVS("stir"), [c, b])
+        assert orig.substitute(a, c) == Step(SVS("stir"), (c, b))
         assert orig.substitute(orig, c) == c
         assert orig.substitute(d, c) == orig
 
 
 class TestReference:
     def test_name_validation(self) -> None:
-        sr = SubRecipe(Ingredient(SVS("spam")), [SVS("foo"), SVS("bar")])
+        sr = SubRecipe(Ingredient(SVS("spam")), (SVS("foo"), SVS("bar")))
 
         # Should work
         Reference(sr)
@@ -46,70 +46,70 @@ class TestReference:
 class TestSubRecipe:
     def test_child_assertion_checked(self) -> None:
         ingredient = Ingredient(SVS("spam"))
-        singleton_sub_recipe = SubRecipe(Ingredient(SVS("eggs")), [SVS("foo")])
+        singleton_sub_recipe = SubRecipe(Ingredient(SVS("eggs")), (SVS("foo"),))
         multiple_sub_recipe = SubRecipe(
-            Ingredient(SVS("foo")), [SVS("bar"), SVS("baz")]
+            Ingredient(SVS("foo")), (SVS("bar"), SVS("baz"))
         )
 
         # Should work
-        SubRecipe(ingredient, [SVS("foo")])
-        SubRecipe(singleton_sub_recipe, [SVS("foo")])
+        SubRecipe(ingredient, (SVS("foo"),))
+        SubRecipe(singleton_sub_recipe, (SVS("foo"),))
 
         # Cannot have child with multiple outputs
         with pytest.raises(MultiOutputSubRecipeUsedAsNonRootNodeError):
-            SubRecipe(multiple_sub_recipe, [SVS("foo")])
+            SubRecipe(multiple_sub_recipe, (SVS("foo"),))
 
     def test_at_least_one_output(self) -> None:
         with pytest.raises(ZeroOutputSubRecipeError):
-            SubRecipe(Ingredient(SVS("spam")), [])
+            SubRecipe(Ingredient(SVS("spam")), ())
 
     def test_substitute(self) -> None:
         a = Ingredient(SVS("a"))
         b = Ingredient(SVS("b"))
         c = Ingredient(SVS("c"))
 
-        orig = SubRecipe(a, [SVS("foo")])
+        orig = SubRecipe(a, (SVS("foo"),))
 
-        assert orig.substitute(a, b) == SubRecipe(b, [SVS("foo")])
+        assert orig.substitute(a, b) == SubRecipe(b, (SVS("foo"),))
         assert orig.substitute(orig, b) == b
         assert orig.substitute(c, b) == orig
 
 
 class TestRecipe:
     def test_reference_to_sub_recipe_not_in_recipe(self) -> None:
-        external_sr = SubRecipe(Ingredient(SVS("eggs")), [SVS("foo")])
+        external_sr = SubRecipe(Ingredient(SVS("eggs")), (SVS("foo"),))
         ref = Reference(external_sr)
 
         with pytest.raises(ReferenceToInvalidSubRecipeError):
-            Recipe([ref])
+            Recipe((ref,))
 
     def test_reference_to_sub_recipe_later_in_recipe(self) -> None:
-        later_sr = SubRecipe(Ingredient(SVS("eggs")), [SVS("foo")])
+        later_sr = SubRecipe(Ingredient(SVS("eggs")), (SVS("foo"),))
         ref = Reference(later_sr)
 
         with pytest.raises(ReferenceToInvalidSubRecipeError):
-            Recipe([ref, later_sr])
+            Recipe((ref, later_sr))
 
     def test_reference_to_nested_sub_recipe(self) -> None:
-        nested_sr = SubRecipe(Ingredient(SVS("eggs")), [SVS("foo")])
-        step = Step(SVS("scramble"), [nested_sr])
+        nested_sr = SubRecipe(Ingredient(SVS("eggs")), (SVS("foo"),))
+        step = Step(SVS("scramble"), (nested_sr,))
 
         ref = Reference(nested_sr)
 
         with pytest.raises(ReferenceToInvalidSubRecipeError):
-            Recipe([step, ref])
+            Recipe((step, ref))
 
     def test_nested_reference_to_sub_recipe_not_in_recipe(self) -> None:
-        external_sr = SubRecipe(Ingredient(SVS("eggs")), [SVS("foo")])
+        external_sr = SubRecipe(Ingredient(SVS("eggs")), (SVS("foo"),))
         ref = Reference(external_sr)
-        step = Step(SVS("bar"), [ref])
+        step = Step(SVS("bar"), (ref,))
 
         with pytest.raises(ReferenceToInvalidSubRecipeError):
-            Recipe([step])
+            Recipe((step,))
 
     def test_valid_references(self) -> None:
-        sr = SubRecipe(Ingredient(SVS("eggs")), [SVS("foo")])
+        sr = SubRecipe(Ingredient(SVS("eggs")), (SVS("foo"),))
         ref = Reference(sr)
 
         # Shouldn't fail
-        Recipe([sr, ref])
+        Recipe((sr, ref))
