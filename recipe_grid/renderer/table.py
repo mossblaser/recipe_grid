@@ -9,6 +9,7 @@ from typing import (
     MutableMapping,
     Mapping,
     Tuple,
+    Set,
     Optional,
     Union,
     Iterable,
@@ -16,7 +17,7 @@ from typing import (
     cast,
 )
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from enum import Enum, auto
 
@@ -261,3 +262,34 @@ def combine_tables(tables: Iterable[Table], axis: int) -> Table:
             column_offset += table.columns
 
     return Table.from_dict(out)
+
+
+def right_pad_table(table: Table, columns: int) -> Table:
+    """
+    Expand the provided table to ensure it has at least ``columns`` columns
+    wide, extending the width of the right-most cells in each row to make up
+    the width.
+    """
+    if table.columns >= columns:
+        return table
+    else:
+        rightmost_cell_coordinates: Set[Tuple[int, int]] = set()
+        for row in range(table.rows):
+            last_column = table[row, -1]
+            if isinstance(last_column, Cell):
+                rightmost_cell_coordinates.add((row, table.columns - 1))
+            else:
+                rightmost_cell_coordinates.add(
+                    (row - last_column.drow, table.columns - last_column.dcolumn - 1)
+                )
+
+        return Table.from_dict(
+            {
+                (row, column): (
+                    cell
+                    if (row, column) not in rightmost_cell_coordinates
+                    else replace(cell, columns=columns - column)
+                )
+                for (row, column), cell in table.to_dict().items()
+            }
+        )

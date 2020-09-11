@@ -14,6 +14,7 @@ from recipe_grid.renderer.table import (
     Cell,
     ExtendedCell,
     combine_tables,
+    right_pad_table,
 )
 
 # Dummy recipe node
@@ -194,3 +195,47 @@ class TestCombineTables:
                 ],
                 axis=1,
             )
+
+
+class TestRightPadTable:
+    def test_already_wide_enough(self) -> None:
+        # Two cells
+        t1 = Table([[Cell(node), Cell(node)]])
+        assert right_pad_table(t1, 2) == t1
+
+        # A wide cell
+        t2 = Table.from_dict({(0, 0): Cell(node, columns=2)})
+        assert right_pad_table(t2, 2) == t2
+
+        # Wider than needed
+        t3 = Table.from_dict({(0, 0): Cell(node, columns=3)})
+        assert right_pad_table(t3, 2) == t3
+
+    def test_expand_single_cell(self) -> None:
+        t1 = Table.from_dict({(0, 0): Cell(node)})
+        assert right_pad_table(t1, 2) == Table.from_dict(
+            {(0, 0): Cell(node, columns=2)}
+        )
+
+        t2 = Table.from_dict({(0, 0): Cell(node, columns=2)})
+        assert right_pad_table(t2, 4) == Table.from_dict(
+            {(0, 0): Cell(node, columns=4)}
+        )
+
+    def test_expand_multiple_cells_including_rows_with_only_extended_cells(
+        self,
+    ) -> None:
+        t1 = Table.from_dict(
+            {
+                (0, 0): Cell(node, columns=2, rows=2),
+                (2, 0): Cell(node),
+                (2, 1): Cell(node),
+            }
+        )
+        assert right_pad_table(t1, 4) == Table.from_dict(
+            {
+                (0, 0): Cell(node, columns=4, rows=2),
+                (2, 0): Cell(node),
+                (2, 1): Cell(node, columns=3),
+            }
+        )
