@@ -282,3 +282,55 @@ def right_pad_table(table: Table[T], columns: int) -> Table[T]:
                 for (row, column), cell in table.to_dict().items()
             }
         )
+
+
+def set_border_around_table(table: Table[T], border_type: BorderType) -> Table[T]:
+    """
+    Return a copy of the provided table with the border style changed around
+    all outside cell edges.
+    """
+
+    def to_cell_coord(row: int, column: int) -> Tuple[int, int]:
+        cell_or_extended_cell = table[row, column]
+        if isinstance(cell_or_extended_cell, Cell):
+            return (row, column)
+        else:
+            return (
+                row - cell_or_extended_cell.drow,
+                column - cell_or_extended_cell.dcolumn,
+            )
+
+    left_edge_cells = set(to_cell_coord(row, 0) for row in range(table.rows))
+    right_edge_cells = set(
+        to_cell_coord(row, table.columns - 1) for row in range(table.rows)
+    )
+    top_edge_cells = set(to_cell_coord(0, column) for column in range(table.columns))
+    bottom_edge_cells = set(
+        to_cell_coord(table.rows - 1, column) for column in range(table.columns)
+    )
+
+    def cell_with_new_border(row: int, column: int) -> Cell[T]:
+        cell = cast(Cell[T], table[row, column])
+
+        changes: MutableMapping[str, BorderType] = {}
+        if (row, column) in left_edge_cells:
+            changes["border_left"] = border_type
+        if (row, column) in right_edge_cells:
+            changes["border_right"] = border_type
+        if (row, column) in top_edge_cells:
+            changes["border_top"] = border_type
+        if (row, column) in bottom_edge_cells:
+            changes["border_bottom"] = border_type
+
+        if changes:
+            return replace(cell, **changes)
+        else:
+            return cell
+
+    return Table.from_dict(
+        {
+            (row, column): cell_with_new_border(row, column)
+            for (row, column), cell in table
+            if isinstance(cell, Cell)
+        }
+    )

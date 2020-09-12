@@ -3,6 +3,7 @@ import pytest
 from typing import List, Union
 
 from recipe_grid.renderer.table import (
+    BorderType,
     EmptyTableError,
     CellExpectedError,
     ExtendedCellExpectedError,
@@ -14,6 +15,7 @@ from recipe_grid.renderer.table import (
     ExtendedCell,
     combine_tables,
     right_pad_table,
+    set_border_around_table,
 )
 
 
@@ -241,4 +243,72 @@ class TestRightPadTable:
                 (2, 0): Cell(123),
                 (2, 1): Cell(123, columns=3),
             }
+        )
+
+
+class TestSetBorderAroundTable:
+    def test_single_cell(self) -> None:
+        assert set_border_around_table(
+            Table.from_dict({(0, 0): Cell(123)}), BorderType.none,
+        ) == Table.from_dict(
+            {
+                (0, 0): Cell(
+                    123,
+                    border_left=BorderType.none,
+                    border_right=BorderType.none,
+                    border_top=BorderType.none,
+                    border_bottom=BorderType.none,
+                ),
+            }
+        )
+
+    def test_single_extended_cell(self) -> None:
+        assert set_border_around_table(
+            Table.from_dict({(0, 0): Cell(123, columns=3, rows=3)}), BorderType.none,
+        ) == Table.from_dict(
+            {
+                (0, 0): Cell(
+                    123,
+                    columns=3,
+                    rows=3,
+                    border_left=BorderType.none,
+                    border_right=BorderType.none,
+                    border_top=BorderType.none,
+                    border_bottom=BorderType.none,
+                ),
+            }
+        )
+
+    def test_all_edge_kinds(self) -> None:
+        assert set_border_around_table(
+            Table(
+                [
+                    [Cell(100), Cell(101), Cell(102)],
+                    [Cell(110), Cell(111), Cell(112)],
+                    [Cell(120), Cell(121), Cell(122)],
+                ]
+            ),
+            BorderType.none,
+        ) == Table(
+            [
+                [
+                    Cell(100, border_left=BorderType.none, border_top=BorderType.none),
+                    Cell(101, border_top=BorderType.none),
+                    Cell(102, border_top=BorderType.none, border_right=BorderType.none),
+                ],
+                [
+                    Cell(110, border_left=BorderType.none),
+                    Cell(111),
+                    Cell(112, border_right=BorderType.none),
+                ],
+                [
+                    Cell(
+                        120, border_left=BorderType.none, border_bottom=BorderType.none
+                    ),
+                    Cell(121, border_bottom=BorderType.none),
+                    Cell(
+                        122, border_bottom=BorderType.none, border_right=BorderType.none
+                    ),
+                ],
+            ]
         )
