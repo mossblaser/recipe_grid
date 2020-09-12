@@ -6,6 +6,7 @@ representation prior to rendering.
 
 from typing import (
     List,
+    Sequence,
     MutableMapping,
     Mapping,
     Tuple,
@@ -14,6 +15,8 @@ from typing import (
     Union,
     Iterable,
     Iterator,
+    Generic,
+    TypeVar,
     cast,
 )
 
@@ -21,7 +24,8 @@ from dataclasses import dataclass, replace
 
 from enum import Enum, auto
 
-from recipe_grid.recipe import RecipeTreeNode
+
+T = TypeVar("T")
 
 
 class BorderType(Enum):
@@ -31,26 +35,9 @@ class BorderType(Enum):
 
 
 @dataclass
-class Cell:
-    node: RecipeTreeNode
-    """
-    The recipe node to be shown in this cell.
-
-    Firstly, the obvious cases:
-
-    * :py:class:`~ingredient` is shown as is.
-    * :py:class:`~Reference` is shown as its label.
-    * :py:class:`~Step` is shown as its description.
-
-    Finally, :py:class:`~SubRecipe`. These may appear in the table for one of
-    two purposes:
-
-    * For single-output sub recipes they should be rendered as a header row
-      above the sub recipe cells containing the output name as text.
-    * For multiple-output sub-recipes they should be placed in a cell to the
-      right of the sub-recipe and contain (vertically arranged) all of the
-      output names for the sub recipe.
-    """
+class Cell(Generic[T]):
+    value: T
+    """The value contained in this cell."""
 
     rows: int = 1
     columns: int = 1
@@ -69,14 +56,14 @@ class Cell:
 
 
 @dataclass
-class ExtendedCell:
+class ExtendedCell(Generic[T]):
     """
     Represents parts of a table which are filled not with a new cell but with
     the extension of an adjacent cell. (Used as a 'dummy' value in
     :py:class:`Table`.)
     """
 
-    cell: Cell
+    cell: Cell[T]
 
     drow: int
     dcolumn: int
@@ -117,8 +104,8 @@ class MissingCellError(InconsistentTableLayoutError):
 
 
 @dataclass
-class Table:
-    cells: List[List[Union[Cell, ExtendedCell]]]
+class Table(Generic[T]):
+    cells: Sequence[Sequence[Union[Cell[T], ExtendedCell[T]]]]
     """
     The table cells. A dense 2D array indexed as ``cells[row][column]`` with
     spaces covered by extended cells being denoted using
@@ -126,7 +113,7 @@ class Table:
     """
 
     @classmethod
-    def from_dict(cls, table_dict: Mapping[Tuple[int, int], Cell]) -> "Table":
+    def from_dict(cls, table_dict: Mapping[Tuple[int, int], Cell[T]]) -> "Table[T]":
         """
         Construct a :py:class:`Table` from a dictionary mapping (row, column)
         to :py:class:`Cell`.
@@ -141,7 +128,7 @@ class Table:
             raise EmptyTableError()
 
         # Populate the table
-        cells: List[List[Optional[Union[Cell, ExtendedCell]]]] = [
+        cells: List[List[Optional[Union[Cell[T], ExtendedCell[T]]]]] = [
             [None for _ in range(columns)] for _ in range(rows)
         ]
         for (row, column), cell in table_dict.items():
@@ -160,9 +147,9 @@ class Table:
                 if maybe_cell is None:
                     raise MissingCellError(row, column)
 
-        return cls(cast(List[List[Union[Cell, ExtendedCell]]], cells))
+        return cls(cast(Sequence[Sequence[Union[Cell[T], ExtendedCell[T]]]], cells))
 
-    def to_dict(self) -> Mapping[Tuple[int, int], Cell]:
+    def to_dict(self) -> Mapping[Tuple[int, int], Cell[T]]:
         return {
             (row, column): cell
             for (row, column), cell in self
@@ -177,12 +164,14 @@ class Table:
     def rows(self) -> int:
         return len(self.cells)
 
-    def __iter__(self) -> Iterator[Tuple[Tuple[int, int], Union[Cell, ExtendedCell]]]:
+    def __iter__(
+        self,
+    ) -> Iterator[Tuple[Tuple[int, int], Union[Cell[T], ExtendedCell[T]]]]:
         for row, row_cells in enumerate(self.cells):
             for column, cell in enumerate(row_cells):
                 yield (row, column), cell
 
-    def __getitem__(self, index: Tuple[int, int]) -> Union[Cell, ExtendedCell]:
+    def __getitem__(self, index: Tuple[int, int]) -> Union[Cell[T], ExtendedCell[T]]:
         row, column = index
         return self.cells[row][column]
 
@@ -243,12 +232,12 @@ class Table:
                             to_check.remove((erow, ecolumn))
 
 
-def combine_tables(tables: Iterable[Table], axis: int) -> Table:
+def combine_tables(tables: Iterable[Table[T]], axis: int) -> Table[T]:
     """
     Combine two or more tables by sacking them vertically (axis=0) or
     horizontally (axis=1).
     """
-    out: MutableMapping[Tuple[int, int], Cell] = {}
+    out: MutableMapping[Tuple[int, int], Cell[T]] = {}
 
     row_offset = 0
     column_offset = 0
@@ -264,7 +253,7 @@ def combine_tables(tables: Iterable[Table], axis: int) -> Table:
     return Table.from_dict(out)
 
 
-def right_pad_table(table: Table, columns: int) -> Table:
+def right_pad_table(table: Table[T], columns: int) -> Table[T]:
     """
     Expand the provided table to ensure it has at least ``columns`` columns
     wide, extending the width of the right-most cells in each row to make up
