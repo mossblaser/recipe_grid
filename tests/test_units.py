@@ -2,61 +2,51 @@ import pytest
 
 import re
 
+from fractions import Fraction
+
 from recipe_grid.units import (
-    Unit,
-    UNITS,
+    Number,
+    UNIT_SYSTEM,
     ALL_UNITS_REGEX_LITERAL,
 )
 
 
 def test_no_duplicate_names() -> None:
     names = set()
-    for related_unit_set in UNITS.values():
-        for unit in related_unit_set.units:
-            for name in unit.names:
-                assert name not in names
-                names.add(name)
-
-
-@pytest.mark.parametrize("kind", UNITS)
-def test_one_base_unit_per_set(kind: str) -> None:
-    related_unit_set = UNITS[kind]
-    base_units = [unit for unit in related_unit_set.units if unit.definition is None]
-    assert len(base_units) == 1
-
-
-@pytest.mark.parametrize("kind", UNITS)
-def test_units_are_well_defined(kind: str) -> None:
-    related_unit_set = UNITS[kind]
-
-    name_to_unit = {
-        name: unit for unit in related_unit_set.units for name in unit.names
-    }
-
-    for unit in related_unit_set.units:
-        visited = [unit]
-
-        def visit_definition_of(unit: Unit) -> None:
-            if unit.definition is None:
-                return
-            elif unit.definition.unit not in name_to_unit:
-                assert False, (
-                    f"Unit {unit.name} is defined in terms of "
-                    f"undefined unit {unit.definition.unit}."
-                )
-            else:
-                parent_unit = name_to_unit[unit.definition.unit]
-                if parent_unit in visited:
-                    assert False, f"Dependency cycle found involving {parent_unit.name}"
-                visited.append(parent_unit)
-                visit_definition_of(parent_unit)
-
-        visit_definition_of(unit)
+    for related_unit_set in UNIT_SYSTEM.unit_sets.values():
+        for name in related_unit_set.iter_names():
+            assert name not in names
+            names.add(name)
 
 
 def test_all_units_regex_literal() -> None:
     regex = re.compile(ALL_UNITS_REGEX_LITERAL)
-    for unit_set in UNITS.values():
-        for unit in unit_set.units:
-            for name in unit.names:
-                assert regex.match(name) is not None
+    for name in UNIT_SYSTEM.iter_names():
+        assert regex.match(name) is not None
+        assert regex.match(name.replace(" ", "    ")) is not None
+
+
+@pytest.mark.parametrize(
+    "from_unit, to_unit, exp",
+    [
+        # Identity (root)
+        ("g", "g", 1),
+        # Identity (non-root)
+        ("oz", "oz", 1),
+        # Parent/child (also using fractions where integers are involved)
+        ("g", "kg", Fraction(1, 1000)),
+        # Child/parent
+        ("kg", "g", 1000),
+        # Keeping fractions where given
+        ("lb", "oz", 16),
+        ("oz", "lb", Fraction(1, 16)),
+        # Up and down the tree (also using floats when necessary)
+        ("lb", "kg", 453.59237 / 1000.0),
+        ("kg", "lb", 1000.0 / 453.59237),
+        # Using alternative names
+        ("kilos", "grams", 1000),
+    ],
+)
+def test_convert_between(from_unit: str, to_unit: str, exp: Number) -> None:
+    assert UNIT_SYSTEM["mass"].convert_between(from_unit, to_unit) == exp
+    assert UNIT_SYSTEM.convert_between(from_unit, to_unit) == exp
