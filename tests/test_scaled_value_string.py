@@ -64,6 +64,14 @@ def test_render(
     assert str(svs) == exp
 
 
+def test_render_custom_formatters() -> None:
+    svs = ScaledValueString(["foo", 123])
+    assert (
+        svs.render(format_number=lambda n: str(-n), format_string=lambda s: s.upper(),)
+        == "FOO-123"
+    )
+
+
 @pytest.mark.parametrize(
     "a, b, exp_equal",
     [

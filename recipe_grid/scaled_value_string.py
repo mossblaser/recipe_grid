@@ -62,9 +62,13 @@ class ScaledValueString:
 
         self._string = tuple(part for part in normalised_string if part != "")
 
-    def render(self, format_number: Callable[[Number], str] = format_number) -> str:
+    def render(
+        self,
+        format_number: Callable[[Number], str] = format_number,
+        format_string: Callable[[str], str] = str,
+    ) -> str:
         return "".join(
-            part if isinstance(part, str) else format_number(part)
+            format_string(part) if isinstance(part, str) else format_number(part)
             for part in self._string
         )
 
