@@ -21,21 +21,27 @@ step <- action
         sp? ")"
 action <- string
 
-# References (e.g. "cheese", "1/2 * white sauce", "remaining pastry")
+# References (e.g. "cheese", "1/2 of white sauce", "remaining pastry")
 reference <- ((proportion / explicit_quantity / implicit_quantity) hsp?)?
              ingredient
 ingredient <- string
 
 # Quantities
-implicit_quantity <- number (hsp? known_unit)?
+implicit_quantity <- number (hsp? known_unit (hsp preposition)?)? 
 explicit_quantity <- "{" hsp?
-                     (number (hsp? freeform_unit)?)
+                     number (hsp? freeform_unit)?
                      hsp?  "}"
+                     (hsp preposition)?
 
-# Proportions (e.g. "remaining" or "1/3 *"
-proportion    <- remainder
-               / number hsp? ("%" (hsp? "*")? / "*")
-remainder     <- r"(?i)(remaining|remainder(\s+of)?|rest(\s+of)?)[ \t]"
+# Proportions (e.g. "remaining" or "1/3 of" or "0.3 *")
+proportion    <- remainder (hsp preposition)?
+               / number ( hsp preposition
+                        / hsp? "%" (hsp preposition)?
+                        / hsp? "*")
+remainder     <- r"(?i)(remaining|remainder|rest|left[ \t]*over)\\b"
+
+# A preposition which might follow an ingredient/quantity
+preposition <- r"(?i)of([ \t]+the)?\\b"
 
 # Units (n.b. @KNOWN_UNITS@ is substituted for a regex matching all units
 # supported by this software).

@@ -49,6 +49,7 @@ def prettify_parse_error(parse_error: ParseError) -> ParseError:
         RuleExpr("interpolated_number"): "<text>",
         RuleExpr("string"): "<text>",
         RuleExpr("static_string"): "<text>",
+        RuleExpr("freeform_unit"): "<text>",
         # Add regex descriptions
         RegexExpr("[0-9]+"): "<number>",
         RegexExpr("[^0-9{}\n\r]"): "<text>",

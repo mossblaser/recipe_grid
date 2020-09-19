@@ -101,80 +101,245 @@ from recipe_grid.parser.ast import (
         # Proportion (remainder)
         (
             "remaining spam",
-            Recipe([Stmt(Reference(String("spam"), Proportion(0, None, False)))]),
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Proportion(0, None, False, "remaining", "")
+                        )
+                    )
+                ]
+            ),
         ),
         (
             "remainder spam",
-            Recipe([Stmt(Reference(String("spam"), Proportion(0, None, False)))]),
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Proportion(0, None, False, "remainder", "")
+                        )
+                    )
+                ]
+            ),
         ),
         (
             "remainder of spam",
-            Recipe([Stmt(Reference(String("spam"), Proportion(0, None, False)))]),
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"),
+                            Proportion(0, None, False, "remainder", " of"),
+                        )
+                    )
+                ]
+            ),
         ),
         (
             "rest spam",
-            Recipe([Stmt(Reference(String("spam"), Proportion(0, None, False)))]),
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Proportion(0, None, False, "rest", "")
+                        )
+                    )
+                ]
+            ),
         ),
         (
             "rest of spam",
-            Recipe([Stmt(Reference(String("spam"), Proportion(0, None, False)))]),
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Proportion(0, None, False, "rest", " of")
+                        )
+                    )
+                ]
+            ),
+        ),
+        (
+            "rest of the spam",
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"),
+                            Proportion(0, None, False, "rest", " of the"),
+                        )
+                    )
+                ]
+            ),
+        ),
+        (
+            "left over spam",
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Proportion(0, None, False, "left over", "")
+                        )
+                    )
+                ]
+            ),
         ),
         # Proportion (%)
         (
             "50% spam",
-            Recipe([Stmt(Reference(String("spam"), Proportion(0, 0.5, True)))]),
+            Recipe(
+                [Stmt(Reference(String("spam"), Proportion(0, 0.5, True, None, "%")))]
+            ),
+        ),
+        (
+            "50 % spam",
+            Recipe(
+                [Stmt(Reference(String("spam"), Proportion(0, 0.5, True, None, " %")))]
+            ),
+        ),
+        (
+            "50% of the spam",
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Proportion(0, 0.5, True, None, "% of the")
+                        )
+                    )
+                ]
+            ),
         ),
         (
             "100/3% spam",
             Recipe(
-                [Stmt(Reference(String("spam"), Proportion(0, Fraction(1, 3), True)))]
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"),
+                            Proportion(0, Fraction(1, 3), True, None, "%"),
+                        )
+                    )
+                ]
             ),
         ),
         (
             "100 100/3% spam",
             Recipe(
-                [Stmt(Reference(String("spam"), Proportion(0, Fraction(4, 3), True)))]
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"),
+                            Proportion(0, Fraction(4, 3), True, None, "%"),
+                        )
+                    )
+                ]
             ),
-        ),
-        (
-            "25% * spam",
-            Recipe([Stmt(Reference(String("spam"), Proportion(0, 0.25, True)))]),
         ),
         # Proportion (factor)
         (
             "0.1 * spam",
-            Recipe([Stmt(Reference(String("spam"), Proportion(0, 0.1, False)))]),
+            Recipe(
+                [Stmt(Reference(String("spam"), Proportion(0, 0.1, False, None, " *")))]
+            ),
+        ),
+        (
+            "0.1*spam",
+            Recipe(
+                [Stmt(Reference(String("spam"), Proportion(0, 0.1, False, None, "*")))]
+            ),
         ),
         (
             "2/3 * spam",
             Recipe(
-                [Stmt(Reference(String("spam"), Proportion(0, Fraction(2, 3), False)))]
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"),
+                            Proportion(0, Fraction(2, 3), False, None, " *"),
+                        )
+                    )
+                ]
             ),
         ),
         (
             "1 2/3 * spam",
             Recipe(
-                [Stmt(Reference(String("spam"), Proportion(0, Fraction(5, 3), False)))]
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"),
+                            Proportion(0, Fraction(5, 3), False, None, " *"),
+                        )
+                    )
+                ]
             ),
         ),
         # Explicit quantity
         (
             "{123} spam",
-            Recipe([Stmt(Reference(String("spam"), Quantity(0, 123.0, None)))]),
+            Recipe([Stmt(Reference(String("spam"), Quantity(0, 123.0, None, "", "")))]),
         ),
         (
             "{123g} spam",
-            Recipe([Stmt(Reference(String("spam"), Quantity(0, 123.0, String("g"))))]),
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Quantity(0, 123.0, String("g"), "", "")
+                        )
+                    )
+                ]
+            ),
+        ),
+        (
+            "{123 g} spam",
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Quantity(0, 123.0, String("g"), " ", "")
+                        )
+                    )
+                ]
+            ),
+        ),
+        (
+            "{123 g} of spam",
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Quantity(0, 123.0, String("g"), " ", " of")
+                        )
+                    )
+                ]
+            ),
         ),
         (
             "{123 foo bar} spam",
             Recipe(
-                [Stmt(Reference(String("spam"), Quantity(0, 123.0, String("foo bar"))))]
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"),
+                            Quantity(0, 123.0, String("foo bar"), " ", ""),
+                        )
+                    )
+                ]
             ),
         ),
         (
             "{1.23 kg} spam",
-            Recipe([Stmt(Reference(String("spam"), Quantity(0, 1.23, String("kg"))))]),
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Quantity(0, 1.23, String("kg"), " ", "")
+                        )
+                    )
+                ]
+            ),
         ),
         (
             "{2/3 kg} spam",
@@ -182,7 +347,8 @@ from recipe_grid.parser.ast import (
                 [
                     Stmt(
                         Reference(
-                            String("spam"), Quantity(0, Fraction(2, 3), String("kg"))
+                            String("spam"),
+                            Quantity(0, Fraction(2, 3), String("kg"), " ", ""),
                         )
                     )
                 ]
@@ -194,7 +360,8 @@ from recipe_grid.parser.ast import (
                 [
                     Stmt(
                         Reference(
-                            String("spam"), Quantity(0, Fraction(5, 3), String("kg"))
+                            String("spam"),
+                            Quantity(0, Fraction(5, 3), String("kg"), " ", ""),
                         )
                     )
                 ]
@@ -203,19 +370,67 @@ from recipe_grid.parser.ast import (
         # Implicit quantity
         (
             "123 spam",
-            Recipe([Stmt(Reference(String("spam"), Quantity(0, 123.0, None)))]),
+            Recipe([Stmt(Reference(String("spam"), Quantity(0, 123.0, None, "", "")))]),
         ),
         (
             "123g spam",
-            Recipe([Stmt(Reference(String("spam"), Quantity(0, 123.0, String("g"))))]),
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Quantity(0, 123.0, String("g"), "", "")
+                        )
+                    )
+                ]
+            ),
+        ),
+        (
+            "123 g spam",
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Quantity(0, 123.0, String("g"), " ", "")
+                        )
+                    )
+                ]
+            ),
+        ),
+        (
+            "123 g of spam",
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Quantity(0, 123.0, String("g"), " ", " of")
+                        )
+                    )
+                ]
+            ),
         ),
         (
             "1.23 kg spam",
-            Recipe([Stmt(Reference(String("spam"), Quantity(0, 1.23, String("kg"))))]),
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Quantity(0, 1.23, String("kg"), " ", "")
+                        )
+                    )
+                ]
+            ),
         ),
         (
             "1.23 Kg spam",  # Note case of unit
-            Recipe([Stmt(Reference(String("spam"), Quantity(0, 1.23, String("Kg"))))]),
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("spam"), Quantity(0, 1.23, String("Kg"), " ", "")
+                        )
+                    )
+                ]
+            ),
         ),
         (
             "2/3 kg spam",
@@ -223,7 +438,8 @@ from recipe_grid.parser.ast import (
                 [
                     Stmt(
                         Reference(
-                            String("spam"), Quantity(0, Fraction(2, 3), String("kg"))
+                            String("spam"),
+                            Quantity(0, Fraction(2, 3), String("kg"), " ", ""),
                         )
                     )
                 ]
@@ -235,7 +451,8 @@ from recipe_grid.parser.ast import (
                 [
                     Stmt(
                         Reference(
-                            String("spam"), Quantity(0, Fraction(5, 3), String("kg"))
+                            String("spam"),
+                            Quantity(0, Fraction(5, 3), String("kg"), " ", ""),
                         )
                     )
                 ]
@@ -593,7 +810,16 @@ def test_valid_cases(source: str, exp_ast: Recipe) -> None:
                 At line 1 column 2:
                     {
                      ^
-                Expected '}' or <number> or <text>
+                Expected '}' or <text>
+            """,
+        ),
+        (
+            "{1",
+            """
+                At line 1 column 3:
+                    {1
+                      ^
+                Expected '/' or '}' or <text>
             """,
         ),
         (

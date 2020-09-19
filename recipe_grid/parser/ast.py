@@ -123,19 +123,45 @@ class Quantity(AST):
     unit: Optional["String"]
     """The name of the unit, or None if a unitless quantity."""
 
+    value_unit_spacing: str
+    """The whitespace, if any, used between the value and the unit."""
+
+    preposition: str
+    """
+    Where a quantity is followed by an unquoted preposition (e.g. the 'of' in
+    '50g of butter' or '{1 sack} of pizza'), a string containing that
+    preposition. Otherwise an empty string
+    """
+
 
 @dataclass
 class Proportion(AST):
     """A relative proportion of a quantity."""
 
-    value: Optional[Number]  # None = remainder
+    value: Optional[Number]
     """
-    The proportion. Either a float, or where the amount was given as a
-    fraction, a :py:class:`~Fraction`, or None if 'remaining' was specified.
+    The proportion. A number between 0.0 and 1.0 giving the proportion
+    indicated, or None indicating 'rest of'.
     """
 
     percentage: bool
     """True if the amount was specified as a percentage."""
+
+    remainder_wording: Optional[str]
+    """
+    When value is None, the string to used to mean 'remainder' (e.g. 'rest' in
+    'rest of sauce').
+    """
+
+    preposition: str
+    """
+    The words and whitespace following a value or remainder. Examples:
+
+    * "rest of the spam" -> " of the"
+    * "1/3 of sauce" -> " of"
+    * "10% spam" -> "%"
+    * "0.5 * spam" -> " *"
+    """
 
 
 @dataclass
@@ -306,27 +332,90 @@ class RecipeTransformer(peggie.ParseTreeTransformer):
 
     def proportion(self, pt: peggie.Alt, children: Any) -> Proportion:
         if pt.choice_index == 0:  # Remainder
-            return Proportion(children.start, None, False)
-        else:  # Number
-            (offset, number), _sp1, maybe_percent = children
+            remainder, maybe_preposition = children
 
-            percentage = isinstance(maybe_percent, list)
+            preposition = ""
+            if maybe_preposition is not None:
+                preposition_sp, preposition_word = maybe_preposition
+                preposition = preposition_sp.string + preposition_word.string
+
+            return Proportion(
+                remainder.start, None, False, remainder.string, preposition
+            )
+        else:  # Number
+            (offset, number), some_preposition = children
+
+            percentage = False
+            preposition = ""
+
+            preposition_choice = cast(
+                peggie.Alt, cast(peggie.Concat, pt.value).values[1]
+            ).choice_index
+            if preposition_choice == 0:  # e.g. " of the"
+                preposition_sp, preposition_word = some_preposition
+                preposition = preposition_sp.string + preposition_word.string
+            elif preposition_choice == 1:  # e.g. "% of the" or "%"
+                percentage = True
+                maybe_sp, perc, maybe_preposition = some_preposition
+                if maybe_sp is not None:
+                    preposition = maybe_sp.string
+                preposition += perc.string
+                if maybe_preposition is not None:
+                    preposition_sp, preposition_word = maybe_preposition
+                    preposition += preposition_sp.string + preposition_word.string
+            elif preposition_choice == 2:  # e.g. "*"
+                maybe_sp, star = some_preposition
+                if maybe_sp is not None:
+                    preposition = maybe_sp.string
+                preposition += star.string
+
             if percentage:
                 number /= 100
 
-            return Proportion(offset, number, percentage)
+            return Proportion(offset, number, percentage, None, preposition)
 
     def implicit_quantity(self, _pt: peggie.ParseTree, children: Any) -> Quantity:
-        (offset, number), maybe_unit = children
+        (offset, number), maybe_unit_and_preposition = children
 
         unit = None
-        if maybe_unit is not None:
-            _sp, unit = maybe_unit
+        value_unit_spacing = ""
+        preposition = ""
+        if maybe_unit_and_preposition is not None:
+            maybe_unit_sp, unit, maybe_preposition = maybe_unit_and_preposition
+            if maybe_unit_sp is not None:
+                value_unit_spacing = maybe_unit_sp.string
+            if maybe_preposition is not None:
+                preposition_sp, preposition_word = maybe_preposition
+                preposition = preposition_sp.string + preposition_word.string
 
-        return Quantity(offset, number, unit)
+        return Quantity(offset, number, unit, value_unit_spacing, preposition)
 
     def explicit_quantity(self, pt: peggie.Concat, children: Any) -> Quantity:
-        return self.implicit_quantity(pt.values[2], children[2])
+        (
+            open_bracket,
+            _sp1,
+            (_offset, number),
+            maybe_unit,
+            _sp2,
+            _close_bracket,
+            maybe_preposition,
+        ) = children
+
+        unit = None
+        value_unit_spacing = ""
+        if maybe_unit is not None:
+            maybe_unit_sp, unit = maybe_unit
+            if maybe_unit_sp is not None:
+                value_unit_spacing = maybe_unit_sp.string
+
+        preposition = ""
+        if maybe_preposition is not None:
+            preposition_sp, preposition_word = maybe_preposition
+            preposition = preposition_sp.string + preposition_word.string
+
+        return Quantity(
+            open_bracket.start, number, unit, value_unit_spacing, preposition
+        )
 
     def reference(self, _pt: peggie.ParseTree, children: Any) -> Reference:
         maybe_quantity_or_proportion, name = children

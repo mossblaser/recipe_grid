@@ -226,7 +226,7 @@ class TestRecipeCompiler:
         )
         assert compile(
             [
-                "spam, tin = open(spam)\nspam\n1/3*spam\n25% * spam\nremaining spam\n2 tin\n50g spam"  # noqa: E501
+                "spam, tin = open(spam)\nspam\n1/3*spam\n25% of the spam\nremaining spam\n2 tin\n50g spam"  # noqa: E501
             ]
         ) == [
             Recipe(
