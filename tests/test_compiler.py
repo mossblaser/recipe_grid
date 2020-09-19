@@ -371,3 +371,47 @@ class TestRecipeCompiler:
             follows=recipe0,
         )
         assert compile(["100g spam", "fry(50g spam, eggs)"]) == [recipe0, recipe1]
+
+    def test_inlining_within_a_block(self) -> None:
+        recipe0 = Recipe(
+            (SubRecipe(Ingredient(SVS("egg")), (SVS("egg"),), show_output_names=False),)
+        )
+        recipe1 = Recipe(
+            (Step(SVS("fry"), (Ingredient(SVS("spam"), Quantity(50, "g")),)),),
+            follows=recipe0,
+        )
+        recipe2 = Recipe(
+            (
+                SubRecipe(
+                    Ingredient(SVS("potato")), (SVS("potato"),), show_output_names=False
+                ),
+            ),
+            follows=recipe1,
+        )
+        assert compile(["egg", "50g spam\nfry(spam)", "potato"]) == [
+            recipe0,
+            recipe1,
+            recipe2,
+        ]
+
+    def test_inlines_within_inlines(self) -> None:
+        recipe = Recipe(
+            (
+                Step(
+                    SVS("boil"),
+                    (
+                        SubRecipe(
+                            Step(
+                                SVS("fry"),
+                                (Ingredient(SVS("spam"), Quantity(100, "g")),),
+                            ),
+                            (SVS("fried spam"),),
+                        ),
+                        Ingredient(SVS("water")),
+                    ),
+                ),
+            )
+        )
+        assert compile(
+            ["100g spam\nfried spam := fry(spam)\nboil(fried spam, water)"]
+        ) == [recipe]

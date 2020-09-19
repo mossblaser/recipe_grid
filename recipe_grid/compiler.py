@@ -1,4 +1,4 @@
-from typing import List, MutableMapping, Optional, Union, Tuple
+from typing import cast, List, MutableMapping, Optional, Union, Tuple
 
 from peggie.error_message_generation import (
     offset_to_line_and_column,
@@ -7,6 +7,8 @@ from peggie.error_message_generation import (
 )
 
 from dataclasses import dataclass, field
+
+from collections import OrderedDict
 
 from recipe_grid.scaled_value_string import ScaledValueString
 
@@ -172,6 +174,28 @@ class NamedOutput:
     final recipe if it is inlined.
     """
 
+    def substitute(self, old: RecipeTreeNode, new: RecipeTreeNode) -> None:
+        self.sub_recipe = cast(SubRecipe, self.sub_recipe.substitute(old, new))
+        self.references = [
+            (
+                (
+                    # NB The following cast is always safe *unless* this ref is
+                    # being substituted for the subtree it points at.
+                    cast(Reference, ref.substitute(old, new))
+                    # In the case where it is this ref which is being inlined,
+                    # keep the old Reference object, rather than letting the
+                    # substitution return a SubTree and lying to the type
+                    # system.  Following the inlining of a SubRecipe, the
+                    # 'NamedOutput' data structure becomes essentially invalid
+                    # anyway so this choice of dummy value is unimportant.
+                    if old != ref
+                    else ref
+                ),
+                ind,
+            )
+            for ref, ind in self.references
+        ]
+
     @property
     def can_be_inlined(self) -> bool:
         """
@@ -224,7 +248,7 @@ class RecipeCompiler:
         particular block in the input recipe specification.
         """
         self._sources = sources
-        self._named_outputs = {}
+        self._named_outputs = OrderedDict()
 
         ast_recipes = [parse(source) for source in self._sources]
 
@@ -252,8 +276,10 @@ class RecipeCompiler:
                 reference_to_replace = named_output.references[0][0]
 
                 # Remove the original definition
-                for recipe_trees in recipe_block_recipe_trees:
-                    recipe_trees.remove(definition_to_remove)
+                recipe_trees = recipe_block_recipe_trees[
+                    named_output.definition_recipe_index
+                ]
+                recipe_trees.remove(definition_to_remove)
 
                 # Apply inline-substitution
                 recipe_block_recipe_trees = [
@@ -263,6 +289,12 @@ class RecipeCompiler:
                     ]
                     for recipe_trees in recipe_block_recipe_trees
                 ]
+
+                # Inline-substitution also applied to recipe trees contained in
+                # NamedOutputs since otherwise when attempting to inline based
+                # on these out-of-date trees would be found.
+                for other_named_output in self._named_outputs.values():
+                    other_named_output.substitute(reference_to_replace, tree_to_inline)
 
         # Create recipe objects
         previous_recipe = None
