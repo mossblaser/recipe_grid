@@ -42,6 +42,18 @@ class TestReference:
         with pytest.raises(OutputIndexError):
             Reference(sr, 2)
 
+    def test_substitute(self) -> None:
+        a = Ingredient(SVS("a"))
+        b = SubRecipe(a, (SVS("b"),))
+        c = Ingredient(SVS("c"))
+        d = SubRecipe(c, (SVS("d"),))
+
+        orig = Reference(b, 0)
+
+        assert orig.substitute(a, c) == Reference(SubRecipe(c, (SVS("b"),)), 0)
+        assert orig.substitute(b, d) == Reference(SubRecipe(c, (SVS("d"),)), 0)
+        assert orig.substitute(orig, c) == c
+
 
 class TestSubRecipe:
     def test_child_assertion_checked(self) -> None:

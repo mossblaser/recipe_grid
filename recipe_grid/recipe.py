@@ -3,7 +3,7 @@ A data structure which defines a recipe.
 """
 
 
-from typing import Union, Optional, Iterable, Tuple, Set
+from typing import cast, Union, Optional, Iterable, Tuple, Set
 
 from fractions import Fraction
 
@@ -177,6 +177,14 @@ class Reference(RecipeTreeNode):
 
     def iter_children(self) -> Iterable[RecipeTreeNode]:
         yield self.sub_recipe
+
+    def substitute(self, old: RecipeTreeNode, new: RecipeTreeNode) -> RecipeTreeNode:
+        if self == old:
+            return new
+        else:
+            return replace(
+                self, sub_recipe=cast(Reference, self.sub_recipe.substitute(old, new)),
+            )
 
 
 @dataclass(frozen=True)
