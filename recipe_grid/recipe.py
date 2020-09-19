@@ -9,6 +9,8 @@ from fractions import Fraction
 
 from dataclasses import dataclass, replace
 
+from recipe_grid.units import UNIT_SYSTEM
+
 from recipe_grid.scaled_value_string import ScaledValueString
 
 
@@ -83,6 +85,27 @@ class Quantity:
     A preposition to append after the value and unit, including any necessary
     leading whitespace. For example " of" for "50g of".
     """
+
+    def has_equal_value_to(self, other: "Quantity") -> bool:
+        """
+        Compare two quantities, returning true if the quantities are equal in
+        magnitude (ignoring other metadata).
+        """
+        other_to_self_scale: Union[int, float, Fraction]
+        if self.unit is None and other.unit is None:
+            other_to_self_scale = 1
+        elif self.unit is None or other.unit is None:
+            # Comparison between unit and unitless quantities
+            return False
+        else:
+            try:
+                other_to_self_scale = UNIT_SYSTEM.convert_between(
+                    other.unit.lower(), self.unit.lower(),
+                )
+            except KeyError:  # No conversion available
+                return False
+
+        return self.value == other.value * other_to_self_scale
 
 
 @dataclass(frozen=True)

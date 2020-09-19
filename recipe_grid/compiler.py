@@ -221,9 +221,9 @@ class NamedOutput:
                 or (
                     isinstance(self.references[0][0].amount, Quantity)
                     and inferred_quantity is not None
-                    # TODO: Maybe try unit conversion?
-                    and self.references[0][0].amount.value == inferred_quantity.value
-                    and self.references[0][0].amount.unit == inferred_quantity.unit
+                    and self.references[0][0].amount.has_equal_value_to(
+                        inferred_quantity
+                    )
                 )
             )
         )

@@ -11,6 +11,7 @@ from recipe_grid.recipe import (
     Step,
     Reference,
     Proportion,
+    Quantity,
     SubRecipe,
     Recipe,
 )
@@ -54,6 +55,31 @@ class TestReference:
         assert orig.substitute(a, c) == Reference(SubRecipe(c, (SVS("b"),)), 0)
         assert orig.substitute(b, d) == Reference(SubRecipe(c, (SVS("d"),)), 0)
         assert orig.substitute(orig, c) == c
+
+
+class TestQuantity:
+    @pytest.mark.parametrize(
+        "a, b, exp",
+        [
+            # Unitless
+            (Quantity(1), Quantity(1), True),
+            (Quantity(1), Quantity(2), False),
+            (Quantity(1), Quantity(1, "g"), False),
+            (Quantity(1, "g"), Quantity(1), False),
+            # Same unit
+            (Quantity(1, "g"), Quantity(1, "g"), True),
+            (Quantity(1, "g"), Quantity(1, "G"), True),
+            (Quantity(1, "g"), Quantity(2, "g"), False),
+            (Quantity(1, "g"), Quantity(1, "kg"), False),
+            # Unit conversion used
+            (Quantity(1, "pounds"), Quantity(16, "ounces"), True),
+            (Quantity(1, "pounds"), Quantity(17, "ounces"), False),
+            # Incompatible, but valid units
+            (Quantity(1, "kg"), Quantity(1, "l"), False),
+        ],
+    )
+    def test_has_equal_value_to(self, a: Quantity, b: Quantity, exp: bool) -> None:
+        assert a.has_equal_value_to(b) is exp
 
 
 class TestProportion:

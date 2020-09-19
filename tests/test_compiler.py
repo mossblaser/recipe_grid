@@ -311,7 +311,7 @@ class TestRecipeCompiler:
         )
 
     @pytest.mark.parametrize(
-        "quantity_spec", ["", "10g", "100%", "1.0 *", "remainder of"]
+        "quantity_spec", ["", "10g", "0.01 kg", "100%", "1.0 *", "remainder of"]
     )
     def test_inlining_single_references(self, quantity_spec: str) -> None:
         assert compile(
