@@ -226,35 +226,68 @@ class TestRecipeCompiler:
         )
         assert compile(
             [
-                "spam, tin = open(spam)\nspam\n1/3*spam\n25% of the spam\nremaining spam\n2 tin\n50g spam"  # noqa: E501
+                "spam, tin = open(spam)\nspam\n1/3*spam\n25% of the spam\nleft over spam\n2 tin\n50g spam"  # noqa: E501
             ]
         ) == [
             Recipe(
                 (
                     sub_recipe,
+                    # spam
                     Reference(sub_recipe, 0, Proportion(1.0)),
-                    Reference(sub_recipe, 0, Proportion(Fraction(1, 3))),
-                    Reference(sub_recipe, 0, Proportion(Fraction(1, 4))),
-                    Reference(sub_recipe, 0, Proportion(None)),
-                    Reference(sub_recipe, 1, Quantity(2)),
-                    Reference(sub_recipe, 0, Quantity(50, "g")),
+                    # 1/3*spam
+                    Reference(
+                        sub_recipe, 0, Proportion(Fraction(1, 3), preposition="*")
+                    ),
+                    # 25% of the spam
+                    Reference(
+                        sub_recipe,
+                        0,
+                        Proportion(0.25, percentage=True, preposition="% of the"),
+                    ),
+                    # remaining
+                    Reference(
+                        sub_recipe, 0, Proportion(None, remainder_wording="left over")
+                    ),
+                    # 2 tin
+                    Reference(sub_recipe, 1, Quantity(2.0)),
+                    # 50g spam
+                    Reference(sub_recipe, 0, Quantity(50.0, "g")),
                 )
             ),
         ]
 
     def test_ingredient_compilation(self) -> None:
-        assert compile(["500g spam\n2 eggs\nheat"]) == [
+        assert compile(["500g spam\n2 eggs\n1 kg foo\n1 can of dog food\nheat"]) == [
             Recipe(
                 (
                     # With unit
                     SubRecipe(
-                        Ingredient(SVS("spam"), Quantity(500, "g")),
+                        Ingredient(SVS("spam"), Quantity(500.0, "g")),
                         (SVS("spam"),),
                         False,
                     ),
                     # No unit
                     SubRecipe(
-                        Ingredient(SVS("eggs"), Quantity(2)), (SVS("eggs"),), False,
+                        Ingredient(SVS("eggs"), Quantity(2.0)), (SVS("eggs"),), False,
+                    ),
+                    # With spacing between number and unit
+                    SubRecipe(
+                        Ingredient(
+                            SVS("foo"), Quantity(1.0, "kg", value_unit_spacing=" ")
+                        ),
+                        (SVS("foo"),),
+                        False,
+                    ),
+                    # With spacing between number and unit
+                    SubRecipe(
+                        Ingredient(
+                            SVS("dog food"),
+                            Quantity(
+                                1, "can", value_unit_spacing=" ", preposition=" of",
+                            ),
+                        ),
+                        (SVS("dog food"),),
+                        False,
                     ),
                     # No quantity
                     SubRecipe(Ingredient(SVS("heat")), (SVS("heat"),), False),

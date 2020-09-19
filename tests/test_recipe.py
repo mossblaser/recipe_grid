@@ -10,6 +10,7 @@ from recipe_grid.recipe import (
     Ingredient,
     Step,
     Reference,
+    Proportion,
     SubRecipe,
     Recipe,
 )
@@ -53,6 +54,18 @@ class TestReference:
         assert orig.substitute(a, c) == Reference(SubRecipe(c, (SVS("b"),)), 0)
         assert orig.substitute(b, d) == Reference(SubRecipe(c, (SVS("d"),)), 0)
         assert orig.substitute(orig, c) == c
+
+
+class TestProportion:
+    def test_default_percentage_flag(self) -> None:
+        assert Proportion(None).percentage is None
+        assert Proportion(0.5).percentage is False
+        assert Proportion(0.5, percentage=True).percentage is True
+
+    def test_default_remainder_wording(self) -> None:
+        assert Proportion(None).remainder_wording == "remaining"
+        assert Proportion(None, remainder_wording="rest").remainder_wording == "rest"
+        assert Proportion(0.5).remainder_wording is None
 
 
 class TestSubRecipe:

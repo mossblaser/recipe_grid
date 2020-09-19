@@ -95,15 +95,42 @@ def test_render_number(number: Union[float, int, Fraction], exp: str) -> None:
             Quantity(123),
             '<span class="rg-quantity-unitless rg-scaled-value">123</span>',
         ),
+        # Unitless with preposition
+        (
+            Quantity(123, preposition=" of>"),
+            '<span class="rg-quantity-unitless rg-scaled-value">123</span> of&gt;',
+        ),
         # Custom (unknown) unit with HTML char in
         (
             Quantity(123, "<foo>"),
-            '<span class="rg-quantity rg-scaled-value">123 &lt;foo&gt;</span>',
+            '<span class="rg-quantity rg-scaled-value">123&lt;foo&gt;</span>',
+        ),
+        # Custom unit with spacing and preposition
+        (
+            Quantity(123, "<foo>", value_unit_spacing=" < ", preposition=" of>"),
+            '<span class="rg-quantity rg-scaled-value">123 &lt; &lt;foo&gt;</span> of&gt;',
         ),
         # Known unit (with non normative name given and with fractional and
         # floating point conversions).
         (
             Quantity(Fraction(1, 2), "Kilos"),
+            (
+                "<span "
+                'class="rg-quantity rg-scaled-value" '
+                "data-rg-alternative-units='["
+                '"&lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt;Kilos", '
+                '"500g", '
+                '"1.1lb", '
+                '"17.6oz"'
+                "]'"
+                ">"
+                "<sup>1</sup>&frasl;<sub>2</sub>Kilos"
+                "</span>"
+            ),
+        ),
+        # Again but with custom spacing
+        (
+            Quantity(Fraction(1, 2), "Kilos", value_unit_spacing=" "),
             (
                 "<span "
                 'class="rg-quantity rg-scaled-value" '
@@ -128,9 +155,25 @@ def test_render_quantity(quantity: Quantity, exp: str) -> None:
     "proportion, exp",
     [
         # Remainder
-        (Proportion(None), '<span class="rg-proportion-remainder">remaining</span>'),
-        # Quantity
-        (Proportion(0.2), '<span class="rg-proportion">0.2 &times;</span>'),
+        (
+            Proportion(None, remainder_wording="left over"),
+            '<span class="rg-proportion-remainder">left over</span>',
+        ),
+        # Remainder with preposition
+        (
+            Proportion(None, remainder_wording="rest>", preposition=" of>"),
+            '<span class="rg-proportion-remainder">rest&gt; of&gt;</span>',
+        ),
+        # Quantity (float)
+        (
+            Proportion(0.2, preposition="*>"),
+            '<span class="rg-proportion">0.2&times;&gt;</span>',
+        ),
+        # Quantity (percentage)
+        (
+            Proportion(0.5, preposition="% of", percentage=True),
+            '<span class="rg-proportion">50% of</span>',
+        ),
     ],
 )
 def test_render_proportion(proportion: Proportion, exp: str) -> None:
@@ -206,7 +249,9 @@ def test_generate_subrecipe_output_id() -> None:
         ),
         (
             Reference(
-                SubRecipe(Ingredient(SVS("spam")), (SVS("foo"),)), 0, Proportion(0.5)
+                SubRecipe(Ingredient(SVS("spam")), (SVS("foo"),)),
+                0,
+                Proportion(0.5, preposition=" *"),
             ),
             '<a href="#sub-recipe-foo"><span class="rg-proportion">0.5 &times;</span> foo</a>',
         ),

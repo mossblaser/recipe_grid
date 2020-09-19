@@ -1,4 +1,4 @@
-from typing import Optional, MutableMapping, List, Union, Tuple
+from typing import cast, Optional, MutableMapping, List, Union, Tuple
 
 import re
 
@@ -85,7 +85,7 @@ def render_quantity(quantity: Quantity) -> str:
             "span",
             render_number(quantity.value),
             class_="rg-quantity-unitless rg-scaled-value",
-        )
+        ) + html.escape(quantity.preposition)
     else:
         alternative_forms: List[Tuple[Union[float, int, Fraction], str]] = []
 
@@ -110,7 +110,11 @@ def render_quantity(quantity: Quantity) -> str:
             alternative_forms.append((quantity.value, quantity.unit))
 
         all_forms = [
-            f"{render_number(value)} {html.escape(unit)}"
+            (
+                render_number(value)
+                + html.escape(quantity.value_unit_spacing)
+                + html.escape(unit)
+            )
             for value, unit in alternative_forms
         ]
 
@@ -122,16 +126,25 @@ def render_quantity(quantity: Quantity) -> str:
 
         return t(
             "span", all_forms[0], class_="rg-quantity rg-scaled-value", **data_attr,
-        )
+        ) + html.escape(quantity.preposition)
 
 
 def render_proportion(proportion: Proportion) -> str:
     if proportion.value is None:
-        return t("span", "remaining", class_="rg-proportion-remainder",)
+        return t(
+            "span",
+            html.escape(
+                cast(str, proportion.remainder_wording) + proportion.preposition
+            ),
+            class_="rg-proportion-remainder",
+        )
     else:
         return t(
             "span",
-            render_number(proportion.value) + " &times;",
+            render_number(
+                proportion.value * 100 if proportion.percentage else proportion.value
+            )
+            + html.escape(proportion.preposition).replace("*", "&times;"),
             class_="rg-proportion",
         )
 

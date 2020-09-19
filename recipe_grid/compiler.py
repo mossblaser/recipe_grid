@@ -201,6 +201,7 @@ class NamedOutput:
         """
         True iff this SubRecipe output can be inlined.
         """
+        inferred_quantity = infer_quantity(self.sub_recipe)
         return (
             # Must have single output
             len(self.sub_recipe.output_names) == 1
@@ -210,11 +211,19 @@ class NamedOutput:
             and self.references[0][1] == self.definition_recipe_index
             # The sole reference to this quantity must be for the full amount.
             and (
-                self.references[0][0].amount == Proportion(1.0)
-                or self.references[0][0].amount == Proportion(None)
+                (
+                    isinstance(self.references[0][0].amount, Proportion)
+                    and (
+                        self.references[0][0].amount.value is None
+                        or self.references[0][0].amount.value == 1.0
+                    )
+                )
                 or (
-                    infer_quantity(self.sub_recipe) is not None
-                    and self.references[0][0].amount == infer_quantity(self.sub_recipe)
+                    isinstance(self.references[0][0].amount, Quantity)
+                    and inferred_quantity is not None
+                    # TODO: Maybe try unit conversion?
+                    and self.references[0][0].amount.value == inferred_quantity.value
+                    and self.references[0][0].amount.unit == inferred_quantity.unit
                 )
             )
         )
@@ -412,16 +421,30 @@ class RecipeCompiler:
     def _compile_quantity(self, ast_quantity: ast.Quantity) -> Quantity:
         unit: Optional[str] = None
         if ast_quantity.unit is not None:
+            unit_string = compile_string(ast_quantity.unit)
+
             # The grammar disallows scaled values in unit names, this assertion
             # is just a sanity check to that effect
-            unit_string = compile_string(ast_quantity.unit)
             assert unit_string == unit_string.scale(0)
+
             unit = str(unit_string)
 
-        return Quantity(ast_quantity.value, unit)
+        return Quantity(
+            value=ast_quantity.value,
+            unit=unit,
+            value_unit_spacing=ast_quantity.value_unit_spacing,
+            preposition=ast_quantity.preposition,
+        )
 
     def _compile_proportion(self, ast_proportion: ast.Proportion) -> Proportion:
-        return Proportion(ast_proportion.value)
+        return Proportion(
+            value=ast_proportion.value,
+            percentage=ast_proportion.percentage
+            if ast_proportion.value is not None
+            else None,
+            remainder_wording=ast_proportion.remainder_wording,
+            preposition=ast_proportion.preposition,
+        )
 
 
 def compile(sources: List[str]) -> List[Recipe]:

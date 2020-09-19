@@ -49,7 +49,15 @@ class ReferenceToInvalidSubRecipeError(RecipeInvariantError):
 
 @dataclass(frozen=True)
 class Quantity:
-    """An absolute quantity."""
+    """
+    An absolute quantity.
+
+    Suggested rendering::
+
+        q.value
+        + (q.value_unit_spacing + q.unit if q.unit is not None else "")
+        + q.preposition
+    """
 
     value: Union[int, float, Fraction]
     """
@@ -64,18 +72,81 @@ class Quantity:
     apples).
     """
 
-    # TODO: Implement unit-converting equality check(?)
+    value_unit_spacing: str = ""
+    """
+    The whitespace to include between the value and unit when displayed, if
+    any. If unit is omitted, this should be an empty string.
+    """
+
+    preposition: str = ""
+    """
+    A preposition to append after the value and unit, including any necessary
+    leading whitespace. For example " of" for "50g of".
+    """
 
 
 @dataclass(frozen=True)
 class Proportion:
-    """A relative proportion."""
+    """
+    A relative proportion.
+
+    Suggested rendering::
+
+        (
+            (q.value * 100 if q.percentage else q.value)
+            if q.value is None else
+            q.remainder_wording
+        )
+        + q.preposition
+    """
 
     value: Optional[Union[int, float, Fraction]] = None
     """
     The proportion (in the range 0.0 to 1.0) of a substance to be used. If
     None, this indicates whatever quantity remains.
     """
+
+    percentage: Optional[bool] = None
+    """
+    If value is not None, a boolean indicating if the value should be rendered
+    as a percentage (i.e. scaled up to the range 0 to 100).
+
+    This field must be None iff value is None.
+
+    If left as None but value is given, this field will be set to False
+    automatically.
+    """
+
+    remainder_wording: Optional[str] = None
+    """
+    If value is None, the word to use to indicate "remainder", e.g.
+    "remainder", "left over", etc.
+
+    Must be None iff value is not None.
+
+    If left as None but value is also None, this field will be set to
+    "remaining" automatically.
+    """
+
+    preposition: str = ""
+    """
+    A preposition to append after the value, including any necessary
+    leading whitespace. Examples:
+
+    * "rest of the sauce" -> " of the"
+    * "0.5 * sauce" -> " *"
+    * "25% of the sauce" -> "% of the"
+
+    Note that for percentages, the preposition string is responsible for
+    indicating to a reader that the value is a percentage (e.g. it should
+    include a '%' symbol).
+    """
+
+    def __post_init__(self) -> None:
+        if self.value is not None and self.percentage is None:
+            object.__setattr__(self, "percentage", False)
+        if self.value is None and self.remainder_wording is None:
+            object.__setattr__(self, "remainder_wording", "remaining")
 
 
 @dataclass(frozen=True)
