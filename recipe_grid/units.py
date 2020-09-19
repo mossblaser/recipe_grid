@@ -181,6 +181,9 @@ class UnitSystem:
     def __getitem__(self, kind: str) -> RelatedUnitSet:
         return self.unit_sets[kind]
 
+    def __contains__(self, unit_name: str) -> bool:
+        return unit_name in self._name_to_unit_set
+
     def iter_names(self) -> Iterator[str]:
         return iter(self._name_to_unit_set.keys())
 
