@@ -107,6 +107,9 @@ class Quantity:
 
         return self.value == other.value * other_to_self_scale
 
+    def scale(self, factor: Union[int, float, Fraction]) -> "Quantity":
+        return replace(self, value=self.value * factor)
+
 
 @dataclass(frozen=True)
 class Proportion:
@@ -171,6 +174,9 @@ class Proportion:
         if self.value is None and self.remainder_wording is None:
             object.__setattr__(self, "remainder_wording", "remaining")
 
+    def scale(self, factor: Union[int, float, Fraction]) -> "Proportion":
+        return self  # Nothing to rescale
+
 
 @dataclass(frozen=True)
 class RecipeTreeNode:
@@ -198,6 +204,9 @@ class RecipeTreeNode:
         else:
             return self
 
+    def scale(self, factor: Union[int, float, Fraction]) -> "RecipeTreeNode":
+        raise NotImplementedError()
+
 
 @dataclass(frozen=True)
 class Ingredient(RecipeTreeNode):
@@ -213,6 +222,15 @@ class Ingredient(RecipeTreeNode):
     The quantity of the ingredient, of specified. If None, the ingredient is
     quantity-less.
     """
+
+    def scale(self, factor: Union[int, float, Fraction]) -> "Ingredient":
+        return replace(
+            self,
+            description=self.description.scale(factor),
+            quantity=(
+                self.quantity.scale(factor) if self.quantity is not None else None
+            ),
+        )
 
 
 @dataclass(frozen=True)
@@ -245,6 +263,13 @@ class Step(RecipeTreeNode):
             return replace(
                 self, inputs=tuple(node.substitute(old, new) for node in self.inputs),
             )
+
+    def scale(self, factor: Union[int, float, Fraction]) -> "Step":
+        return replace(
+            self,
+            description=self.description.scale(factor),
+            inputs=tuple(input.scale(factor) for input in self.inputs),
+        )
 
 
 @dataclass(frozen=True)
@@ -279,6 +304,13 @@ class Reference(RecipeTreeNode):
             return replace(
                 self, sub_recipe=cast(Reference, self.sub_recipe.substitute(old, new)),
             )
+
+    def scale(self, factor: Union[int, float, Fraction]) -> "Reference":
+        return replace(
+            self,
+            sub_recipe=self.sub_recipe.scale(factor),
+            amount=self.amount.scale(factor),
+        )
 
 
 @dataclass(frozen=True)
@@ -341,6 +373,15 @@ class SubRecipe(RecipeTreeNode):
         else:
             return replace(self, sub_tree=self.sub_tree.substitute(old, new),)
 
+    def scale(self, factor: Union[int, float, Fraction]) -> "SubRecipe":
+        return replace(
+            self,
+            sub_tree=self.sub_tree.scale(factor),
+            output_names=tuple(
+                output_name.scale(factor) for output_name in self.output_names
+            ),
+        )
+
 
 @dataclass(frozen=True)
 class Recipe:
@@ -385,3 +426,16 @@ class Recipe:
 
             if isinstance(tree_root, SubRecipe):
                 previous_sub_recipe_roots.add(tree_root)
+
+    def scale(self, factor: Union[int, float, Fraction]) -> "Recipe":
+        """
+        Return a copy of this recipe with all scalable values and quantities
+        scaled by the given factor.
+        """
+        return replace(
+            self,
+            recipe_trees=tuple(
+                recipe_tree.scale(factor) for recipe_tree in self.recipe_trees
+            ),
+            follows=(self.follows.scale(factor) if self.follows is not None else None),
+        )

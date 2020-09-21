@@ -30,6 +30,15 @@ class TestStep:
         assert orig.substitute(orig, c) == c
         assert orig.substitute(d, c) == orig
 
+    def test_scale(self) -> None:
+        step = Step(
+            SVS(["fry in ", 4, " blocks"]), (Ingredient(SVS("spam"), Quantity(2)),)
+        )
+
+        assert step.scale(3) == Step(
+            SVS(["fry in ", 12, " blocks"]), (Ingredient(SVS("spam"), Quantity(6)),),
+        )
+
 
 class TestReference:
     def test_name_validation(self) -> None:
@@ -56,6 +65,19 @@ class TestReference:
         assert orig.substitute(b, d) == Reference(SubRecipe(c, (SVS("d"),)), 0)
         assert orig.substitute(orig, c) == c
 
+    def test_scale(self) -> None:
+        sr_2 = SubRecipe(
+            Ingredient(SVS("spam"), Quantity(2)), (SVS([2, " blocks of spam"]),)
+        )
+        sr_6 = SubRecipe(
+            Ingredient(SVS("spam"), Quantity(6)), (SVS([6, " blocks of spam"]),)
+        )
+
+        assert Reference(sr_2, 0).scale(3) == Reference(sr_6, 0)
+        assert Reference(sr_2, 0, Quantity(100, "g")).scale(3) == Reference(
+            sr_6, 0, Quantity(300, "g"),
+        )
+
 
 class TestQuantity:
     @pytest.mark.parametrize(
@@ -81,6 +103,9 @@ class TestQuantity:
     def test_has_equal_value_to(self, a: Quantity, b: Quantity, exp: bool) -> None:
         assert a.has_equal_value_to(b) is exp
 
+    def test_scale(self) -> None:
+        assert Quantity(123, "foo").scale(10) == Quantity(1230, "foo")
+
 
 class TestProportion:
     def test_default_percentage_flag(self) -> None:
@@ -92,6 +117,10 @@ class TestProportion:
         assert Proportion(None).remainder_wording == "remaining"
         assert Proportion(None, remainder_wording="rest").remainder_wording == "rest"
         assert Proportion(0.5).remainder_wording is None
+
+    def test_scale(self) -> None:
+        assert Proportion(None).scale(10) == Proportion(None)
+        assert Proportion(123).scale(10) == Proportion(123)
 
 
 class TestSubRecipe:
@@ -124,6 +153,12 @@ class TestSubRecipe:
         assert orig.substitute(a, b) == SubRecipe(b, (SVS("foo"),))
         assert orig.substitute(orig, b) == b
         assert orig.substitute(c, b) == orig
+
+    def test_scale(self) -> None:
+        sr_2 = SubRecipe(Ingredient(SVS("spam"), Quantity(2)), (SVS([2, "spams"]),))
+        sr_6 = SubRecipe(Ingredient(SVS("spam"), Quantity(6)), (SVS([6, "spams"]),))
+
+        assert sr_2.scale(3) == sr_6
 
 
 class TestRecipe:
@@ -177,3 +212,19 @@ class TestRecipe:
         ref4 = Reference(sr)
         with pytest.raises(ReferenceToInvalidSubRecipeError):
             Recipe((ref4,))
+
+    def test_scale(self) -> None:
+        sr_2 = SubRecipe(Ingredient(SVS("spam"), Quantity(2)), (SVS("spam"),))
+        ref_sr_2 = Reference(sr_2)
+
+        sr_6 = SubRecipe(Ingredient(SVS("spam"), Quantity(6)), (SVS("spam"),))
+        ref_sr_6 = Reference(sr_6)
+
+        first_rec_2 = Recipe((sr_2,))
+        second_rec_2 = Recipe((ref_sr_2,), follows=first_rec_2)
+
+        first_rec_6 = Recipe((sr_6,))
+        second_rec_6 = Recipe((ref_sr_6,), follows=first_rec_6)
+
+        assert first_rec_2.scale(3) == first_rec_6
+        assert second_rec_2.scale(3) == second_rec_6
