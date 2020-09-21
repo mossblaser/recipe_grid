@@ -88,8 +88,8 @@ class Quantity:
 
     def has_equal_value_to(self, other: "Quantity") -> bool:
         """
-        Compare two quantities, returning true if the quantities are equal in
-        magnitude (ignoring other metadata).
+        Compare two quantities, returning true if the quantities are equal
+        (ignoring other metadata).
         """
         other_to_self_scale: Union[int, float, Fraction]
         if self.unit is None and other.unit is None:
@@ -103,7 +103,10 @@ class Quantity:
                     other.unit.lower(), self.unit.lower(),
                 )
             except KeyError:  # No conversion available
-                return False
+                if self.unit.lower() == other.unit.lower():
+                    other_to_self_scale = 1
+                else:
+                    return False
 
         return self.value == other.value * other_to_self_scale
 

@@ -98,6 +98,9 @@ class TestQuantity:
             (Quantity(1, "pounds"), Quantity(17, "ounces"), False),
             # Incompatible, but valid units
             (Quantity(1, "kg"), Quantity(1, "l"), False),
+            # Compatible but unknown units
+            (Quantity(123, "foo"), Quantity(123, "foo"), True),
+            (Quantity(123, "FOO"), Quantity(123, "foo"), True),
         ],
     )
     def test_has_equal_value_to(self, a: Quantity, b: Quantity, exp: bool) -> None:
