@@ -256,6 +256,7 @@ UNIT_SYSTEM = UnitSystem(
                 Unit(("bulb", "bulbs"), Definition(10, "cloves")),
             ]
         ),
+        "pinch": RelatedUnitSet([Unit(("pinch", "pinches"))]),
     }
 )
 """
