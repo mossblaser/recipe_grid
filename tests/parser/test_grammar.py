@@ -458,6 +458,21 @@ from recipe_grid.parser.ast import (
                 ]
             ),
         ),
+        (
+            # Note 'clove' would match too (leaving 's garlic' as the
+            # ingredient name) if the regex does not ensure implicit names
+            # are whole words.
+            "2 cloves garlic",
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String("garlic"), Quantity(0, 2, String("cloves"), " ", "")
+                        )
+                    )
+                ]
+            ),
+        ),
         # Steps
         (
             "cook(spam)",

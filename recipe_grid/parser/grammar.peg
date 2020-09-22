@@ -45,7 +45,7 @@ preposition <- r"(?i)of([ \t]+the)?\\b"
 
 # Units (n.b. @KNOWN_UNITS@ is substituted for a regex matching all units
 # supported by this software).
-known_unit    <- r"(?i)@KNOWN_UNITS@"
+known_unit    <- r"(?i)(@KNOWN_UNITS@)\\b"
 freeform_unit <- static_string
 
 # Strings
