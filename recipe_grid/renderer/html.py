@@ -30,6 +30,8 @@ from recipe_grid.recipe import (
     Proportion,
 )
 
+from recipe_grid.renderer.recipe_to_table import recipe_tree_to_table
+
 
 def t(tag: str, body: Optional[str] = None, **attrs: str) -> str:
     """
@@ -202,11 +204,7 @@ def render_step(step: Step) -> str:
 
 
 def render_sub_recipe_header(sub_recipe: SubRecipe) -> str:
-    return t(
-        "a",
-        render_scaled_value_string(sub_recipe.output_names[0]),
-        id=generate_subrecipe_output_id(sub_recipe, 0),
-    )
+    return render_scaled_value_string(sub_recipe.output_names[0])
 
 
 def render_sub_recipe_outputs(sub_recipe: SubRecipe) -> str:
@@ -248,16 +246,10 @@ def render_cell(cell: Cell[RecipeTreeNode]) -> str:
         body = render_step(cell.value)
     elif isinstance(cell.value, SubRecipe):
         if len(cell.value.output_names) == 1:
-            if cell.value.show_output_names:
-                class_names.append("rg-sub-recipe-header")
-            else:
-                class_names.append("rg-sub-recipe-hidden-header")
+            class_names.append("rg-sub-recipe-header")
             body = render_sub_recipe_header(cell.value)
         else:
-            if cell.value.show_output_names:
-                class_names.append("rg-sub-recipe-outputs")
-            else:
-                class_names.append("rg-sub-recipe-hidden-outputs")
+            class_names.append("rg-sub-recipe-outputs")
             body = render_sub_recipe_outputs(cell.value)
 
     for edge in ["left", "right", "top", "bottom"]:
@@ -268,7 +260,11 @@ def render_cell(cell: Cell[RecipeTreeNode]) -> str:
     return t("td", body, class_=" ".join(class_names), **spans)
 
 
-def render_table(table: Table[RecipeTreeNode]) -> str:
+def render_table(table: Table[RecipeTreeNode], id: Optional[str] = None) -> str:
+    """
+    Renders a recipe grid table as HTML, optionally setting its ``id``
+    attribute set to a particular string.
+    """
     return t(
         "table",
         "\n".join(
@@ -281,4 +277,14 @@ def render_table(table: Table[RecipeTreeNode]) -> str:
             for row_cells in table.cells
         ),
         class_="rg-table",
+        **({"id": id} if id is not None else {}),
     )
+
+
+def render_recipe_tree(recipe_tree: RecipeTreeNode) -> str:
+    """Render a recipe tree as a HTML table."""
+    id: Optional[str] = None
+    if isinstance(recipe_tree, SubRecipe) and len(recipe_tree.output_names) == 1:
+        id = generate_subrecipe_output_id(recipe_tree, 0)
+
+    return render_table(recipe_tree_to_table(recipe_tree), id)

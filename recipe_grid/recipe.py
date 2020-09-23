@@ -357,7 +357,7 @@ class SubRecipe(RecipeTreeNode):
     Specifies whether the output name(s) for this subrecipe should be rendered.
     For example when a sub-recipe consists of a single ingredient (e.g. '300g
     spam') with a single output (e.g. 'spam'), adding extra labelling would
-    just be a distraction.
+    just be a distraction and so this setting should be False.
     """
 
     def __post_init__(self) -> None:

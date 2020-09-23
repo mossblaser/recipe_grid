@@ -1,6 +1,6 @@
 import pytest
 
-from typing import Union
+from typing import Union, Optional
 
 from fractions import Fraction
 
@@ -31,6 +31,7 @@ from recipe_grid.renderer.html import (
     render_sub_recipe_outputs,
     render_cell,
     render_table,
+    render_recipe_tree,
 )
 
 
@@ -279,7 +280,7 @@ def test_render_step() -> None:
 def test_render_sub_recipe_header() -> None:
     assert (
         render_sub_recipe_header(SubRecipe(Ingredient(SVS("spam")), (SVS("foo"),)))
-        == '<a id="sub-recipe-foo">foo</a>'
+        == "foo"
     )
 
 
@@ -316,47 +317,17 @@ class TestRenderCell:
             == '<td class="rg-step">fry</td>'
         )
 
-    def test_subrecipe_header_visible(self) -> None:
+    def test_subrecipe_header(self) -> None:
         assert (
             render_cell(Cell(SubRecipe(Ingredient(SVS("spam")), (SVS("foo"),))))
-            == '<td class="rg-sub-recipe-header"><a id="sub-recipe-foo">foo</a></td>'
+            == '<td class="rg-sub-recipe-header">foo</td>'
         )
 
-    def test_subrecipe_header_hidden(self) -> None:
-        assert (
-            render_cell(
-                Cell(
-                    SubRecipe(
-                        Ingredient(SVS("spam")), (SVS("foo"),), show_output_names=False
-                    )
-                )
-            )
-            == '<td class="rg-sub-recipe-hidden-header"><a id="sub-recipe-foo">foo</a></td>'
-        )
-
-    def test_subrecipe_outputs_visible(self) -> None:
+    def test_subrecipe_outputs(self) -> None:
         assert render_cell(
             Cell(SubRecipe(Ingredient(SVS("spam")), (SVS("foo"), SVS("bar"))))
         ) == (
             '<td class="rg-sub-recipe-outputs">\n'
-            '  <ul class="rg-sub-recipe-output-list">\n'
-            '    <li><a id="sub-recipe-foo">foo</a></li>\n'
-            '    <li><a id="sub-recipe-bar">bar</a></li>\n'
-            "  </ul>\n"
-            "</td>"
-        )
-
-    def test_subrecipe_outputs_hidden(self) -> None:
-        assert render_cell(
-            Cell(
-                SubRecipe(
-                    Ingredient(SVS("spam")),
-                    (SVS("foo"), SVS("bar")),
-                    show_output_names=False,
-                )
-            )
-        ) == (
-            '<td class="rg-sub-recipe-hidden-outputs">\n'
             '  <ul class="rg-sub-recipe-output-list">\n'
             '    <li><a id="sub-recipe-foo">foo</a></li>\n'
             '    <li><a id="sub-recipe-bar">bar</a></li>\n'
@@ -396,7 +367,10 @@ class TestRenderCell:
         )
 
 
-def test_render_table() -> None:
+@pytest.mark.parametrize(
+    "id, exp_attrs", [(None, ""), ("foo-bar", ' id="foo-bar"')],
+)
+def test_render_table(id: Optional[str], exp_attrs: str) -> None:
     assert render_table(
         Table.from_dict(
             {
@@ -409,9 +383,10 @@ def test_render_table() -> None:
                     rows=2,
                 ),
             }
-        )
+        ),
+        id=id,
     ) == (
-        '<table class="rg-table">\n'
+        f'<table class="rg-table"{exp_attrs}>\n'
         "  <tr>\n"
         '    <td class="rg-ingredient">spam</td>\n'
         '    <td class="rg-step" rowspan="2">fry</td>\n'
@@ -419,3 +394,62 @@ def test_render_table() -> None:
         '  <tr><td class="rg-ingredient">eggs</td></tr>\n'
         "</table>"
     )
+
+
+class TestRenderRecipeTree:
+    def test_non_subrecipe(self) -> None:
+        assert render_recipe_tree(Ingredient(SVS("spam"))) == (
+            '<table class="rg-table">'
+            "<tr>"
+            '<td class="rg-ingredient '
+            "rg-border-left-sub-recipe "
+            "rg-border-right-sub-recipe "
+            "rg-border-top-sub-recipe "
+            'rg-border-bottom-sub-recipe">spam</td>'
+            "</tr>"
+            "</table>"
+        )
+
+    def test_single_output_hidden_subrecipe(self) -> None:
+        assert render_recipe_tree(
+            SubRecipe(Ingredient(SVS("spam")), (SVS("spam"),), show_output_names=False)
+        ) == (
+            '<table class="rg-table" id="sub-recipe-spam">'
+            "<tr>"
+            '<td class="rg-ingredient '
+            "rg-border-left-sub-recipe "
+            "rg-border-right-sub-recipe "
+            "rg-border-top-sub-recipe "
+            'rg-border-bottom-sub-recipe">spam</td>'
+            "</tr>"
+            "</table>"
+        )
+
+    def test_multiple_output_hidden_subrecipe(self) -> None:
+        assert render_recipe_tree(
+            SubRecipe(
+                Ingredient(SVS("spam")),
+                (SVS("spam"), SVS("tin")),
+                show_output_names=False,
+            )
+        ) == (
+            ""
+            '<table class="rg-table">\n'
+            "  <tr>\n"
+            '    <td class="rg-ingredient '
+            "rg-border-left-sub-recipe "
+            "rg-border-right-sub-recipe "
+            "rg-border-top-sub-recipe "
+            'rg-border-bottom-sub-recipe">spam</td>\n'
+            '    <td class="rg-sub-recipe-outputs '
+            "rg-border-right-none "
+            "rg-border-top-none "
+            'rg-border-bottom-none">\n'
+            '      <ul class="rg-sub-recipe-output-list">\n'
+            '        <li><a id="sub-recipe-spam">spam</a></li>\n'
+            '        <li><a id="sub-recipe-tin">tin</a></li>\n'
+            "      </ul>\n"
+            "    </td>\n"
+            "  </tr>\n"
+            "</table>"
+        )

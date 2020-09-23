@@ -23,7 +23,9 @@ from recipe_grid.renderer.table import (
 )
 
 
-def recipe_tree_to_table(recipe_tree: RecipeTreeNode) -> Table[RecipeTreeNode]:
+def recipe_tree_to_table(
+    recipe_tree: RecipeTreeNode, _root: bool = True
+) -> Table[RecipeTreeNode]:
     """
     Convert a recipe tree into tabular form.
 
@@ -42,12 +44,20 @@ def recipe_tree_to_table(recipe_tree: RecipeTreeNode) -> Table[RecipeTreeNode]:
     * For multiple-output sub-recipes they should be placed in a cell to the
       right of the sub-recipe and contain (vertically arranged) all of the
       output names for the sub recipe.
+
+    NB: The ``_root`` argument is for internal use and indicates if the node
+    passed to this function is the root node of its recipe tree.
     """
     if isinstance(recipe_tree, (Ingredient, Reference)):
-        return Table([[Cell(recipe_tree)]])
+        table: Table[RecipeTreeNode] = Table([[Cell(recipe_tree)]])
+        if _root:
+            return set_border_around_table(table, BorderType.sub_recipe)
+        else:
+            return table
+
     elif isinstance(recipe_tree, Step):
         input_tables = [
-            recipe_tree_to_table(input_tree) for input_tree in recipe_tree.inputs
+            recipe_tree_to_table(input_tree, False) for input_tree in recipe_tree.inputs
         ]
 
         # Pad all input tables to same width and stack them up
@@ -56,7 +66,7 @@ def recipe_tree_to_table(recipe_tree: RecipeTreeNode) -> Table[RecipeTreeNode]:
         combined_input_tables = combine_tables(input_tables, axis=0)
 
         # Add step to RHS of inputs
-        return combine_tables(
+        table = combine_tables(
             [
                 combined_input_tables,
                 Table.from_dict(
@@ -65,27 +75,35 @@ def recipe_tree_to_table(recipe_tree: RecipeTreeNode) -> Table[RecipeTreeNode]:
             ],
             axis=1,
         )
+
+        if _root:
+            return set_border_around_table(table, BorderType.sub_recipe)
+        else:
+            return table
     elif isinstance(recipe_tree, SubRecipe):
-        sub_tree_table = recipe_tree_to_table(recipe_tree.sub_tree)
+        sub_tree_table = recipe_tree_to_table(recipe_tree.sub_tree, False)
 
         if len(recipe_tree.output_names) == 1:
-            return set_border_around_table(
-                combine_tables(
-                    [
-                        Table.from_dict(
-                            {
-                                (0, 0): Cell(
-                                    cast(RecipeTreeNode, recipe_tree),
-                                    columns=sub_tree_table.columns,
-                                ),
-                            }
-                        ),
-                        sub_tree_table,
-                    ],
-                    axis=0,
-                ),
-                BorderType.sub_recipe,
-            )
+            if recipe_tree.show_output_names:
+                return set_border_around_table(
+                    combine_tables(
+                        [
+                            Table.from_dict(
+                                {
+                                    (0, 0): Cell(
+                                        cast(RecipeTreeNode, recipe_tree),
+                                        columns=sub_tree_table.columns,
+                                    ),
+                                }
+                            ),
+                            sub_tree_table,
+                        ],
+                        axis=0,
+                    ),
+                    BorderType.sub_recipe,
+                )
+            else:
+                return set_border_around_table(sub_tree_table, BorderType.sub_recipe)
         else:
             return combine_tables(
                 [

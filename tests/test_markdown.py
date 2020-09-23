@@ -173,10 +173,10 @@ class TestRenderMarkdown:
                 <div class="rg-recipe-block">
                   <table class="rg-table">
                     <tr>
-                      <td class="rg-ingredient"><span class="rg-quantity rg-scaled-value" data-rg-alternative-units='["200g", "0.2kg", "0.441lb", "7.05oz"]'>200g</span> spam</td>
-                      <td class="rg-step" rowspan="2">fry</td>
+                      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe"><span class="rg-quantity rg-scaled-value" data-rg-alternative-units='["200g", "0.2kg", "0.441lb", "7.05oz"]'>200g</span> spam</td>
+                      <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="2">fry</td>
                     </tr>
-                    <tr><td class="rg-ingredient"><span class="rg-quantity-unitless rg-scaled-value">4</span> eggs</td></tr>
+                    <tr><td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe"><span class="rg-quantity-unitless rg-scaled-value">4</span> eggs</td></tr>
                   </table>
                 </div><p>Ta-da!</p>
             """  # noqa: E501

@@ -117,10 +117,9 @@ from recipe_grid.scaled_value_string import ScaledValueString as SVS
 from recipe_grid.renderer.html import (
     render_scaled_value_string,
     render_number,
-    render_table,
+    render_recipe_tree,
     t,
 )
-from recipe_grid.renderer.recipe_to_table import recipe_tree_to_table
 
 
 def generate_placeholder(num_random_chars: int = 32) -> str:
@@ -394,7 +393,7 @@ class MarkdownRecipe:
                 t(
                     "div",
                     "\n".join(
-                        render_table(recipe_tree_to_table(recipe_tree))
+                        render_recipe_tree(recipe_tree)
                         for recipe_tree in recipe.scale(scale).recipe_trees
                     ),
                     class_="rg-recipe-block",

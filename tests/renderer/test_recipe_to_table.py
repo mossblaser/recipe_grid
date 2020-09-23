@@ -17,15 +17,17 @@ from recipe_grid.renderer.recipe_to_table import recipe_tree_to_table
 
 def test_ingredient() -> None:
     ingredient = Ingredient(SVS("spam"))
-    assert recipe_tree_to_table(ingredient) == Table.from_dict(
-        {(0, 0): Cell(ingredient)}
+    assert recipe_tree_to_table(ingredient) == set_border_around_table(
+        Table.from_dict({(0, 0): Cell(ingredient)}), BorderType.sub_recipe
     )
 
 
 def test_reference() -> None:
     sub_recipe = SubRecipe(Ingredient(SVS("spam")), (SVS("out"),))
     reference = Reference(sub_recipe, 0)
-    assert recipe_tree_to_table(reference) == Table.from_dict({(0, 0): Cell(reference)})
+    assert recipe_tree_to_table(reference) == set_border_around_table(
+        Table.from_dict({(0, 0): Cell(reference)}), BorderType.sub_recipe
+    )
 
 
 def test_step() -> None:
@@ -36,21 +38,24 @@ def test_step() -> None:
     input_2 = Step(SVS("chopped"), (input_2_ingredient,))
     step = Step(SVS("combine"), (input_0, input_1, input_2))
 
-    assert recipe_tree_to_table(step) == Table.from_dict(
-        cast(
-            Mapping[Tuple[int, int], Cell[RecipeTreeNode]],
-            {
-                (0, 0): Cell(input_0, columns=2),
-                (1, 0): Cell(input_1, columns=2),
-                (2, 0): Cell(input_2_ingredient),
-                (2, 1): Cell(input_2),
-                (0, 2): Cell(step, rows=3),
-            },
-        )
+    assert recipe_tree_to_table(step) == set_border_around_table(
+        Table.from_dict(
+            cast(
+                Mapping[Tuple[int, int], Cell[RecipeTreeNode]],
+                {
+                    (0, 0): Cell(input_0, columns=2),
+                    (1, 0): Cell(input_1, columns=2),
+                    (2, 0): Cell(input_2_ingredient),
+                    (2, 1): Cell(input_2),
+                    (0, 2): Cell(step, rows=3),
+                },
+            )
+        ),
+        BorderType.sub_recipe,
     )
 
 
-def test_single_output_sub_recipe() -> None:
+def test_single_output_sub_recipe_shown() -> None:
     ingredient = Ingredient(SVS("spam"))
     step = Step(SVS("fry"), (ingredient,))
     sub_recipe = SubRecipe(step, (SVS("out"),))
@@ -64,6 +69,22 @@ def test_single_output_sub_recipe() -> None:
                     (1, 0): Cell(ingredient),
                     (1, 1): Cell(step),
                 },
+            )
+        ),
+        BorderType.sub_recipe,
+    )
+
+
+def test_single_output_sub_recipe_hidden() -> None:
+    ingredient = Ingredient(SVS("spam"))
+    step = Step(SVS("fry"), (ingredient,))
+    sub_recipe = SubRecipe(step, (SVS("out"),), show_output_names=False)
+
+    assert recipe_tree_to_table(sub_recipe) == set_border_around_table(
+        Table.from_dict(
+            cast(
+                Mapping[Tuple[int, int], Cell[RecipeTreeNode]],
+                {(0, 0): Cell(ingredient), (0, 1): Cell(step)},
             )
         ),
         BorderType.sub_recipe,
