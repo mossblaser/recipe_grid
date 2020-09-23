@@ -253,10 +253,18 @@ UNIT_SYSTEM = UnitSystem(
         "garlic": RelatedUnitSet(
             [
                 Unit(("clove", "cloves")),
+                # Approx...
                 Unit(("bulb", "bulbs"), Definition(10, "cloves")),
             ]
         ),
+        # Other non-specific units
         "pinch": RelatedUnitSet([Unit(("pinch", "pinches"))]),
+        "knob": RelatedUnitSet([Unit(("knob", "knobs"))]),
+        "packet": RelatedUnitSet([Unit(("packet", "packets", "pack", "packs"))]),
+        "box": RelatedUnitSet([Unit(("box", "boxes", "boxen"))]),
+        "bag": RelatedUnitSet([Unit(("bag", "bags"))]),
+        "sack": RelatedUnitSet([Unit(("sack", "sacks"))]),
+        "sachet": RelatedUnitSet([Unit(("sachet", "sachets"))]),
     }
 )
 """
