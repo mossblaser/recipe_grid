@@ -54,6 +54,25 @@ from recipe_grid.parser.ast import (
                 ]
             ),
         ),
+        # Concatenated strings without spaces between
+        (
+            "{Spam}'and'\"eggs\"",
+            Recipe(
+                [
+                    Stmt(
+                        Reference(
+                            String(
+                                [
+                                    Substring(0, "Spam"),
+                                    Substring(0, "and"),
+                                    Substring(0, "eggs"),
+                                ]
+                            )
+                        )
+                    )
+                ]
+            ),
+        ),
         # String interpolation
         (
             "spam {1}",

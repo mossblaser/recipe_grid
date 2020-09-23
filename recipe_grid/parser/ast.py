@@ -320,7 +320,8 @@ class RecipeTransformer(peggie.ParseTreeTransformer):
         out = String(first)
         if rest is not None:
             sp, rest_text = rest
-            out.substrings.append(Substring(sp.start, sp.string))
+            if sp is not None:
+                out.substrings.append(Substring(sp.start, sp.string))
             out.substrings.extend(rest_text.substrings)
 
         return out
