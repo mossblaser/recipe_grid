@@ -290,9 +290,9 @@ def test_render_sub_recipe_outputs() -> None:
         "sub-recipe-",
     ) == (
         '<ul class="rg-sub-recipe-output-list">\n'
-        '  <li><a id="sub-recipe-foo">foo</a></li>\n'
-        '  <li><a id="sub-recipe-bar">bar</a></li>\n'
-        '  <li><a id="sub-recipe-baz">baz</a></li>\n'
+        '  <li id="sub-recipe-foo">foo</li>\n'
+        '  <li id="sub-recipe-bar">bar</li>\n'
+        '  <li id="sub-recipe-baz">baz</li>\n'
         "</ul>"
     )
 
@@ -330,8 +330,8 @@ class TestRenderCell:
         ) == (
             '<td class="rg-sub-recipe-outputs">\n'
             '  <ul class="rg-sub-recipe-output-list">\n'
-            '    <li><a id="sub-recipe-foo">foo</a></li>\n'
-            '    <li><a id="sub-recipe-bar">bar</a></li>\n'
+            '    <li id="sub-recipe-foo">foo</li>\n'
+            '    <li id="sub-recipe-bar">bar</li>\n'
             "  </ul>\n"
             "</td>"
         )
@@ -449,8 +449,8 @@ class TestRenderRecipeTree:
             "rg-border-top-none "
             'rg-border-bottom-none">\n'
             '      <ul class="rg-sub-recipe-output-list">\n'
-            '        <li><a id="qux-spam">spam</a></li>\n'
-            '        <li><a id="qux-tin">tin</a></li>\n'
+            '        <li id="qux-spam">spam</li>\n'
+            '        <li id="qux-tin">tin</li>\n'
             "      </ul>\n"
             "    </td>\n"
             "  </tr>\n"

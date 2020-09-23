@@ -217,11 +217,8 @@ def render_sub_recipe_outputs(sub_recipe: SubRecipe, id_prefix: str) -> str:
         "\n".join(
             t(
                 "li",
-                t(
-                    "a",
-                    render_scaled_value_string(name),
-                    id=generate_subrecipe_output_id(sub_recipe, index, id_prefix),
-                ),
+                render_scaled_value_string(name),
+                id=generate_subrecipe_output_id(sub_recipe, index, id_prefix),
             )
             for index, name in enumerate(sub_recipe.output_names)
         ),
