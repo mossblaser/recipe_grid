@@ -170,12 +170,14 @@ def render_ingredient(ingredient: Ingredient) -> str:
     return quantity + description
 
 
-def generate_subrecipe_output_id(sub_recipe: SubRecipe, output_index: int) -> str:
+def generate_subrecipe_output_id(
+    sub_recipe: SubRecipe, output_index: int, prefix: str
+) -> str:
     name = str(sub_recipe.output_names[output_index])
-    return "sub-recipe-" + re.sub(r"[^a-zA-Z0-9._-]", "-", name).strip("-")
+    return prefix + re.sub(r"[^a-zA-Z0-9._-]", "-", name).strip("-")
 
 
-def render_reference(reference: Reference) -> str:
+def render_reference(reference: Reference, id_prefix: str) -> str:
     amount: str
     if isinstance(reference.amount, Quantity):
         amount = render_quantity(reference.amount) + " "
@@ -195,7 +197,9 @@ def render_reference(reference: Reference) -> str:
         "a",
         amount + name,
         href="#"
-        + generate_subrecipe_output_id(reference.sub_recipe, reference.output_index,),
+        + generate_subrecipe_output_id(
+            reference.sub_recipe, reference.output_index, id_prefix
+        ),
     )
 
 
@@ -207,7 +211,7 @@ def render_sub_recipe_header(sub_recipe: SubRecipe) -> str:
     return render_scaled_value_string(sub_recipe.output_names[0])
 
 
-def render_sub_recipe_outputs(sub_recipe: SubRecipe) -> str:
+def render_sub_recipe_outputs(sub_recipe: SubRecipe, id_prefix: str) -> str:
     return t(
         "ul",
         "\n".join(
@@ -216,7 +220,7 @@ def render_sub_recipe_outputs(sub_recipe: SubRecipe) -> str:
                 t(
                     "a",
                     render_scaled_value_string(name),
-                    id=generate_subrecipe_output_id(sub_recipe, index),
+                    id=generate_subrecipe_output_id(sub_recipe, index, id_prefix),
                 ),
             )
             for index, name in enumerate(sub_recipe.output_names)
@@ -225,7 +229,7 @@ def render_sub_recipe_outputs(sub_recipe: SubRecipe) -> str:
     )
 
 
-def render_cell(cell: Cell[RecipeTreeNode]) -> str:
+def render_cell(cell: Cell[RecipeTreeNode], id_prefix: str = "sub-recipe-") -> str:
     spans: MutableMapping[str, str] = {}
     if cell.columns != 1:
         spans["colspan"] = str(cell.columns)
@@ -240,7 +244,7 @@ def render_cell(cell: Cell[RecipeTreeNode]) -> str:
         body = render_ingredient(cell.value)
     elif isinstance(cell.value, Reference):
         class_names.append("rg-reference")
-        body = render_reference(cell.value)
+        body = render_reference(cell.value, id_prefix)
     elif isinstance(cell.value, Step):
         class_names.append("rg-step")
         body = render_step(cell.value)
@@ -250,7 +254,7 @@ def render_cell(cell: Cell[RecipeTreeNode]) -> str:
             body = render_sub_recipe_header(cell.value)
         else:
             class_names.append("rg-sub-recipe-outputs")
-            body = render_sub_recipe_outputs(cell.value)
+            body = render_sub_recipe_outputs(cell.value, id_prefix)
 
     for edge in ["left", "right", "top", "bottom"]:
         border_type: BorderType = getattr(cell, f"border_{edge}")
@@ -260,10 +264,16 @@ def render_cell(cell: Cell[RecipeTreeNode]) -> str:
     return t("td", body, class_=" ".join(class_names), **spans)
 
 
-def render_table(table: Table[RecipeTreeNode], id: Optional[str] = None) -> str:
+def render_table(
+    table: Table[RecipeTreeNode],
+    id: Optional[str] = None,
+    id_prefix: str = "sub-recipe-",
+) -> str:
     """
-    Renders a recipe grid table as HTML, optionally setting its ``id``
-    attribute set to a particular string.
+    Renders a recipe grid table as HTML.
+
+    Optionally sets the ``id`` attribute of the generated table to the provided
+    string (NB: The ``id_prefix`` is not added to this string.).
     """
     return t(
         "table",
@@ -271,7 +281,9 @@ def render_table(table: Table[RecipeTreeNode], id: Optional[str] = None) -> str:
             t(
                 "tr",
                 "\n".join(
-                    render_cell(cell) for cell in row_cells if isinstance(cell, Cell)
+                    render_cell(cell, id_prefix)
+                    for cell in row_cells
+                    if isinstance(cell, Cell)
                 ),
             )
             for row_cells in table.cells
@@ -281,10 +293,17 @@ def render_table(table: Table[RecipeTreeNode], id: Optional[str] = None) -> str:
     )
 
 
-def render_recipe_tree(recipe_tree: RecipeTreeNode) -> str:
-    """Render a recipe tree as a HTML table."""
+def render_recipe_tree(
+    recipe_tree: RecipeTreeNode, id_prefix: str = "sub-recipe-"
+) -> str:
+    """
+    Render a recipe tree as a HTML table.
+
+    The ``id_prefix`` argument may be used to specify the prefix added to all
+    anchor IDs used in this recipe tree.
+    """
     id: Optional[str] = None
     if isinstance(recipe_tree, SubRecipe) and len(recipe_tree.output_names) == 1:
-        id = generate_subrecipe_output_id(recipe_tree, 0)
+        id = generate_subrecipe_output_id(recipe_tree, 0, id_prefix)
 
-    return render_table(recipe_tree_to_table(recipe_tree), id)
+    return render_table(recipe_tree_to_table(recipe_tree), id, id_prefix)

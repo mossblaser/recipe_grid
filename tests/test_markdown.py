@@ -226,38 +226,46 @@ class TestRenderMarkdown:
                 Fried egg:
 
                 ```recipe
+                1 egg
+                ```
+
+                ```recipe
                 fry(egg)
                 ```
 
                 Boiled egg:
 
                 ```new-recipe
+                2 egg
+                ```
+
+                ```recipe
                 boil(egg)
                 ```
                 """
             ).strip()
         )
 
-        r1 = Recipe(
-            (
-                SubRecipe(
-                    Step(SVS("fry"), (Ingredient(SVS("egg")),),),
-                    (SVS("egg"),),
-                    show_output_names=False,
-                ),
-            ),
+        e1 = SubRecipe(
+            Ingredient(SVS("egg"), Quantity(1)), (SVS("egg"),), show_output_names=False,
         )
-        r2 = Recipe(
-            (
-                SubRecipe(
-                    Step(SVS("boil"), (Ingredient(SVS("egg")),),),
-                    (SVS("egg"),),
-                    show_output_names=False,
-                ),
-            ),
-        )
+        r1 = Recipe((e1,))
+        r2 = Recipe((Step(SVS("fry"), (Reference(e1),)),), follows=r1)
 
-        assert compiled.recipes == [[r1], [r2]]
+        e2 = SubRecipe(
+            Ingredient(SVS("egg"), Quantity(2)), (SVS("egg"),), show_output_names=False,
+        )
+        r3 = Recipe((e2,))
+        r4 = Recipe((Step(SVS("boil"), (Reference(e2),)),), follows=r3)
+
+        assert compiled.recipes == [[r1, r2], [r3, r4]]
+
+        # Check anchor IDs are unique too
+        html = compiled.render()
+        assert 'id="recipe-egg"' in html
+        assert 'href="#recipe-egg"' in html
+        assert 'id="recipe2-egg"' in html
+        assert 'href="#recipe2-egg"' in html
 
     @pytest.mark.parametrize(
         "source",

@@ -223,8 +223,8 @@ def test_generate_subrecipe_output_id() -> None:
     sub_recipe = SubRecipe(
         Ingredient(SVS("spam")), (SVS("foo"), SVS(["foo bar ", 123, " baz?"])),
     )
-    assert generate_subrecipe_output_id(sub_recipe, 0) == "sub-recipe-foo"
-    assert generate_subrecipe_output_id(sub_recipe, 1) == "sub-recipe-foo-bar-123-baz"
+    assert generate_subrecipe_output_id(sub_recipe, 0, "qux-") == "qux-foo"
+    assert generate_subrecipe_output_id(sub_recipe, 1, "qux-") == "qux-foo-bar-123-baz"
 
 
 @pytest.mark.parametrize(
@@ -270,7 +270,7 @@ def test_generate_subrecipe_output_id() -> None:
     ],
 )
 def test_render_reference(reference: Reference, exp: str) -> None:
-    assert render_reference(reference) == exp
+    assert render_reference(reference, "sub-recipe-") == exp
 
 
 def test_render_step() -> None:
@@ -286,7 +286,8 @@ def test_render_sub_recipe_header() -> None:
 
 def test_render_sub_recipe_outputs() -> None:
     assert render_sub_recipe_outputs(
-        SubRecipe(Ingredient(SVS("spam")), (SVS("foo"), SVS("bar"), SVS("baz")),)
+        SubRecipe(Ingredient(SVS("spam")), (SVS("foo"), SVS("bar"), SVS("baz"))),
+        "sub-recipe-",
     ) == (
         '<ul class="rg-sub-recipe-output-list">\n'
         '  <li><a id="sub-recipe-foo">foo</a></li>\n'
@@ -412,9 +413,10 @@ class TestRenderRecipeTree:
 
     def test_single_output_hidden_subrecipe(self) -> None:
         assert render_recipe_tree(
-            SubRecipe(Ingredient(SVS("spam")), (SVS("spam"),), show_output_names=False)
+            SubRecipe(Ingredient(SVS("spam")), (SVS("spam"),), show_output_names=False),
+            "qux-",
         ) == (
-            '<table class="rg-table" id="sub-recipe-spam">'
+            '<table class="rg-table" id="qux-spam">'
             "<tr>"
             '<td class="rg-ingredient '
             "rg-border-left-sub-recipe "
@@ -431,7 +433,8 @@ class TestRenderRecipeTree:
                 Ingredient(SVS("spam")),
                 (SVS("spam"), SVS("tin")),
                 show_output_names=False,
-            )
+            ),
+            "qux-",
         ) == (
             ""
             '<table class="rg-table">\n'
@@ -446,8 +449,8 @@ class TestRenderRecipeTree:
             "rg-border-top-none "
             'rg-border-bottom-none">\n'
             '      <ul class="rg-sub-recipe-output-list">\n'
-            '        <li><a id="sub-recipe-spam">spam</a></li>\n'
-            '        <li><a id="sub-recipe-tin">tin</a></li>\n'
+            '        <li><a id="qux-spam">spam</a></li>\n'
+            '        <li><a id="qux-tin">tin</a></li>\n'
             "      </ul>\n"
             "    </td>\n"
             "  </tr>\n"

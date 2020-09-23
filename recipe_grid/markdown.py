@@ -387,13 +387,22 @@ class MarkdownRecipe:
             )
 
         # Substitute scaled recipes
+        id_prefix_index = 0
         for placeholder, recipe in self.recipe_placeholders.items():
+            if recipe.follows is None:
+                id_prefix_index += 1
+
+            if id_prefix_index > 1:
+                id_prefix = f"recipe{id_prefix_index}-"
+            else:
+                id_prefix = "recipe-"
+
             html = html.replace(
                 placeholder,
                 t(
                     "div",
                     "\n".join(
-                        render_recipe_tree(recipe_tree)
+                        render_recipe_tree(recipe_tree, id_prefix)
                         for recipe_tree in recipe.scale(scale).recipe_trees
                     ),
                     class_="rg-recipe-block",
