@@ -188,7 +188,13 @@ class ScaledValueExpression(inline.InlineElement):  # type: ignore
                 if submatch["numerator"] is not None
                 else
                 # Decimal case
-                float(submatch["decimal"]) if submatch["decimal"] is not None else
+                (
+                    int(float(submatch["decimal"]))
+                    if "." not in submatch["decimal"]
+                    else float(submatch["decimal"])
+                )
+                if submatch["decimal"] is not None
+                else
                 # Escaped char case
                 submatch["escaped_char"]
                 if submatch["escaped_char"] is not None

@@ -6,6 +6,8 @@ from textwrap import dedent
 
 from peggie import ParseError
 
+from fractions import Fraction
+
 from recipe_grid.recipe import (
     Recipe,
     Step,
@@ -104,6 +106,17 @@ class TestRenderMarkdown:
         assert compiled.render(1) == exp
         assert compiled.render(10) == exp10
 
+    def test_scaled_value_expr_integers_stay_as_ints(self) -> None:
+        compiled = compile_markdown("{5}")
+        assert compiled.render(Fraction(1, 3)) == (
+            '<p><span class="rg-scaled-value">1 <sup>2</sup>&frasl;<sub>3</sub></span></p>\n'
+        )
+
+        compiled = compile_markdown("{5.0}")
+        assert compiled.render(Fraction(1, 3)) == (
+            '<p><span class="rg-scaled-value">1.67</span></p>\n'
+        )
+
     @pytest.mark.parametrize(
         "source",
         [
@@ -173,7 +186,7 @@ class TestRenderMarkdown:
                 <div class="rg-recipe-block">
                   <table class="rg-table">
                     <tr>
-                      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe"><span class="rg-quantity rg-scaled-value" data-rg-alternative-units='["200g", "0.2kg", "0.441lb", "7.05oz"]'>200g</span> spam</td>
+                      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe"><span class="rg-quantity rg-scaled-value" data-rg-alternative-units='["200g", "&lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;5&lt;/sub&gt;kg", "0.441lb", "7.05oz"]'>200g</span> spam</td>
                       <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="2">fry</td>
                     </tr>
                     <tr><td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe"><span class="rg-quantity-unitless rg-scaled-value">4</span> eggs</td></tr>

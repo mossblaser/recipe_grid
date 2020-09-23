@@ -236,8 +236,14 @@ class RecipeTransformer(peggie.ParseTreeTransformer):
     def _transform_regex(self, regex: peggie.Regex) -> peggie.Regex:
         return regex
 
-    def decimal(self, _pt: peggie.ParseTree, children: Any) -> Tuple[int, float]:
-        return children.start, float(children.string)
+    def decimal(
+        self, _pt: peggie.ParseTree, children: Any
+    ) -> Tuple[int, Union[int, float]]:
+        number = float(children.string)
+        if "." not in children.string:
+            return children.start, int(number)
+        else:
+            return children.start, number
 
     def fraction(self, _pt: peggie.ParseTree, children: Any) -> Tuple[int, Fraction]:
         maybe_integer, numer, _sp1, _slash, _sp2, denom = children

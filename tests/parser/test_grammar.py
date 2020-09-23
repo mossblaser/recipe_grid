@@ -1,5 +1,7 @@
 import pytest
 
+from typing import cast
+
 from fractions import Fraction
 
 from textwrap import dedent
@@ -658,6 +660,27 @@ from recipe_grid.parser.ast import (
 def test_valid_cases(source: str, exp_ast: Recipe) -> None:
     ast = parse(source)
     assert ast == exp_ast
+
+
+@pytest.mark.parametrize(
+    "number, exp_type", [("123", int), ("123.0", float), ("123.4", float)]
+)
+def test_decimal_values_become_correct_types(number: str, exp_type: type) -> None:
+    ast = parse(f"''{{{number}}}")
+    assert ast == Recipe(
+        [
+            Stmt(
+                Reference(
+                    String([Substring(0, ""), InterpolatedValue(0, float(number))]),
+                    None,
+                )
+            ),
+        ]
+    )
+
+    ref = cast(Reference, ast.stmts[0].expr)
+    interp_value = cast(InterpolatedValue, ref.name.substrings[1])
+    assert type(interp_value.number) == exp_type
 
 
 @pytest.mark.parametrize(
