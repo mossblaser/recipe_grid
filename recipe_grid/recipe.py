@@ -5,6 +5,8 @@ A data structure which defines a recipe.
 
 from typing import cast, Union, Optional, Iterable, Tuple, Set
 
+import math
+
 from fractions import Fraction
 
 from dataclasses import dataclass, replace
@@ -88,8 +90,9 @@ class Quantity:
 
     def has_equal_value_to(self, other: "Quantity") -> bool:
         """
-        Compare two quantities, returning true if the quantities are equal
-        (ignoring other metadata).
+        Compare two quantities, returning true if the quantities are equal (to
+        within a small tolerance (allowing for float imprecision) and ignoring
+        other metadata.
         """
         other_to_self_scale: Union[int, float, Fraction]
         if self.unit is None and other.unit is None:
@@ -108,7 +111,7 @@ class Quantity:
                 else:
                     return False
 
-        return self.value == other.value * other_to_self_scale
+        return math.isclose(self.value, other.value * other_to_self_scale)
 
     def scale(self, factor: Union[int, float, Fraction]) -> "Quantity":
         return replace(self, value=self.value * factor)

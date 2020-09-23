@@ -101,6 +101,9 @@ class TestQuantity:
             # Compatible but unknown units
             (Quantity(123, "foo"), Quantity(123, "foo"), True),
             (Quantity(123, "FOO"), Quantity(123, "foo"), True),
+            # Floating point errors mean an approximate comparison is required
+            # here
+            (Quantity(10, "g"), Quantity(0.01, "kg"), True),
         ],
     )
     def test_has_equal_value_to(self, a: Quantity, b: Quantity, exp: bool) -> None:
