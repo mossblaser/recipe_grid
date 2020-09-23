@@ -169,7 +169,7 @@ class TestRenderMarkdown:
             compiled.render(2)
             == dedent(
                 """
-                <header><h1 class="rg-title-scalable">A recipe for <span class="rg-scaled-value">4</span></h1><p>Rescaled from <span class="rg-original-servings">2</span> servings.</p><header>
+                <header><h1 class="rg-title-scalable">A recipe for <span class="rg-scaled-value">4</span></h1><p>Rescaled from <span class="rg-original-servings">2</span> servings.</p></header>
                 <div class="rg-recipe-block">
                   <table class="rg-table">
                     <tr>
@@ -332,11 +332,11 @@ class TestRenderMarkdown:
                 "# Food & drink",
                 "Food & drink",
                 None,
-                '<header><h1 class="rg-title-unscalable">Food &amp; drink</h1><header>\n',
+                '<header><h1 class="rg-title-unscalable">Food &amp; drink</h1></header>\n',
                 (
                     '<header><h1 class="rg-title-unscalable">Food &amp; drink</h1>'
                     '<p>Scaled <span class="rg-scaling-factor">10</span>&times;'
-                    "</p><header>\n"
+                    "</p></header>\n"
                 ),
             ),
             # Title with serving count
@@ -346,13 +346,13 @@ class TestRenderMarkdown:
                 3,
                 (
                     '<header><h1 class="rg-title-scalable">Food &amp; drink for '
-                    '<span class="rg-scaled-value">3</span></h1><header>\n'
+                    '<span class="rg-scaled-value">3</span></h1></header>\n'
                 ),
                 (
                     '<header><h1 class="rg-title-scalable">Food &amp; drink for '
                     '<span class="rg-scaled-value">30</span></h1>'
                     '<p>Rescaled from <span class="rg-original-servings">3</span> '
-                    "servings.</p><header>\n"
+                    "servings.</p></header>\n"
                 ),
             ),
         ],

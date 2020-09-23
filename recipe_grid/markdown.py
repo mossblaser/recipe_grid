@@ -421,7 +421,7 @@ class MarkdownRecipe:
                     )
                     post_title_text = t("p", f"Scaled {scale_str}&times;")
             html = html.replace(
-                self.post_title_placeholder, f"{post_title_text}<header>"
+                self.post_title_placeholder, f"{post_title_text}</header>"
             )
 
         return html
