@@ -117,7 +117,7 @@ class RecipeDirectory:
     title: str
     """The title which describes this directory."""
 
-    description: Optional[str]
+    description: str
     """HTML describing the contents of this directory."""
 
     subdirectories: Mapping[Path, "RecipeDirectory"]
@@ -167,7 +167,7 @@ class RecipeDirectory:
 
         if readme_path is None:
             self.title = filename_to_title(directory.resolve().name)
-            self.description = None
+            self.description = ""
         else:
             self.title, self.description = compile_readme_markdown(path)
 

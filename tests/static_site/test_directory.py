@@ -113,7 +113,7 @@ class TestRecipeDirectory:
 
         assert d.directory == empty_dir
         assert d.title == "Empty dir"
-        assert d.description is None
+        assert d.description == ""
         assert d.subdirectories == {}
         assert d.recipes == {}
         assert bool(d) is False
