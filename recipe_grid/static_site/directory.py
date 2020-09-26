@@ -26,7 +26,7 @@ class NotADirectoryError(RecipeDirectoryError):
     """Thrown when a path given is not a directory."""
 
 
-class MultipleIndexError(RecipeDirectoryError):
+class MultipleReadmeError(RecipeDirectoryError):
     """Thrown when a recipe directory contains multiple index.md or readme.md files."""
 
 
@@ -34,12 +34,12 @@ class RecipeInDirectoryCompileError(RecipeDirectoryError):
     """Thrown when a recipe found in a directory fails to compile."""
 
 
-class IndexMissingTitleError(RecipeDirectoryError):
-    """Thrown when an index.md file is missing a <h1> level title."""
+class ReadmeMissingTitleError(RecipeDirectoryError):
+    """Thrown when an readme.md file is missing a <h1> level title."""
 
 
-class IndexMalformedTitleError(RecipeDirectoryError):
-    """Thrown when an index.md file's <h1> title contains anything but simple text."""
+class ReadmeMalformedTitleError(RecipeDirectoryError):
+    """Thrown when an readme.md file's <h1> title contains anything but simple text."""
 
 
 class RecipeMissingTitleError(RecipeDirectoryError):
@@ -78,7 +78,7 @@ def filename_to_title(filename: str) -> str:
 
 def compile_readme_markdown(path: Path) -> Tuple[str, str]:
     """
-    Read and compile a markdown 'index' document, stripping the <h1> heading
+    Read and compile a markdown 'readme' document, stripping the <h1> heading
     and returning the title and remainder of the document separately.
 
     Returns
@@ -96,11 +96,11 @@ def compile_readme_markdown(path: Path) -> Tuple[str, str]:
 
     first_line = (lines[0] if lines else "").strip()
     if not (first_line.startswith("<h1>") and first_line.endswith("</h1>")):
-        raise IndexMissingTitleError(f"{path} must start with a h1-level title.")
+        raise ReadmeMissingTitleError(f"{path} must start with a h1-level title.")
 
     title = first_line[len("<h1>") : -len("</h1>")]
     if "<" in title:
-        raise IndexMalformedTitleError(
+        raise ReadmeMalformedTitleError(
             f"{path} must have only simple text in its  h1 title"
         )
 
@@ -120,6 +120,12 @@ class RecipeDirectory:
     description: str
     """HTML describing the contents of this directory."""
 
+    readme_path: Optional[Path]
+    """
+    File containing the readme.md or index.md file in this directory, if
+    present.
+    """
+
     subdirectories: Mapping[Path, "RecipeDirectory"]
 
     recipes: Mapping[Path, MarkdownRecipe]
@@ -129,7 +135,7 @@ class RecipeDirectory:
             raise NotADirectoryError(f"{directory} is not a directory")
         self.directory = directory
 
-        readme_path: Optional[Path] = None
+        self.readme_path = None
         self.subdirectories = {}
         self.recipes = {}
 
@@ -138,13 +144,13 @@ class RecipeDirectory:
                 subdir = RecipeDirectory(path)
                 if subdir:  # Don't include non-recipe containing directories
                     self.subdirectories[path] = subdir
-            elif path.name.lower() in ("index.md", "readme.md"):
-                if readme_path is None:
-                    readme_path = path
+            elif path.name.lower() in ("readme.md", "index.md"):
+                if self.readme_path is None:
+                    self.readme_path = path
                 else:
-                    raise MultipleIndexError(
-                        f"{path} contains multiple index files: "
-                        f"{readme_path.name} and {path.name}."
+                    raise MultipleReadmeError(
+                        f"{path} contains multiple readme files: "
+                        f"{self.readme_path.name} and {path.name}."
                     )
             elif path.suffix.lower() == ".md":
                 with path.open() as f:
@@ -165,11 +171,11 @@ class RecipeDirectory:
                             f"servings (e.g. '... for 3' in the title)"
                         )
 
-        if readme_path is None:
+        if self.readme_path is None:
             self.title = filename_to_title(directory.resolve().name)
             self.description = ""
         else:
-            self.title, self.description = compile_readme_markdown(path)
+            self.title, self.description = compile_readme_markdown(self.readme_path)
 
     def __bool__(self) -> bool:
         """True if this directory contains at least one recipe."""

@@ -9,9 +9,9 @@ from recipe_grid.static_site.directory import (
     compile_readme_markdown,
     RecipeDirectory,
     NotADirectoryError,
-    MultipleIndexError,
-    IndexMissingTitleError,
-    IndexMalformedTitleError,
+    MultipleReadmeError,
+    ReadmeMissingTitleError,
+    ReadmeMalformedTitleError,
     RecipeMissingTitleError,
     RecipeMissingServingsError,
     RecipeInDirectoryCompileError,
@@ -64,13 +64,13 @@ class TestCompileReadmeMarkdown:
     def test_no_h1_title(self, tmp_path: Path, markdown: str) -> None:
         md = tmp_path / "test.md"
         md.open("w").write(markdown)
-        with pytest.raises(IndexMissingTitleError):
+        with pytest.raises(ReadmeMissingTitleError):
             compile_readme_markdown(md)
 
     def test_title_contains_html(self, tmp_path: Path) -> None:
         md = tmp_path / "test.md"
         md.open("w").write("# Hello *world*")
-        with pytest.raises(IndexMalformedTitleError):
+        with pytest.raises(ReadmeMalformedTitleError):
             compile_readme_markdown(md)
 
     @pytest.mark.parametrize(
@@ -114,6 +114,7 @@ class TestRecipeDirectory:
         assert d.directory == empty_dir
         assert d.title == "Empty dir"
         assert d.description == ""
+        assert d.readme_path is None
         assert d.subdirectories == {}
         assert d.recipes == {}
         assert bool(d) is False
@@ -133,6 +134,7 @@ class TestRecipeDirectory:
         assert d.directory == path
         assert d.title == "A Directory"
         assert d.description == "<p>Ta-da!</p>\n"
+        assert d.readme_path == readme
         assert d.subdirectories == {}
         assert d.recipes == {}
         assert bool(d) is False
@@ -140,7 +142,7 @@ class TestRecipeDirectory:
     def test_multiple_index_files(self, tmp_path: Path) -> None:
         (tmp_path / "index.md").open("w").write("# Hello")
         (tmp_path / "readme.md").open("w").write("# Hello")
-        with pytest.raises(MultipleIndexError):
+        with pytest.raises(MultipleReadmeError):
             RecipeDirectory(tmp_path)
 
     def test_recipes(self, tmp_path: Path) -> None:
