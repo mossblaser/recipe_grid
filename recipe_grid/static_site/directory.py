@@ -10,7 +10,7 @@ from html import unescape
 
 import re
 
-import marko
+import marko  # type: ignore
 
 from peggie import ParseError
 

@@ -61,13 +61,13 @@ class TestCompileReadmeMarkdown:
             "Hello\n# World",
         ],
     )
-    def test_no_h1_title(self, tmp_path, markdown: str) -> None:
+    def test_no_h1_title(self, tmp_path: Path, markdown: str) -> None:
         md = tmp_path / "test.md"
         md.open("w").write(markdown)
         with pytest.raises(IndexMissingTitleError):
             compile_readme_markdown(md)
 
-    def test_title_contains_html(self, tmp_path) -> None:
+    def test_title_contains_html(self, tmp_path: Path) -> None:
         md = tmp_path / "test.md"
         md.open("w").write("# Hello *world*")
         with pytest.raises(IndexMalformedTitleError):
@@ -85,7 +85,7 @@ class TestCompileReadmeMarkdown:
         ],
     )
     def test_valid(
-        self, tmp_path, markdown: str, exp_title: str, exp_description: str
+        self, tmp_path: Path, markdown: str, exp_title: str, exp_description: str
     ) -> None:
         md = tmp_path / "test.md"
         md.open("w").write(markdown)
