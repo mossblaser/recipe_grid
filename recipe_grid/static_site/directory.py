@@ -2,7 +2,7 @@
 A directory structure containing recipe grid markdown recipes.
 """
 
-from typing import Mapping, Optional, Tuple
+from typing import Mapping, Optional, Tuple, Iterator
 
 from pathlib import Path
 
@@ -180,3 +180,9 @@ class RecipeDirectory:
     def __bool__(self) -> bool:
         """True if this directory contains at least one recipe."""
         return bool(self.recipes) or any(d for d in self.subdirectories)
+
+    def iter_recipes(self) -> Iterator[MarkdownRecipe]:
+        """Iterate recursively over all recipes in this directory and its children."""
+        yield from self.recipes.values()
+        for subdirectory in self.subdirectories.values():
+            yield from subdirectory.iter_recipes()

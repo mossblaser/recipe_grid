@@ -236,3 +236,9 @@ class TestRecipeDirectory:
             .subdirectories[path / "empty" / "grandchild"]
             .recipes
         ) == {path / "empty" / "grandchild" / "baz.md"}
+
+        assert {r.title for r in d.iter_recipes()} == {
+            "Foo",
+            "Bar",
+            "Baz",
+        }
