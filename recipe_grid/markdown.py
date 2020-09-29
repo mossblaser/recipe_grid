@@ -426,14 +426,18 @@ class MarkdownRecipe:
             if scale != 1:
                 if self.servings is not None:
                     orig_servings = t(
-                        "span", str(self.servings), class_="rg-original-servings",
+                        "span",
+                        f"{self.servings} servings",
+                        class_="rg-original-servings",
                     )
-                    post_title_text = t("p", f"Rescaled from {orig_servings} servings.")
+                    post_title_text = t("p", f"Rescaled from {orig_servings}.")
                 else:
                     scale_str = t(
-                        "span", render_number(scale), class_="rg-scaling-factor",
+                        "span",
+                        f"{render_number(scale)}&times;",
+                        class_="rg-scaling-factor",
                     )
-                    post_title_text = t("p", f"Scaled {scale_str}&times;")
+                    post_title_text = t("p", f"Scaled {scale_str}")
             html = html.replace(
                 self.post_title_placeholder, f"{post_title_text}</header>"
             )
@@ -516,12 +520,14 @@ class RecipeGridRendererMixin:
             else:
                 self.output.title = html.unescape(match["title"].strip())
                 self.output.servings = int(match["servings"])
-                text = generate_placeholder()
-                self.output.scaled_value_strings[text] = SVS(
-                    [
-                        html.unescape(match["title"] + match["preposition"]),
-                        int(match["servings"]),
-                    ]
+                placeholder = generate_placeholder()
+                self.output.scaled_value_strings[placeholder] = SVS(
+                    int(match["servings"])
+                )
+                text = match["title"] + t(
+                    "span",
+                    match["preposition"] + placeholder,
+                    class_="rg-serving-count",
                 )
                 attrs = ' class="rg-title-scalable"'
             pre = self.output.pre_title_placeholder = generate_placeholder()
