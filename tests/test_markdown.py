@@ -378,6 +378,24 @@ class TestRenderMarkdown:
                     "servings</span>.</p></header>\n"
                 ),
             ),
+            # Original serving count was 1
+            (
+                "# Food & drink for 1",
+                "Food & drink",
+                1,
+                (
+                    '<header><h1 class="rg-title-scalable">Food &amp; drink '
+                    '<span class="rg-serving-count">for '
+                    '<span class="rg-scaled-value">1</span></span></h1></header>\n'
+                ),
+                (
+                    '<header><h1 class="rg-title-scalable">Food &amp; drink '
+                    '<span class="rg-serving-count">for '
+                    '<span class="rg-scaled-value">10</span></span></h1>'
+                    '<p>Rescaled from <span class="rg-original-servings">1 '
+                    "serving</span>.</p></header>\n"
+                ),
+            ),
         ],
     )
     def test_title_parsing(

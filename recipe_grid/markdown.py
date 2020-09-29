@@ -427,7 +427,7 @@ class MarkdownRecipe:
                 if self.servings is not None:
                     orig_servings = t(
                         "span",
-                        f"{self.servings} servings",
+                        f"{self.servings} serving{'s' if self.servings != 1 else ''}",
                         class_="rg-original-servings",
                     )
                     post_title_text = t("p", f"Rescaled from {orig_servings}.")
