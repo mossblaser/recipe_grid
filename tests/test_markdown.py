@@ -378,6 +378,24 @@ class TestRenderMarkdown:
                     "servings</span>.</p></header>\n"
                 ),
             ),
+            # Title with serving count with longer preposition
+            (
+                "# Food & drink to serve 3",
+                "Food & drink",
+                3,
+                (
+                    '<header><h1 class="rg-title-scalable">Food &amp; drink '
+                    '<span class="rg-serving-count">to serve '
+                    '<span class="rg-scaled-value">3</span></span></h1></header>\n'
+                ),
+                (
+                    '<header><h1 class="rg-title-scalable">Food &amp; drink '
+                    '<span class="rg-serving-count">to serve '
+                    '<span class="rg-scaled-value">30</span></span></h1>'
+                    '<p>Rescaled from <span class="rg-original-servings">3 '
+                    "servings</span>.</p></header>\n"
+                ),
+            ),
             # Original serving count was 1
             (
                 "# Food & drink for 1",

@@ -458,16 +458,23 @@ class RecipeGridRendererMixin:
 
     title_serving_count_pattern = re.compile(
         (
-            r"(?P<title>.*)"
-            r"(?P<preposition>(serves?|for|makes|serving)\s+)"
+            r"(?P<preposition>((to\s+)?serves?|for|makes|serving)\s+)"
             r"(?P<servings>[0-9]+)\s*"
+            r"$"
         ),
         re.IGNORECASE,
     )
     """
-    A regex matching recipe titles containing a serving count (e.g. "Spam for
-    2"), dissecting the title into the title (e.g. "Spam"), preposition (e.g.
-    "for") and the number of servings (e.g. "2").
+    A regex matching recipe a preposition and serving count (e.g. in "Spam for
+    2" finding "for " and "2" respectively).
+
+    .. note::
+
+        This regular expression does not include a match field for the rest of
+        the title since Python's regex parser works left-to-right trying to
+        find the longest match possible. As a consequence if we added a
+        ``(?P<title>.*)`` to the start, we would potentially end up with some
+        optional leading parts of a preposition stuck in the title.
     """
 
     output: MarkdownRecipe
@@ -517,18 +524,19 @@ class RecipeGridRendererMixin:
         # level title or if it contains HTML or a scaled value substitution
         # since we can't easily turn these into a plain text title.
         if self.first_heading and level == 1 and "<" not in text and "%" not in text:
-            match = self.title_serving_count_pattern.fullmatch(text)
+            match = self.title_serving_count_pattern.search(text)
             if match is None:
                 self.output.title = html.unescape(text.strip())
                 attrs = ' class="rg-title-unscalable"'
             else:
-                self.output.title = html.unescape(match["title"].strip())
+                title = text[: match.start()]
+                self.output.title = html.unescape(title.strip())
                 self.output.servings = int(match["servings"])
                 placeholder = generate_placeholder()
                 self.output.scaled_value_strings[placeholder] = SVS(
                     int(match["servings"])
                 )
-                text = match["title"] + t(
+                text = title + t(
                     "span",
                     match["preposition"] + placeholder,
                     class_="rg-serving-count",
