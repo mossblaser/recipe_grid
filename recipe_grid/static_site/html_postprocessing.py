@@ -10,6 +10,10 @@ from urllib.parse import urlsplit, urlunsplit, quote, unquote
 
 from copy import deepcopy
 
+import mimetypes
+
+from base64 import b64encode
+
 import lxml.html  # type: ignore
 
 from recipe_grid.static_site.exceptions import (
@@ -248,3 +252,64 @@ def add_recipe_scaling_links(
         link.extend(span)
         span.append(link)
         span.text = ""
+
+
+def embed_local_links_as_data_urls(
+    tree: lxml.etree.Element, source: Path, root: Path,
+) -> None:
+    """
+    A post-processing stage which converts local URLs into data URLs containing
+    the linked content.
+
+    Parameters
+    ==========
+    tree: lxml.etree.ElementTree
+        The tree in which rewrite_links will be called.
+    source: Path
+        The filename of the source file where the links were originally
+        defined.
+    root: Path
+        The root directory containing the source. References will not be
+        allowed to files outside this directory tree.
+    """
+
+    def rewrite_link(url: str) -> str:
+        parts = urlsplit(url)
+
+        # Don't rewrite external links, or links within the page
+        if parts.scheme != "" or parts.netloc != "" or parts.path == "":
+            return url
+
+        path = unquote(parts.path)
+
+        # Work out the local file system path the URL points at
+        fspath: Path
+        if path.startswith("/"):
+            fspath = root / Path(*path.split("/")[1:])
+        else:
+            fspath = source.parent / Path(*path.split("/"))
+        fspath = fspath.resolve()
+
+        # Verify that the local file exists and is not outside the source
+        # root
+        root_parts = root.resolve().parts
+        if fspath.parts[: len(root_parts)] != root_parts:
+            raise LinkToExternalFileError(
+                f"{source} contains a link to a file outside the website source: {url}"
+            )
+        if not fspath.is_file():
+            raise LinkToNonExistentFileError(
+                f"{source} contains a link to non-existent file: {url}"
+            )
+
+        # Guess mimetype
+        mimetype, _encoding = mimetypes.guess_type(fspath)
+        if mimetype is None:
+            mimetype = "application/octet-stream"
+
+        # Base64 encode
+        base64_data = b64encode(fspath.open("rb").read()).decode("ascii")
+
+        return f"data:{mimetype};base64,{base64_data}"
+
+    tree.rewrite_links(rewrite_link)

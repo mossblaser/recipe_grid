@@ -10,3 +10,5 @@ homepage_template = env.get_template("homepage.html")
 categories_template = env.get_template("categories.html")
 recipe_template = env.get_template("recipe.html")
 website_css_template = env.get_template("website.css")
+
+standalone_recipe_template = env.get_template("standalone_recipe.html")

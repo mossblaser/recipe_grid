@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block stylesheet %}
+<style type="text/css">
+    {% include "standalone_recipe.css" %}
+</style>
+{% endblock %}
+
+{% block body %}
+{{ body|safe }}
+{% endblock %}

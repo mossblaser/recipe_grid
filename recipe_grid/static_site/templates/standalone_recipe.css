@@ -1,0 +1,4 @@
+{% include 'base_top_of_file.css' %}
+{% include 'normalize.css' %}
+{% include 'base.css' %}
+{% include 'recipe_tables.css' %}

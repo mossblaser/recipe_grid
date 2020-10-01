@@ -12,10 +12,16 @@ from recipe_grid.renderer.html import t
 
 from recipe_grid.markdown import compile_markdown
 
+from recipe_grid.static_site.exceptions import (
+    LinkToExternalFileError,
+    LinkToNonExistentFileError,
+)
+
 from recipe_grid.static_site.html_postprocessing import (
     postprocess_html,
     resolve_local_links,
     add_recipe_scaling_links,
+    embed_local_links_as_data_urls,
 )
 
 
@@ -294,3 +300,71 @@ def test_add_recipe_scaling_links() -> None:
         '<a href="../../serves3/foo/bar.html">3 servings</a></span>.</p>'
         "</header>\n"
     )
+
+
+class TestEmbedLocalLinksAsDataUrls:
+    @pytest.mark.parametrize(
+        "url", ["http://example.com", "#foo"],
+    )
+    def test_ignore_external_or_page_local_links(
+        self, tmp_path: Path, url: str
+    ) -> None:
+        html = t("a", "foo", href=url)
+
+        assert (
+            postprocess_html(
+                html,
+                False,
+                [
+                    partial(
+                        embed_local_links_as_data_urls,
+                        source=tmp_path / "foo.md",
+                        root=tmp_path,
+                    ),
+                ],
+            )
+            == html
+        )
+
+    def test_path_outside_root(self, tmp_path: Path) -> None:
+        with pytest.raises(LinkToExternalFileError):
+            postprocess_html(
+                t("a", "foo", href="../bar.txt"),
+                False,
+                [
+                    partial(
+                        embed_local_links_as_data_urls,
+                        source=tmp_path / "foo.md",
+                        root=tmp_path,
+                    ),
+                ],
+            )
+
+    def test_path_does_not_exist(self, tmp_path: Path) -> None:
+        with pytest.raises(LinkToNonExistentFileError):
+            postprocess_html(
+                t("a", "foo", href="bar.txt"),
+                False,
+                [
+                    partial(
+                        embed_local_links_as_data_urls,
+                        source=tmp_path / "foo.md",
+                        root=tmp_path,
+                    ),
+                ],
+            )
+
+    def test_valid(self, tmp_path: Path) -> None:
+        (tmp_path / "bar.txt").open("w").write("foobar")
+
+        assert postprocess_html(
+            t("a", "foo", href="bar.txt"),
+            False,
+            [
+                partial(
+                    embed_local_links_as_data_urls,
+                    source=tmp_path / "foo.md",
+                    root=tmp_path,
+                ),
+            ],
+        ) == t("a", "foo", href="data:text/plain;base64,Zm9vYmFy")
