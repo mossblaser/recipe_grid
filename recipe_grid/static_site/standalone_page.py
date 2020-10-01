@@ -72,4 +72,6 @@ def generate_standalone_page(
             ],
         )
 
-    return standalone_recipe_template.render(title=recipe.title, body=recipe_html,)
+    return standalone_recipe_template.render(
+        title=recipe.title if recipe.title is not None else "Recipe", body=recipe_html,
+    )
