@@ -1,0 +1,13 @@
+@import url(http://fonts.googleapis.com/css?family=Donegal+One);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+
+:root {
+    --normal-colour:  #000000;
+    --accent-colour:  #FE5E41;
+    --inverted-fg-colour: #FFFFFF;
+    
+    --hr-colour: #DDDDDD;
+    --subtitle-colour: #666666;
+    --link-colour: #666666;
+}

@@ -1,0 +1,27 @@
+{% extends "website_base.html" %}
+
+{% block body %}
+    <header>
+        <h1>{{ title }}</h1>
+    </header>
+    {{ description|safe }}
+    <div class="category-selection">
+        {% if categories %}
+            <p>Select a subcategory:</p>
+            <ul>
+                {% for category, href in categories %}
+                <li><a href="{{ href }}">{{ category }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if recipes %}
+            <p>Select a recipe:</p>
+            <ul>
+                {% for recipe, href in recipes %}
+                <li><a href="{{ href }}">{{ recipe }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    
+{% endblock %}

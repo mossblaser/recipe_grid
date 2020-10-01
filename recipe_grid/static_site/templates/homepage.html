@@ -1,0 +1,27 @@
+{% extends "website_base.html" %}
+
+{% block title %}{{ site_name }}{% endblock %}
+
+{% block nav %}{% endblock %}
+
+{% block body %}
+    <header>
+        <h1 class="logo">{{ site_name or "Recipe Grid" }}</h1>
+    </header>
+    
+    <div class="welcome-message">
+        {{ welcome_message|safe }}
+    </div>
+
+    <div class="serving-selection">
+        <p>Recipes to serve:</p>
+        <ul>
+            {% for num_servings, href in serving_page_hrefs %}
+                <li><a href="{{ href }}" class="big-button">{{ num_servings }}</a></li>
+            {% endfor %}
+        </ul>
+        <p>or</p>
+        <p><a href="{{ categories_page_href }}" class="big-button">Browse by category</a></p>
+    </div>
+    
+{% endblock %}

@@ -1,0 +1,237 @@
+{% include 'base_top_of_file.css' %}
+{% include 'normalize.css' %}
+{% include 'base.css' %}
+{% include 'recipe_tables.css' %}
+
+/**
+ * Nav bar and breadcrumb bar.
+ */
+
+nav {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+
+    padding-top: 16px;
+    padding-bottom: 16px;
+
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #DDD;
+}
+
+/* Don't print the navbar */
+@media print {
+    nav {
+        display: none;
+    }
+}
+
+ul.breadcrumb {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    flex-wrap: wrap;
+    
+    flex-grow: 1;
+    
+    padding: 0;
+    
+    --row-spacing: 16px;
+    margin-bottom: calc(0 - var(--row-spacing));
+}
+
+
+ul.breadcrumb li {
+    display: block;
+    
+    margin-bottom: var(--row-spacing);
+}
+
+ul.breadcrumb li:before {
+    content: ">";
+    padding-left: 8px;
+    padding-right: 8px;
+    color: #888888;
+}
+
+ul.breadcrumb li:first-child:before {
+    content: "";
+    display: none;
+}
+
+/* Only show the homepage in breadcrumb bar on mobile/narrow screens */
+@media screen and (max-width: 15cm) {
+    ul.breadcrumb {
+        flex-direction: column;
+    }
+    ul.breadcrumb li {
+        display: none;
+    }
+    ul.breadcrumb li:first-child {
+        display: inherit;
+    }
+}
+
+/* Website name */
+ul.breadcrumb li:first-child {
+    font-weight: bolder;
+}
+
+
+/**
+ * Homepage-specific styles.
+ */
+
+.welcome-message {
+    text-align: center;
+    margin-top: 32px;
+    margin-bottom: 64px;
+}
+
+/* The number-of-servings selection list */
+.serving-selection {
+    text-align: center;
+    font-size: 130%;
+}
+
+.serving-selection p {
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+.serving-selection ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    
+    margin: 0;
+    padding: 0;
+    margin-top: -8px;
+    margin-bottom: -8px;
+}
+
+.serving-selection ul li {
+    list-style: none;
+    
+    padding: 8px;
+    padding: 8px;
+}
+
+.serving-selection li .big-button {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.big-button {
+    font-size: 120%;
+    font-weight: bolder;
+    
+    display: inline-block;
+    min-width: 48px;
+    line-height: 48px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+/**
+ * Category page specific styles.
+ */
+
+.category-selection p {
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+.category-selection {
+    text-align: center;
+    font-size: 130%;
+}
+
+.category-selection ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    margin: 0;
+    padding: 0;
+    margin-bottom: 64px;
+}
+
+.category-selection ul li {
+    list-style: none;
+}
+
+.category-selection ul li a {
+    font-size: 120%;
+    font-weight: bolder;
+    
+    display: block;
+    min-height: 48px;
+    min-width: 48px;
+    
+    vertical-align: middle;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/**
+ * Recipe page specific styles.
+ */
+
+.rg-recipe-block {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    
+    position: relative;
+    max-width: 100vw;
+}
+
+/* Change number of servings drop-down */
+.rg-serving-count {
+    display: inline-block;
+}
+
+.rg-serving-count .rg-serving-count-current:after {
+    content: " \25BE";
+    font-size: 70%;
+    visibility: hidden;
+}
+
+.rg-serving-count:hover .rg-serving-count-current:after,
+.rg-serving-count:focus-within .rg-serving-count-current:after {
+    visibility: visible;
+}
+
+.rg-serving-count ul {
+    position: absolute;
+    z-index: 999;
+    
+    margin: -16px;
+    padding: 16px;
+    margin-top: 0;
+    padding-top: 0;
+    
+    background-color: white;
+    
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--hr-colour);
+    
+    filter: drop-shadow(4px 4px 8px #00000033);
+    
+    list-style: none;
+    text-align: left;
+    
+    visibility: hidden;
+}
+
+.rg-serving-count:hover ul,
+.rg-serving-count:focus-within ul {
+    visibility: visible;
+}

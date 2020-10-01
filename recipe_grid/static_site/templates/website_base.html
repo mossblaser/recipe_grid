@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - {{ site_name }}{% endblock %}
+
+{% block nav %}
+<nav>
+    <ul class="breadcrumb">
+        {% for label, href in breadcrumbs %}
+        <li><a href="{{ href }}">{{ label }}</a></li>
+        {% endfor %}
+    </ul>
+</nav>
+{% endblock %}
