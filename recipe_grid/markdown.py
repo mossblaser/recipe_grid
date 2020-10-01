@@ -459,7 +459,7 @@ class RecipeGridRendererMixin:
     title_serving_count_pattern = re.compile(
         (
             r"(?P<title>.*)"
-            r"(?P<preposition>((to\s+)?serves?|for|makes|serving)\s+)"
+            r"(?P<preposition>(serves?|for|makes|serving)\s+)"
             r"(?P<servings>[0-9]+)\s*"
         ),
         re.IGNORECASE,
