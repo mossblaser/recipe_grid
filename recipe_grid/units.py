@@ -247,7 +247,7 @@ UNIT_SYSTEM = UnitSystem(
                 Unit(("cup", "cups"), Definition(236.58824, "ml")),
                 Unit(("pint", "pints"), Definition(568.261, "ml")),
                 # Dubious
-                Unit(("can", "cans"), Definition(400, "ml")),
+                Unit(("can", "cans", "tin", "tins"), Definition(400, "ml")),
             ]
         ),
         "garlic": RelatedUnitSet(
