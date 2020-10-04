@@ -12,6 +12,7 @@ setup(
     entry_points={
         "console_scripts": [
             "recipe-grid=recipe_grid.scripts.recipe_grid:main",
+            "recipe-grid-lint=recipe_grid.scripts.recipe_grid_lint:main",
             "recipe-grid-site=recipe_grid.scripts.recipe_grid_site:main",
         ],
     },
