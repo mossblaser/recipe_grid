@@ -265,6 +265,8 @@ UNIT_SYSTEM = UnitSystem(
         "bag": RelatedUnitSet([Unit(("bag", "bags"))]),
         "sack": RelatedUnitSet([Unit(("sack", "sacks"))]),
         "sachet": RelatedUnitSet([Unit(("sachet", "sachets"))]),
+        "rasher": RelatedUnitSet([Unit(("rasher", "rashers"))]),
+        "strip": RelatedUnitSet([Unit(("strip", "strips"))]),
     }
 )
 """
