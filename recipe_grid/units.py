@@ -246,18 +246,12 @@ UNIT_SYSTEM = UnitSystem(
                 # Crazy
                 Unit(("cup", "cups"), Definition(236.58824, "ml")),
                 Unit(("pint", "pints"), Definition(568.261, "ml")),
-                # Dubious
-                Unit(("can", "cans", "tin", "tins"), Definition(400, "ml")),
-            ]
-        ),
-        "garlic": RelatedUnitSet(
-            [
-                Unit(("clove", "cloves")),
-                # Approx...
-                Unit(("bulb", "bulbs"), Definition(10, "cloves")),
             ]
         ),
         # Other non-specific units
+        "clove": RelatedUnitSet([Unit(("clove", "cloves"))]),
+        "bulb": RelatedUnitSet([Unit(("bulb", "bulbs"))]),
+        "can": RelatedUnitSet([Unit(("can", "cans", "tin", "tins"))]),
         "pinch": RelatedUnitSet([Unit(("pinch", "pinches"))]),
         "knob": RelatedUnitSet([Unit(("knob", "knobs"))]),
         "packet": RelatedUnitSet([Unit(("packet", "packets", "pack", "packs"))]),
