@@ -200,12 +200,6 @@ ul.breadcrumb li:first-child {
 .rg-serving-count .rg-serving-count-current:after {
     content: " \25BE";
     font-size: 70%;
-    visibility: hidden;
-}
-
-.rg-serving-count:hover .rg-serving-count-current:after,
-.rg-serving-count:focus-within .rg-serving-count-current:after {
-    visibility: visible;
 }
 
 .rg-serving-count ul {
@@ -234,4 +228,13 @@ ul.breadcrumb li:first-child {
 .rg-serving-count:hover ul,
 .rg-serving-count:focus-within ul {
     visibility: visible;
+}
+
+@media print {
+    .rg-serving-count .rg-serving-count-current:after {
+        display: none;
+    }
+    .rg-serving-count ul {
+        display: none;
+    }
 }
