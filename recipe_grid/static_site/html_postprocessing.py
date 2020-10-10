@@ -2,7 +2,7 @@
 Routines for post-processing HTML, e.g. rewriting links etc.
 """
 
-from typing import List, Optional, Callable, Mapping, MutableMapping
+from typing import List, Tuple, Optional, Callable, Mapping, MutableMapping
 
 from pathlib import Path
 
@@ -87,7 +87,7 @@ def resolve_local_links(
     source: Path,
     root: Path,
     from_path: str,
-    source_to_page_paths: Mapping[Path, str],
+    source_to_page_paths: Mapping[Path, Tuple[str, bool]],
     filename_to_asset_paths: MutableMapping[Path, str],
     assets_dir_path: str,
 ) -> None:
@@ -108,9 +108,12 @@ def resolve_local_links(
     from_path: str
         The website page path to the page being transformed. Used to construct
         relative hrefs.
-    source_to_page_paths: {source_filename: site_path, ...}
+    source_to_page_paths: {source_filename: (site_path, is_scalable), ...}
         A lookup from (resolved) paths to website page paths corresponding
-        to that source.
+        to that source. The is_scalable boolean indicates if the page is
+        scalable (e.g. recipes which can be scaled, or a category page) or not
+        (e.g. unscalable recipes). In the former case, the first part of the
+        site path may be modified to contain a different serving count.
 
         Used to substitute links to markdown files with their
         compiled recipe pages and links to directories or READMEs with the
@@ -120,7 +123,7 @@ def resolve_local_links(
         serving size for that recipe.
 
         Paths to directories should point to the unscaled version of the
-        corresponding page (i.e. ["categories", ...] path).
+        corresponding page (i.e. "/categories/..." path).
 
         When substitutions are being made, if we're on a recipe or category
         page scaled to a particular number, links to other recipes will use the
@@ -156,11 +159,11 @@ def resolve_local_links(
         # Work out where on the website this points
         website_path: str
         if fspath in source_to_page_paths:
-            website_path = source_to_page_paths[fspath]
+            website_path, is_scalable = source_to_page_paths[fspath]
 
             # Change serving number to match current page, if it's path starts
-            # with "/serves"
-            if from_path.startswith("/serves"):
+            # with "/serves", except for unscaled recipes
+            if from_path.startswith("/serves") and is_scalable:
                 website_path = "/".join(
                     from_path.split("/")[:2] + website_path.split("/")[2:]
                 )

@@ -11,13 +11,10 @@ the site root:
 * ``/serves<N>/index.html``: Root category page (scaled to <N> servings).
 * ``/categories/index.html``: Root category page (scaled to native number of servings).
 * ``/<...>/<category>/index.html``: Category browsing page
-* ``/serves<N>/<categories>/<recipe>.html``: Recipe webpage (NB: only
-  within 'serves<N>' tree, not 'categories'.
-
-For backward-compatibility with older versions of Recipe Grid, the following
-redirect is implemented using a HTML ``meta`` redirect.
-
-* ``/<...>/<recipe>.rec.html`` -> ``/<...>/<recipe>.html``
+* ``/serves<N>/<categories>/<recipe>.html``: Recipe webpages, for scalable
+  recipes only (i.e. ones with a serving count in the title).
+* ``/categories/<categories>/<recipe>.html``: Recipe webpages, for unscalable
+  recipes only (i.e. ones without a serving count in the title).
 
 The following additional paths store static resources:
 
@@ -92,13 +89,15 @@ class Page:
     title: str
     """The page title."""
 
-    path: str
-    """
-    The absolute path of this page in the generated website (e.g. "/index.html"
-    or "/foo/bar.html"). Starts with a leading slash (i.e. must be absolute)
-    and full non-default-index-page paths must be used (i.e. write
-    "/foo/index.html" not "/foo/").
-    """
+    @property
+    def path(self) -> str:
+        """
+        The absolute path of this page in the generated website (e.g. "/index.html"
+        or "/foo/bar.html"). Starts with a leading slash (i.e. must be absolute)
+        and full non-default-index-page paths must be used (i.e. write
+        "/foo/index.html" not "/foo/").
+        """
+        raise NotImplementedError()
 
     parent: Optional["Page"]
     """The logical parent of this page. Used to construct breadcrumbs."""
@@ -172,7 +171,7 @@ class Page:
     def get_resolve_local_links_stage(
         self,
         source: Path,
-        source_to_page_paths: Mapping[Path, str],
+        source_to_page_paths: Mapping[Path, Tuple[str, bool]],
         filename_to_asset_paths: MutableMapping[Path, str],
     ) -> HTMLPostprocessingStage:
         """
@@ -200,7 +199,7 @@ class Page:
 
     def render(
         self,
-        source_to_page_paths: Mapping[Path, str],
+        source_to_page_paths: Mapping[Path, Tuple[str, bool]],
         filename_to_asset_paths: MutableMapping[Path, str],
     ) -> str:
         """
@@ -208,9 +207,12 @@ class Page:
 
         Parameters
         ==========
-        source_to_page_paths : {fs_path: site_path, ...}
+        source_to_page_paths : {fs_path: (site_path, is_scalable), ...}
             A dictionary pre-populated with a mapping from website page source
-            filenames to the corresponding page path on the website.
+            filenames to the corresponding page path on the website (and a
+            boolean indicating if this page exists at other scales or not --
+            i.e. that the first part of the site path can be replaced with
+            different scales).
 
             The paths to recipes should point to the page containing the native
             serving size for that recipe.
@@ -248,10 +250,7 @@ class HomePage(Page):
 
     @classmethod
     def from_root_directory(
-        cls,
-        root_directory: Path,
-        index_filename: str = "index.html",
-        max_servings: int = 10,
+        cls, root_directory: Path, max_servings: int = 10,
     ) -> "HomePage":
         """
         Create a complete hierarchy of pages from a root directory.
@@ -260,8 +259,6 @@ class HomePage(Page):
         ==========
         root_directory: Path
             The root directory of the recipe website sources.
-        index_filename: str
-            The filename to use for index files.
         max_servings: int
             The maximum number of servings to scale recipes to. Must be at
             least as high as the largest number of servings a recipe is scaled
@@ -271,21 +268,20 @@ class HomePage(Page):
 
         homepage = cls(
             title=root.title,
-            path=f"/{index_filename}",
             parent=None,
             source_root_directory=root_directory,
             welcome_message_html=root.description_html,
             welcome_message_source=root.description_source,
         )
 
-        recipe_pages: MutableMapping[Path, MutableMapping[int, RecipePage]] = {}
+        recipe_pages: MutableMapping[
+            Path, MutableMapping[Optional[int], RecipePage]
+        ] = {}
         homepage.scaled_categories = {
             servings: CategoryPage.from_directory(
                 servings=servings,
                 directory_path=root_directory,
                 parent=homepage,
-                root_category=True,
-                index_filename=index_filename,
                 recipe_pages=recipe_pages,
             )
             for servings in range(1, max_servings + 1)
@@ -294,12 +290,14 @@ class HomePage(Page):
             servings=None,
             directory_path=root_directory,
             parent=homepage,
-            root_category=True,
-            index_filename=index_filename,
             recipe_pages=recipe_pages,
         )
 
         return homepage
+
+    @property
+    def path(self) -> str:
+        return "/index.html"
 
     def children(self) -> Iterator["CategoryPage"]:
         yield from self.scaled_categories.values()
@@ -309,25 +307,36 @@ class HomePage(Page):
         if self.welcome_message_source is not None:
             yield self.welcome_message_source
 
-    def make_source_to_page_paths_lookup(self) -> Mapping[Path, str]:
+    def make_source_to_page_paths_lookup(self) -> Mapping[Path, Tuple[str, bool]]:
         """
         Make a lookup from source filenames to pages in this site.
 
         The paths to recipes point to the page containing the native serving
-        size for that recipe.
+        size for that recipe. Where the boolean part of the mapping values is
+        true, this path may be modified to point at other scales and expect to
+        find a page at that address. Otherwise, only the listed path will
+        exist (e.g. for unscaled recipes).
 
         Paths to directories point to the unscaled version of the corresponding
         page (i.e. ["categories", ...] path).
         """
         return {
-            source: page.path
+            source: (
+                page.path,
+                (
+                    # Non-recipe pages are always scalable
+                    not isinstance(page, RecipePage)
+                    # Recipe pages may be scalable, if the recipe is
+                    or page.native_servings is not None
+                ),
+            )
             for page in self.iter_all_pages()
             for source in page.sources()
         }
 
     def render(
         self,
-        source_to_page_paths: Mapping[Path, str],
+        source_to_page_paths: Mapping[Path, Tuple[str, bool]],
         filename_to_asset_paths: MutableMapping[Path, str],
     ) -> str:
         welcome_message: str = ""
@@ -390,10 +399,8 @@ class CategoryPage(Page):
         cls,
         servings: Optional[int],
         directory_path: Path,
-        root_category: bool,
         parent: Union[HomePage, "CategoryPage"],
-        index_filename: str,
-        recipe_pages: MutableMapping[Path, MutableMapping[int, "RecipePage"]],
+        recipe_pages: MutableMapping[Path, MutableMapping[Optional[int], "RecipePage"]],
     ) -> "CategoryPage":
         """
         Create a category listing page.
@@ -405,25 +412,12 @@ class CategoryPage(Page):
             of servings for recipes.
         directory_path : Path
             The directory containing the recipes/subcategories at this level.
-        root_category : bool
-            True if this page is the root category of the website, False
-            otherwise.
-
-            When True, the title will be set to "Recipes for <N>" or
-            "Categories" and the description omitted. This is because the root
-            page's title and description are used on the website homepage
-            instead.
-
-            When False, the title and description from the README will be used
-            as normal.
         parent: HomePage or CategoryPage
             The parent page in the hierarchy.
-        index_filename : str
-            The filename to use for the category page itself. Typically
-            index.html.
         recipe_pages: {recipe_source_path: {servings: MarkdownRecipe, ...}, ...}
             A dictionary which maps from recipe markdown source filenames and
-            serving counts to :py:class:`RecipePage` objects.
+            serving counts (where 'None' is for unscaled recipes with no
+            serving count defined) to :py:class:`RecipePage` objects.
 
             When scaled category pages are generated (i.e. where servings is
             not None), this dictionary will be populated with RecipePage
@@ -438,6 +432,8 @@ class CategoryPage(Page):
         """
         directory = enumerate_recipe_directory(directory_path)
 
+        root_category = isinstance(parent, HomePage)
+
         category_page = cls(
             title=(
                 directory.title
@@ -445,17 +441,6 @@ class CategoryPage(Page):
                 else f"Recipes for {servings}"
                 if servings is not None
                 else "Categories"
-            ),
-            path=(
-                href.parent(parent.path)
-                + "/"
-                + (
-                    directory_path.name
-                    if not root_category
-                    else (f"serves{servings}" if servings is not None else "categories")
-                )
-                + "/"
-                + index_filename
             ),
             parent=parent,
             servings=servings,
@@ -474,8 +459,6 @@ class CategoryPage(Page):
                     servings=servings,
                     directory_path=subdirectory,
                     parent=category_page,
-                    root_category=False,
-                    index_filename=index_filename,
                     recipe_pages=recipe_pages,
                 )
                 for subdirectory in directory.subdirectories
@@ -486,10 +469,7 @@ class CategoryPage(Page):
         if servings is not None:
             for recipe_source in directory.recipes:
                 scaled_recipe_pages = recipe_pages.setdefault(recipe_source, {})
-                assert servings not in scaled_recipe_pages
-                recipe_page = scaled_recipe_pages[
-                    servings
-                ] = RecipePage.from_recipe_source(
+                recipe_page = RecipePage.from_recipe_source(
                     servings=servings,
                     recipe_source=recipe_source,
                     parent=category_page,
@@ -498,7 +478,12 @@ class CategoryPage(Page):
                 category_page.recipes.append(recipe_page)
         else:
             for recipe_source in directory.recipes:
-                native_servings = recipe_pages[recipe_source][1].native_servings
+                this_recipe_pages = recipe_pages[recipe_source]
+                if 1 in this_recipe_pages:  # Scalable recipe
+                    recipe_page = this_recipe_pages[1]
+                else:  # Unscalable recipe
+                    recipe_page = this_recipe_pages[None]
+                native_servings = recipe_page.native_servings
                 try:
                     recipe_page = recipe_pages[recipe_source][native_servings]
                 except KeyError:
@@ -506,9 +491,34 @@ class CategoryPage(Page):
                         f"The maximum number of servings must be at least {native_servings}"
                     )
                 category_page.recipes.append(recipe_page)
+
+                # Bodge: For unscaled recipes, the native number of servings
+                # will be None. Over-write the parent with this (unscaled)
+                # categories page.
+                if native_servings is None:
+                    recipe_page.parent = category_page
+
         category_page.recipes.sort(key=lambda recipe_page: recipe_page.title)
 
         return category_page
+
+    @property
+    def path(self) -> str:
+        assert self.parent is not None  # For type checking purposes
+        return (
+            href.parent(self.parent.path)
+            + "/"
+            + (
+                self.source_directory.name
+                if not isinstance(self.parent, HomePage)
+                else (
+                    f"serves{self.servings}"
+                    if self.servings is not None
+                    else "categories"
+                )
+            )
+            + "/index.html"
+        )
 
     def children(self) -> Iterator[Union["CategoryPage", "RecipePage"]]:
         yield from iter(self.subcategories)
@@ -524,7 +534,7 @@ class CategoryPage(Page):
 
     def render(
         self,
-        source_to_page_paths: Mapping[Path, str],
+        source_to_page_paths: Mapping[Path, Tuple[str, bool]],
         filename_to_asset_paths: MutableMapping[Path, str],
     ) -> str:
         description: str = ""
@@ -561,11 +571,14 @@ class CategoryPage(Page):
 
 @dataclass
 class RecipePage(Page):
-    servings: int
-    """Number of servings to scale to."""
+    servings: Optional[int]
+    """Number of servings to scale to (None for unscaled recipes)."""
 
-    native_servings: int
-    """Number of servings the recipe was originally specified for."""
+    native_servings: Optional[int]
+    """
+    Number of servings the recipe was originally specified for (None for
+    unscaled recipes).
+    """
 
     recipe_html: str
     """The rendered recipe HTML."""
@@ -573,37 +586,68 @@ class RecipePage(Page):
     recipe_source: Path
     """The markdown file containing the recipe source."""
 
-    other_scalings: MutableMapping[int, "RecipePage"]
+    other_scalings: MutableMapping[Optional[int], "RecipePage"]
     """Pages showing this recipe at other scales."""
 
     @classmethod
     def from_recipe_source(
         cls,
-        servings: int,
+        servings: Optional[int],
         recipe_source: Path,
         parent: CategoryPage,
-        other_scalings: MutableMapping[int, "RecipePage"],
+        other_scalings: MutableMapping[Optional[int], "RecipePage"],
     ) -> "RecipePage":
-        recipe = compile_recipe_markdown(recipe_source)
+        """
+        The ``other_scalings[servings]`` dictionary entry will be populated
+        with the value returned by this function.
+
+        For unscaled recipes (i.e. those without a serving count in the title),
+        the 'servings' argument will be ignored and 'None' will be implicitly
+        used instead.
+
+        If an other_scalings entry already exists, the existing page will be
+        returned (and the 'parent' argument will be ignored). For unscaled
+        recipes, this means that repeated calls with different scales will all
+        return the same (unscaled) recipe page. This page should later have its
+        :py:attr:`parent` attribute replaced with the corresponding unscaled
+        category page.
+        """
+        recipe = compile_recipe_markdown(recipe_source, require_servings=False)
 
         # Actually checked by compile_recipe_markdown; only here for type
         # checking purposes...
         assert recipe.title is not None
-        assert recipe.servings is not None
 
-        return RecipePage(
-            title=recipe.title,
-            path=(
-                href.parent(parent.path[:-1])
-                + "/"
-                + (recipe_source.name.rsplit(".")[0] + ".html")
-            ),
-            parent=parent,
-            servings=servings,
-            native_servings=recipe.servings,
-            recipe_html=recipe.render(Fraction(servings, recipe.servings)),
-            recipe_source=recipe_source,
-            other_scalings=other_scalings,
+        if recipe.servings is None:
+            servings = None
+        else:
+            # Sanity check
+            assert servings is not None
+
+        if servings in other_scalings:
+            return other_scalings[servings]
+        else:
+            recipe_page = RecipePage(
+                title=recipe.title,
+                parent=parent,
+                servings=servings,
+                native_servings=recipe.servings,
+                recipe_html=recipe.render(
+                    Fraction(servings, recipe.servings) if servings is not None else 1.0
+                ),
+                recipe_source=recipe_source,
+                other_scalings=other_scalings,
+            )
+            other_scalings[servings] = recipe_page
+            return recipe_page
+
+    @property
+    def path(self) -> str:
+        assert self.parent is not None
+        return (
+            href.parent(self.parent.path)
+            + "/"
+            + (self.recipe_source.name.rsplit(".")[0] + ".html")
         )
 
     def children(self) -> Iterator[Page]:
@@ -615,7 +659,7 @@ class RecipePage(Page):
 
     def render(
         self,
-        source_to_page_paths: Mapping[Path, str],
+        source_to_page_paths: Mapping[Path, Tuple[str, bool]],
         filename_to_asset_paths: MutableMapping[Path, str],
     ) -> str:
         body = postprocess_html(
@@ -643,10 +687,7 @@ class RecipePage(Page):
 
 
 def generate_static_site(
-    input_directory: Path,
-    output_directory: Path,
-    index_filename: str = "index.html",
-    max_servings: int = 10,
+    input_directory: Path, output_directory: Path, max_servings: int = 10,
 ) -> None:
     """
     Generate a static recipe website.
@@ -659,17 +700,13 @@ def generate_static_site(
         The directory to write the generated pages. Will be created if it does
         not exist. Should ideally be empty but if not, existing files will be
         clobbered without warning.
-    index_filename: str
-        The filename to use for index pages (e.g. "index.html").
     max_servings: int
         The maximum number of servings to scale a recipe to. Must be at least
         as large as the largest recipe in the site.
     """
     # Generate the site
     home_page = HomePage.from_root_directory(
-        root_directory=input_directory,
-        index_filename=index_filename,
-        max_servings=max_servings,
+        root_directory=input_directory, max_servings=max_servings,
     )
 
     # Render and write the pages

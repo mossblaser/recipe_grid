@@ -184,15 +184,19 @@ class TestHomePage:
                     "README.md": "# A website",
                     "foo/README.md": "# Foo category",
                     "foo/recipe.md": "# A recipe for 2",
+                    "foo/unscaled.md": "# An unscaled recipe",
                 }
             )
         )
         assert h.make_source_to_page_paths_lookup() == {
-            input_path / "README.md": "/index.html",
-            input_path: "/categories/index.html",
-            input_path / "foo": "/categories/foo/index.html",
-            input_path / "foo" / "README.md": "/categories/foo/index.html",
-            input_path / "foo" / "recipe.md": "/serves2/foo/recipe.html",
+            input_path / "README.md": ("/index.html", True),
+            input_path: ("/categories/index.html", True),
+            input_path / "foo": ("/categories/foo/index.html", True),
+            input_path / "foo" / "README.md": ("/categories/foo/index.html", True),
+            input_path / "foo" / "recipe.md": ("/serves2/foo/recipe.html", True),
+            input_path
+            / "foo"
+            / "unscaled.md": ("/categories/foo/unscaled.html", False),
         }
 
 
@@ -358,7 +362,7 @@ class TestCategoryPage:
                     "recipe_a.md": "# Recipe Z for 6",
                     "recipe_b.md": "# Recipe Y for 5",
                     "recipe_c.md": "# Recipe X for 4",
-                    "recipe_d.md": "# Recipe W for 3",
+                    "recipe_d.md": "# Recipe W",
                 }
             )
         )
@@ -374,22 +378,35 @@ class TestCategoryPage:
         assert h.unscaled_categories.recipes[2].title == "Recipe Y"
         assert h.unscaled_categories.recipes[3].title == "Recipe Z"
 
-        # Scaled categories should link to matching scaled recipes
-        assert h.scaled_categories[1].recipes[0].servings == 1
+        # Scaled categories should link to matching scaled recipes (unless the
+        # recipe is unscaled)
+        assert h.scaled_categories[1].recipes[0].servings is None
         assert h.scaled_categories[1].recipes[1].servings == 1
         assert h.scaled_categories[1].recipes[2].servings == 1
         assert h.scaled_categories[1].recipes[3].servings == 1
 
-        assert h.scaled_categories[3].recipes[0].servings == 3
+        assert h.scaled_categories[3].recipes[0].servings is None
         assert h.scaled_categories[3].recipes[1].servings == 3
         assert h.scaled_categories[3].recipes[2].servings == 3
         assert h.scaled_categories[3].recipes[3].servings == 3
 
+        # Check unscaled recipe page is referenced for all scalings
+        unscaled_recipe = h.unscaled_categories.recipes[0]
+        for servings in range(1, 11):
+            assert h.scaled_categories[servings].recipes[0] is unscaled_recipe
+
         # Unscaled categories should link to natively scaled recipes
-        assert h.unscaled_categories.recipes[0].servings == 3
+        assert h.unscaled_categories.recipes[0].servings is None
         assert h.unscaled_categories.recipes[1].servings == 4
         assert h.unscaled_categories.recipes[2].servings == 5
         assert h.unscaled_categories.recipes[3].servings == 6
+
+        # Unscaled recipes should have the unscaled categories page as their
+        # parent, otherwise the matching scaled categories page
+        assert h.scaled_categories[3].recipes[0].parent == h.unscaled_categories
+        assert h.scaled_categories[3].recipes[1].parent == h.scaled_categories[3]
+        assert h.scaled_categories[3].recipes[2].parent == h.scaled_categories[3]
+        assert h.scaled_categories[3].recipes[3].parent == h.scaled_categories[3]
 
     def test_sources(self, input_path: Path, make_directory: MakeDirectoryFn) -> None:
         h = HomePage.from_root_directory(
@@ -506,8 +523,10 @@ class TestRecipePage:
             .get_resolve_local_links_stage(
                 source=input_path / "foo" / "recipe.md",
                 source_to_page_paths={
-                    input_path / "README.md": "/categories/index.html",
-                    input_path / "foo" / "recipe.md": "/serves2/foo/recipe.html",
+                    input_path / "README.md": ("/categories/index.html", True),
+                    input_path
+                    / "foo"
+                    / "recipe.md": ("/serves2/foo/recipe.html", True),
                 },
                 filename_to_asset_paths=filename_to_asset_paths,
             )
@@ -557,12 +576,15 @@ class TestGenerateStaticSite:
                     "# A static website\n"
                     "With some ace recipes, [like this one](recipe.md)"
                 ),
-                # Recipe page contains links
+                # Recipe page contains links (to both scaled and unscaled
+                # pages)
                 "recipe.md": (
                     "# A recipe for 3\n"
-                    "Pretty nice. See also the [foo category](foo) of recipes."
+                    "Pretty nice. See also the [foo category](foo) of recipes "
+                    "and [the foo recipe](foo/100%_foo_'recipe'.md) in particular."
                 ),
-                # Category page contains links in other directories
+                # Category page contains links in other directories (and both
+                # scaled and unscaled pages)
                 "foo/index.md": (
                     "# Foo recipes\n"
                     "These are even better than [previous recipes](..) like "
@@ -573,9 +595,11 @@ class TestGenerateStaticSite:
                 # * Its filename contains a symbols which requires escaping in URLs
                 #   and HTML attributes alike
                 # * Contains a reference to a static file
-                # * Contains internal recipe anchor links
+                # * Contains internal recipe anchor links (to both scaled and
+                #   unscaled pages)
+                # * It's unscalable
                 "foo/100%_foo_'recipe'.md": (
-                    "# A foo recipe for 7\n"
+                    "# A foo recipe\n"
                     "It's delicious!\n"
                     "```recipe\n"
                     "pizza = order(takeaway pizza)\n"
@@ -606,7 +630,10 @@ class TestGenerateStaticSite:
                 link_path = page_path.parent / Path(*unquote(parts.path).split("/"))
 
                 # Referenced file should exist
-                assert link_path.is_file()
+                assert link_path.is_file(), {
+                    "page_path": page_path,
+                    "link_path": link_path,
+                }
 
                 # Referenced file should be in output directory
                 assert (

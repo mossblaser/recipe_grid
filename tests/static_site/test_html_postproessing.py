@@ -107,18 +107,30 @@ class TestResolveLocalLinks:
                     root=tmp_path / "foo",
                     from_path=from_path,
                     source_to_page_paths={
-                        tmp_path / "foo" / "bar" / "baz.md": "/serves2/bar/baz.html",
-                        tmp_path / "foo" / "bar" / "same.md": "/serves3/bar/same.html",
-                        tmp_path / "foo" / "parent.md": "/serves5/parent.html",
-                        # Index pages
-                        tmp_path / "foo" / "README.md": "/categories/index.html",
                         tmp_path
                         / "foo"
                         / "bar"
-                        / "README.md": "/categories/bar/index.html",
+                        / "baz.md": ("/serves2/bar/baz.html", True),
+                        tmp_path
+                        / "foo"
+                        / "bar"
+                        / "same.md": ("/serves3/bar/same.html", True),
+                        tmp_path / "foo" / "parent.md": ("/serves5/parent.html", True),
+                        tmp_path
+                        / "foo"
+                        / "bar"
+                        / "unscaled.md": ("/categories/bar/unscaled.html", False),
+                        # Index pages
+                        tmp_path
+                        / "foo"
+                        / "README.md": ("/categories/index.html", True),
+                        tmp_path
+                        / "foo"
+                        / "bar"
+                        / "README.md": ("/categories/bar/index.html", True),
                         # Directories
-                        tmp_path / "foo": "/categories/index.html",
-                        tmp_path / "foo" / "bar": "/categories/bar/index.html",
+                        tmp_path / "foo": ("/categories/index.html", True),
+                        tmp_path / "foo" / "bar": ("/categories/bar/index.html", True),
                     },
                     filename_to_asset_paths=filename_to_asset_paths,
                     assets_dir_path="/static",
@@ -186,15 +198,45 @@ class TestResolveLocalLinks:
             ("./baz.md", "baz.html"),
             ("../bar/baz.md", "baz.html"),
             ("../bar/baz.md#foo", "baz.html#foo"),
+            # To a scaled page (should keep same scale)
+            ("same.md", "same.html"),
+            # To category (should keep unscaled)
+            ("./", "index.html"),
+            # To unscaled page (should discard scale)
+            ("unscaled.md", "../../categories/bar/unscaled.html"),
         ],
     )
-    def test_from_recipe_page(self, tmp_path: Path, link: str, exp_link: str,) -> None:
+    def test_from_recipe_page(self, tmp_path: Path, link: str, exp_link: str) -> None:
         filename_to_asset_paths: MutableMapping[str, str] = {}
         assert self.run(
             t("a", "Link", href=link),
             tmp_path=tmp_path,
             source=tmp_path / "foo" / "bar" / "baz.md",
             from_path="/serves123/bar/baz.html",
+            filename_to_asset_paths=filename_to_asset_paths,
+        ) == t("a", "Link", href=exp_link)
+        assert filename_to_asset_paths == {}
+
+    @pytest.mark.parametrize(
+        "link, exp_link",
+        [
+            # Relative link to current page (should keep unscaled)
+            ("unscaled.md", "unscaled.html"),
+            # To category (should keep unscaled)
+            ("./", "index.html"),
+            # To scaled page (should use native scale)
+            ("baz.md", "../../serves2/bar/baz.html"),
+        ],
+    )
+    def test_from_unscaled_recipe_page(
+        self, tmp_path: Path, link: str, exp_link: str
+    ) -> None:
+        filename_to_asset_paths: MutableMapping[str, str] = {}
+        assert self.run(
+            t("a", "Link", href=link),
+            tmp_path=tmp_path,
+            source=tmp_path / "foo" / "bar" / "unscaled.md",
+            from_path="/categories/bar/unscaled.html",
             filename_to_asset_paths=filename_to_asset_paths,
         ) == t("a", "Link", href=exp_link)
         assert filename_to_asset_paths == {}
@@ -214,6 +256,8 @@ class TestResolveLocalLinks:
             ("/bar/same.md", "same.html"),
             ("../parent.md", "../parent.html"),
             ("/parent.md", "../parent.html"),
+            # Link to unscaled recipe page
+            ("unscaled.md", "../../categories/bar/unscaled.html"),
         ],
     )
     def test_from_scaled_category_page(
@@ -244,6 +288,8 @@ class TestResolveLocalLinks:
             ("/bar/same.md", "../../serves3/bar/same.html"),
             ("../parent.md", "../../serves5/parent.html"),
             ("/parent.md", "../../serves5/parent.html"),
+            # Link to unscaled recipe page
+            ("unscaled.md", "unscaled.html"),
         ],
     )
     def test_from_unscaled_category_page(
