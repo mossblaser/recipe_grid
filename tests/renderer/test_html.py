@@ -104,28 +104,27 @@ def test_render_number(number: Union[float, int, Fraction], exp: str) -> None:
         # Custom (unknown) unit with HTML char in
         (
             Quantity(123, "<foo>"),
-            '<span class="rg-quantity rg-scaled-value">123&lt;foo&gt;</span>',
+            '<span class="rg-quantity-without-conversions rg-scaled-value">123&lt;foo&gt;</span>',
         ),
         # Custom unit with spacing and preposition
         (
             Quantity(123, "<foo>", value_unit_spacing=" < ", preposition=" of>"),
-            '<span class="rg-quantity rg-scaled-value">123 &lt; &lt;foo&gt;</span> of&gt;',
+            (
+                '<span class="rg-quantity-without-conversions rg-scaled-value">'
+                "123 &lt; &lt;foo&gt;</span> of&gt;"
+            ),
         ),
         # Known unit (with non normative name given and with fractional and
         # floating point conversions).
         (
             Quantity(Fraction(1, 2), "Kilos"),
             (
-                "<span "
-                'class="rg-quantity rg-scaled-value" '
-                "data-rg-alternative-units='["
-                '"&lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt;Kilos", '
-                '"500g", '
-                '"1.1lb", '
-                '"17.6oz"'
-                "]'"
-                ">"
-                "<sup>1</sup>&frasl;<sub>2</sub>Kilos"
+                '<span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">\n'
+                '  <sup>1</sup>&frasl;<sub>2</sub>Kilos<ul class="rg-quantity-conversions">\n'
+                "    <li>500g</li>\n"
+                "    <li>1.1lb</li>\n"
+                "    <li>17.6oz</li>\n"
+                "  </ul>\n"
                 "</span>"
             ),
         ),
@@ -133,16 +132,12 @@ def test_render_number(number: Union[float, int, Fraction], exp: str) -> None:
         (
             Quantity(Fraction(1, 2), "Kilos", value_unit_spacing=" "),
             (
-                "<span "
-                'class="rg-quantity rg-scaled-value" '
-                "data-rg-alternative-units='["
-                '"&lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; Kilos", '
-                '"500 g", '
-                '"1.1 lb", '
-                '"17.6 oz"'
-                "]'"
-                ">"
-                "<sup>1</sup>&frasl;<sub>2</sub> Kilos"
+                '<span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">\n'
+                '  <sup>1</sup>&frasl;<sub>2</sub> Kilos<ul class="rg-quantity-conversions">\n'
+                "    <li>500 g</li>\n"
+                "    <li>1.1 lb</li>\n"
+                "    <li>17.6 oz</li>\n"
+                "  </ul>\n"
                 "</span>"
             ),
         ),

@@ -120,6 +120,83 @@ table.rg-table tr td.rg-sub-recipe-outputs ul li {
 
 
 /**
+ * Unit conversion popups
+ */
+.rg-quantity-with-conversions ul.rg-quantity-conversions {
+    position: absolute;
+    z-index: 999;
+    
+    margin: -8px;
+    margin-top: 4px;
+    padding: 8px;
+    
+    background-color: white;
+    
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+    
+    border-radius: 4px;
+    
+    filter: drop-shadow(4px 4px 8px #00000033);
+    
+    list-style: none;
+    text-align: left;
+}
+
+/* Draw an arrow pointing up at the value. */
+.rg-quantity-with-conversions ul.rg-quantity-conversions:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -16px;
+    
+    box-sizing: content-box;
+    width: 0;
+    height: 0;
+    
+    border-style: solid;
+    border-color: black;
+    border-width: 8px;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    
+}
+
+.rg-quantity-with-conversions ul.rg-quantity-conversions li {
+    padding-bottom: 8px;
+}
+.rg-quantity-with-conversions ul.rg-quantity-conversions li:last-child {
+    padding-bottom: 0;
+}
+
+/* Show on unit conversions on mouseover/focus */
+.rg-quantity-with-conversions:focus {
+    outline: none;
+}
+.rg-quantity-with-conversions .rg-quantity-conversions {
+    visibility: hidden;
+}
+.rg-quantity-with-conversions:hover .rg-quantity-conversions,
+.rg-quantity-with-conversions:focus-within .rg-quantity-conversions {
+    visibility: visible;
+    pointer-events: auto;
+}
+.rg-quantity-with-conversions:hover .rg-quantity-conversions {
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* Hide conversions in print */
+@media print {
+    .rg-quantity-with-conversions .rg-quantity-conversions {
+        display: none;
+    }
+}
+
+
+/**
  * Apply accent colouring when a table cell is targeted.
  */
 

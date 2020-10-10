@@ -186,7 +186,15 @@ class TestRenderMarkdown:
                 <div class="rg-recipe-block">
                   <table class="rg-table">
                     <tr>
-                      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe"><span class="rg-quantity rg-scaled-value" data-rg-alternative-units='["200g", "&lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;5&lt;/sub&gt;kg", "0.441lb", "7.05oz"]'>200g</span> spam</td>
+                      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe">
+                        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+                          200g<ul class="rg-quantity-conversions">
+                            <li><sup>1</sup>&frasl;<sub>5</sub>kg</li>
+                            <li>0.441lb</li>
+                            <li>7.05oz</li>
+                          </ul>
+                        </span> spam
+                      </td>
                       <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="2">fry</td>
                     </tr>
                     <tr><td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe"><span class="rg-quantity-unitless rg-scaled-value">4</span> eggs</td></tr>

@@ -2,8 +2,6 @@ from typing import cast, Optional, MutableMapping, List, Union, Tuple
 
 import re
 
-import json
-
 import html
 
 from textwrap import indent
@@ -109,6 +107,7 @@ def render_quantity(quantity: Quantity) -> str:
             assert alternative_forms[0][0] == quantity.value  # Sanity check...
             alternative_forms[0] = (quantity.value, quantity.unit)
         except KeyError:
+            # Unknown unit; no conversions available
             alternative_forms.append((quantity.value, quantity.unit))
 
         all_forms = [
@@ -120,15 +119,26 @@ def render_quantity(quantity: Quantity) -> str:
             for value, unit in alternative_forms
         ]
 
-        data_attr = (
-            {"data__rg__alternative__units": json.dumps(all_forms)}
-            if len(all_forms) > 1
-            else {}
-        )
-
-        return t(
-            "span", all_forms[0], class_="rg-quantity rg-scaled-value", **data_attr,
-        ) + html.escape(quantity.preposition)
+        if len(all_forms) == 1:
+            return t(
+                "span",
+                all_forms[0],
+                class_="rg-quantity-without-conversions rg-scaled-value",
+            ) + html.escape(quantity.preposition)
+        else:
+            return t(
+                "span",
+                (
+                    all_forms[0]
+                    + t(
+                        "ul",
+                        "\n".join(t("li", form) for form in all_forms[1:]),
+                        class_="rg-quantity-conversions",
+                    )
+                ),
+                class_="rg-quantity-with-conversions rg-scaled-value",
+                tabindex="0",
+            ) + html.escape(quantity.preposition)
 
 
 def render_proportion(proportion: Proportion) -> str:
