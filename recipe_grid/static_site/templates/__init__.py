@@ -12,3 +12,5 @@ recipe_template = env.get_template("recipe.html")
 website_css_template = env.get_template("website.css")
 
 standalone_recipe_template = env.get_template("standalone_recipe.html")
+
+tables_only_css_template = env.get_template("recipe_tables.css")
