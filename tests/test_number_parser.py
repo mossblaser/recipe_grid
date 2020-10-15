@@ -4,7 +4,7 @@ from typing import Union
 
 from fractions import Fraction
 
-from recipe_grid.scripts.recipe_grid import number
+from recipe_grid.number_parser import number
 
 
 class TestNumber:
