@@ -1,5 +1,283 @@
-"""
-A data structure which defines a recipe.
+r"""
+The :py:mod:`recipe_grid.recipe` module defines the Directed Acyclic Graph
+(DAG) data structure used to describe recipes.
+
+
+Overview
+========
+
+Recipes are defined as a series of trees, principally consisting of
+:py:class:`Ingredient` nodes and :py:class:`Step` nodes.
+
+An :py:class:`Ingredient` node contains a name and an optional quantity.
+
+A :py:class:`Step` node contains a description of the step and a series of
+input nodes (children).
+
+A simple recipe might only consist of a single tree of :py:class:`Ingredient`
+and :py:class:`Step` nodes. For example, here's how a simple pasta meal might
+be represented.
+
+.. graphviz::
+
+   digraph foo {
+
+      subgraph {
+          node [shape=ellipse]
+
+          onion [label=<Onion<br/>(Ingredient)>]
+          tomatoes [label=<Chopped Tomatoes<br/>(Ingredient)>]
+          pasta [label=<Pasta<br/>(Ingredient)>]
+      }
+
+      subgraph {
+          node [shape=rectangle]
+
+          chop [label=<Chop<br/>(Step)>]
+          fry [label=<Fry<br/>(Step)>]
+          boildown [label=<Boil down<br/>(Step)>]
+          boil [label=<Boil<br/>(Step)>]
+          mix [label=<Mix<br/>(Step)>]
+      }
+
+      chop -> onion;
+
+      fry -> chop;
+
+      boildown -> fry;
+      boildown -> tomatoes;
+
+      boil -> pasta;
+
+      mix -> boildown;
+      mix -> boil;
+   }
+
+Sometimes a sub tree within a recipe might be identified as its own sub recipe
+and given an emphasising border and title in the rendered recipe table.  For
+example, in the recipe above we might make the pasta sauce a sub recipe. To
+represent this, a :py:class:`SubRecipe` node type is used which always has exactly one
+child and one or more named outputs. In this example, there is only one output
+('Pasta sauce').  We'll return to the case with multiple named outputs later.
+
+.. graphviz::
+
+   digraph foo {
+
+      subgraph {
+          node [shape=ellipse]
+
+          onion [label=<Onion<br/>(Ingredient)>]
+          tomatoes [label=<Chopped Tomatoes<br/>(Ingredient)>]
+          pasta [label=<Pasta<br/>(Ingredient)>]
+      }
+
+      subgraph {
+          node [shape=rectangle]
+
+          chop [label=<Chop<br/>(Step)>]
+          fry [label=<Fry<br/>(Step)>]
+          boildown [label=<Boil down<br/>(Step)>]
+          boil [label=<Boil<br/>(Step)>]
+          mix [label=<Mix<br/>(Step)>]
+      }
+
+      subgraph {
+          node [shape=Mrecord]
+
+          sauce [label="{<fs>Pasta sauce|<fo>(SubRecipe)}"]
+      }
+
+      chop -> onion;
+
+      fry -> chop;
+
+      boildown -> fry;
+      boildown -> tomatoes;
+
+      sauce:fo -> boildown;
+
+      boil -> pasta;
+
+      mix -> sauce:fs:n;
+      mix -> boil;
+   }
+
+In other cases, an ingredient or whole sub recipe may be split into parts and
+used separately. In this case, a :py:class:`Reference` node may be used to
+refer to a :py:class:`SubRecipe` which must be the root of a previous tree in the
+recipe. For example, in the recipe below, a Sub Recipe for grated cheese is
+referenced in two places, with 75% being mixed into the main recipe and 25%
+being used to top it:
+
+.. graphviz::
+
+   digraph foo {
+
+      subgraph {
+          node [shape=ellipse]
+
+          cheese [label=<Cheese<br/>(Ingredient)>]
+          white_sauce [label=<White sauce<br/>(Ingredient)>]
+          pasta [label=<Pasta<br/>(Ingredient)>]
+      }
+
+      subgraph {
+          node [shape=rectangle]
+
+          grate [label=<Grate<br/>(Step)>]
+          mix [label=<Mix<br/>(Step)>]
+          top [label=<Top<br/>(Step)>]
+      }
+
+      subgraph {
+          node [shape=diamond]
+
+          refm [label=<75%<br/>(Reference)>]
+          reft [label=<25%<br/>(Reference)>]
+      }
+
+      subgraph {
+          node [shape=Mrecord]
+
+          grated_cheese [label="{<fc>Grated cheese|<fo>(SubRecipe)}"]
+      }
+
+      grate -> cheese;
+      grated_cheese:fo -> grate;
+
+      mix -> refm;
+      mix -> white_sauce;
+      mix -> pasta;
+
+      top -> mix;
+      top -> reft;
+
+      subgraph {
+            edge [constraint=false,style=dashed];
+
+            refm:sw -> grated_cheese:fc:n
+            reft:sw -> grated_cheese:fc:n
+      }
+   }
+
+A final case is where a :py:class:`SubRecipe` has more than one output. This might occur
+when, for example, when vegetables are boiled and both the vegetables and the
+water are reserved and used in a later step. Each output may then be referenced
+separately by :py:class:`Reference` nodes. :py:class:`SubRecipe` nodes with more than
+one output must be the root of a recipe tree.
+
+.. graphviz::
+
+   digraph foo {
+      subgraph {
+          node [shape=ellipse]
+
+          vegetables [label=<Vegetables<br/>(Ingredient)>]
+          gravy_granules [label=<Gravy granules<br/>(Ingredient)>]
+      }
+
+      subgraph {
+          node [shape=rectangle]
+
+          boil [label=<Boil, reserving water<br/>(Step)>]
+          make [label=<Make gravy<br/>(Step)>]
+          pour [label=<Pour over<br/>(Step)>]
+      }
+
+      subgraph {
+          node [shape=diamond]
+
+          refv [label=<(Reference)>]
+          refw [label=<(Reference)>]
+      }
+
+      subgraph {
+          node [shape=Mrecord]
+
+          boiled_veg [label="{{<fv>Boiled Vegetables|<fw>Water}|<fo>(SubRecipe)}"]
+      }
+
+      boil -> vegetables;
+      boiled_veg -> boil;
+
+      make -> gravy_granules;
+      make -> refw;
+
+      pour -> make;
+      pour -> refv;
+
+      subgraph {
+          edge [constraint=false,style=dashed];
+
+          refv:sw -> boiled_veg:fv:n
+          refw:sw -> boiled_veg:fw:n
+      }
+   }
+
+
+Data structures
+===============
+
+A Recipe is defined at its root by a :py:class:`Recipe` instance. In a simple
+document there will be a single :py:class:`Recipe` instance which contains the
+entire DAG for that recipe. For more complex documents where the recipe is
+presented in several sections, each section of the recipe will be represented
+by its own :py:class:`Recipe` with back-references to prior :py:class:`Recipe`\
+s in :py:attr:`Recipe.follows`.
+
+.. autoclass:: Recipe
+    :members:
+
+DAG Structure
+-------------
+
+Recipe trees are in turn defined using subclasses of
+:py:class:`RecipeTreeNode`:
+
+.. autoclass:: RecipeTreeNode
+    :members:
+
+.. autoclass:: Ingredient
+    :members:
+
+.. autoclass:: Step
+    :members: description, inputs
+
+.. autoclass:: SubRecipe
+    :members: sub_tree, output_names, show_output_names
+
+.. autoclass:: Reference
+    :members: output_index, amount
+
+
+Quantities and Proportions
+--------------------------
+
+Absolute quantities (for ingredients and references) and relative proportions
+(for references only) are defined as follows:
+
+.. autoclass:: Quantity
+
+.. autoclass:: Proportion
+
+Exceptions
+----------
+
+The DAG structure invariants are enforced by checks in their constructors and
+any non-conforming input will produce a :py:exc:`RecipeInvariantError`
+subclass.
+
+.. autoexception:: RecipeInvariantError
+
+.. autoexception:: MultiOutputSubRecipeUsedAsNonRootNodeError
+
+.. autoexception:: OutputIndexError
+
+.. autoexception:: ZeroOutputSubRecipeError
+
+.. autoexception:: ReferenceToInvalidSubRecipeError
+
 """
 
 
@@ -398,6 +676,9 @@ class Recipe:
     """
 
     recipe_trees: Tuple[RecipeTreeNode, ...]
+    """
+    The recipe tree roots for this :py:class:`Recipe`.
+    """
 
     follows: Optional["Recipe"] = None
     r"""
