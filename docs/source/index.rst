@@ -58,6 +58,8 @@ tools:
 .. toctree::
    :maxdepth: 2
    
+   markdown.rst
+   sphinx.rst
    language_reference.rst
 
 

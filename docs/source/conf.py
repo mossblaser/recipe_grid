@@ -49,6 +49,7 @@ autodoc_member_order = "bysource"
 intersphinx_mapping = {
     "python": ("http://docs.python.org/3", None),
     "peggie": ("https://peggie.readthedocs.io/en/latest/", None),
+    "marko": ("https://marko-py.readthedocs.io/en/latest/", None),
 }
 
 # -- Options for HTML output -------------------------------------------------
