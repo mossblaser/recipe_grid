@@ -9,3 +9,6 @@ TODO: Add some docs...
    :caption: Contents:
    
    tutorial.rst
+   language_reference.rst
+   grammar.rst
+   data_model.rst

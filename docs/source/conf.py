@@ -30,6 +30,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
+    "sphinx.ext.graphviz",
     "numpydoc",
     "recipe_grid.sphinx_ext",
 ]
@@ -38,6 +39,17 @@ templates_path = []
 
 exclude_patterns = []
 
+# Fixes numpydoc autosummary errors
+numpydoc_show_class_members = False
+
+# Order members in source order, not alphabetically
+autodoc_member_order = "bysource"
+
+# Pull in references to other Python code's docs
+intersphinx_mapping = {
+    "python": ("http://docs.python.org/3", None),
+    "peggie": ("https://peggie.readthedocs.io/en/latest/", None),
+}
 
 # -- Options for HTML output -------------------------------------------------
 
