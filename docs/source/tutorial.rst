@@ -7,47 +7,6 @@ This tutorial will give you an introduction to Recipe Grid including its recipe
 description language and tools for compiling recipes into stand-alone HTML
 pages or complete recipe websites.
 
-
-Why Recipe Grid?
-----------------
-
-Recipe Grid produces recipes in a tabular form as illustrated by the (rather
-tasty) recipe below for tiffin.
-
-.. recipe::
-    :start-new-recipe:
-
-    6 tsp of cocoa powder
-    2 tbsp of golden syrup
-    1/2 cup of butter
-    1/2 cup of sugar
-    16oz of digestives
-    200g of chocolate
-
-    cover(
-        mix(
-            heat until bubbling (cocoa powder, golden syrup, butter, sugar),
-            crush(digestives)
-        ),
-        melt(chocolate)
-    )
-
-These recipes have several advantages over traditional recipe descriptions:
-
-* Recipes are typically much more concise.
-* Quantities and method are shown together avoiding the need to
-  manually cross-reference between the two while cooking. It also ensures that
-  no parts of the method get "hidden" in the ingredients list (e.g. chopping of
-  vegetables). It's still easy to read-off the list of ingredients, however:
-  just read the left-hand-side of the table!
-* Opportunities to carry out steps in parallel are easy to see. In the example
-  above, for instance, you can see that while the mixture is heating up you can
-  be crushing the digestives or melting the chocolate.
-* Parallelism is not enforced: traditional recipes sometimes interleave
-  multiple parts of the recipe in their method which can be confusing when
-  you're still new to it.
-
-
 Recipe description basics
 -------------------------
 
