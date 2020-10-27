@@ -1,3 +1,10 @@
+"""
+The recipe description language is parsed into an Abstract Syntax Tree
+(AST) using :py:func:`recipe_grid.parser.parse`:
+
+.. autofunction:: recipe_grid.parser.parse
+"""
+
 from typing import cast
 
 from peggie import Parser, ParseError

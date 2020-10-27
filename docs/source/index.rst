@@ -75,3 +75,4 @@ TODO
    grammar.rst
    units.rst
    data_model.rst
+   compiler.rst

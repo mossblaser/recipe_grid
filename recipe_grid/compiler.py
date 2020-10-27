@@ -1,3 +1,36 @@
+"""
+The recipe description language is compiled into the recipe Grid data model
+(see :py:mod:`recipe_grid.recipe`) by the following function:
+
+.. autofunction:: recipe_grid.compiler.compile
+
+During compilation the following exception types may be thrown. In all cases,
+when cast to :py:class:`str`, the string representation takes the form similar
+to:
+
+.. code:: text
+
+    At line 19 column 2:
+        ))
+         ^
+    Expected ','
+
+With a line number, code snippet and error explanation provided.
+
+.. exception:: peggie.ParseError
+    :noindex:
+
+    Thrown if parsing fails due to a syntactic error (see
+    :py:exc:`peggie.ParseError` in the :py:mod:`peggie` documentation for
+    details).
+
+.. autoexception:: RecipeCompileError
+
+.. autoexception:: NameRedefinedError
+
+.. autoexception:: ProportionGivenForIngredientError
+"""
+
 from typing import cast, List, MutableMapping, Optional, Union, Tuple
 
 from peggie.error_message_generation import (
@@ -449,11 +482,24 @@ class RecipeCompiler:
 
 def compile(sources: List[str]) -> List[Recipe]:
     """
-    Compile a recipe from source into a :py:class:`recipe_grid.recipe.Recipe`
-    data structure.
+    Compile a recipe from source into a series of
+    :py:class:`recipe_grid.recipe.Recipe` data structures.
 
-    May throw any exceptions produced by :py:func:`recipe_grid.parser.parse`
-    during parsing and subclasses of :py:exc:`RecipeCompileError` during
-    compilation.
+    The input recipe may be split into several blocks with later blocks
+    referencing sub recipes in earlier ones. The code for each block should be
+    passed separately and for each of these a separate
+    :py:class:`~recipe_grid.recipe.Recipe` object will be produced.
+
+    May throw :py:exc:`peggie.ParseError` during parsing and subclasses of
+    :py:exc:`RecipeCompileError` during compilation.
+
+    .. tip::
+
+        It is assumed that all source blocks originate from a single file (e.g.
+        from different indented blocks in a Markdown file). To make error
+        messages report correct line numbers, pad the start of each source
+        string with empty lines according to the position of the block in the
+        original file. This will ensure that error messages give useful line
+        numbers.
     """
     return RecipeCompiler().compile(sources)
