@@ -1,3 +1,106 @@
+"""
+This module implements :py:class:`~recipe_grid.renderer.table.Table` to HTML
+conversion in the following routine:
+
+.. autofunction:: render_recipe_tree
+
+In the generated HTML, the following CSS class names are used which should be
+styled accordingly using a suitable stylesheet.
+
+The generated table is mostly self explnatory, though ingredients and
+references may contain a ``<ul>`` (with the CSS class
+``rg-quantity-conversions``) listing quantities using alternative units. This
+list may be styled using CSS as a mouse-over hint (for example) or hidden
+entirely, as required.
+
+CSS Classes
+===========
+
+In the generated HTML, the following CSS class names are used
+
+* Top level (``<table>``) classes:
+
+  ``rg-table``
+      Applied to each generated ``<table>``.
+
+* Cell (``<td>``) semantic classes
+
+  ``rg-ingredient``
+      Applied to each cell containing an ingredient.
+  ``rg-reference``
+      Applied to each cell containing an reference.
+  ``rg-step``
+      Applied to each cell containing a step description.
+  ``rg-sub-recipe-header``
+      Applied to each cell acting as a header for a sub recipe.
+  ``rg-sub-recipe-outputs``
+      Applied to the cell on the right-hand-end of a table representing a sub
+      recipe with multiple outputs.
+
+* Cell (``<td>``) border styling classes
+
+  ``rg-border-top-none``, ``rg-border-bottom-none``, ``rg-border-left-none``, ``rg-border-right-none``
+      Indicates the respective border should be omitted.
+  ``rg-border-top-sub-recipe``, ``rg-border-bottom-sub-recipe``, ``rg-border-left-sub-recipe``, ``rg-border-right-sub-recipe``
+      Indicates the respective border should be drawn with an emphasised (e.g.
+      bold) stroke.
+
+  Where the above classes are given, they are given for both 'sides' of the
+  border (e.g. when ``rg-border-left-none`` is used in one cell, the cell
+  immediately to its left always has the matching class
+  ``rg-border-right-none``).
+
+  When not overridden by the classes above, all other cell borders should be
+  solid (and the ``<table>`` should have no border at all), and inter-cell
+  spacing should be collapsed.
+
+* Inline styles
+
+  ``rg-quantity-unitless``
+      Applied to the ``<span>`` surrounding the number in a unitless quantity.
+      For example the "3" in "3 eggs".
+  ``rg-quantity-with-conversions``
+     Applied to the ``<span>`` surrounding the number and unit and list of unit
+     conversions in a quantity.  For example the "1 tsp <ul>...</ul>" in "1 tsp
+     <ul>...</ul> of salt".
+  ``rg-quantity-without-conversions``
+     Applied to the ``<span>`` surrounding the number and unit in a quantity
+     where no unit conversions are given.  For example the "1 sack" in "1 sack
+     of potatoes".
+  ``rg-quantity-conversions``
+      Applied to lists (``<ul>>``) of alternative-unit quantity values.
+  ``rg-proportion``
+      Applied to the ``<span>`` surrounding the proportion in a reference. For
+      example in "1/2 of the sauce", this would surround the "1/2 of the" part.
+
+      .. note::
+
+          The number inside will additionally be enclosed in a ``<span>``
+          with the class ``rg-scaled-value``.
+  ``rg-proportion-remainder``
+      Applied to the ``<span>`` surrounding the proportion indicating a
+      remainder in reference. For example in "remainder of the sauce", this
+      would surround the "remainder of the" part.
+  ``rg-sub-recipe-output-list``
+      Applies to the list (``ul``) of output names in a cell containing a
+      sub recipe with multiple outputs.
+  ``rg-scaled-value``
+      Applies to the ``<span>`` wrapping all strings containing scaled values
+      in the recipe. For example, ingredient quantities or text wrapped in
+      ``{`` and ``}`` in the recipe source.
+
+Example CSS stylesheet:
+=======================
+
+A sample stylesheet (actually, the one used by the Recipe Grid static site
+generator) is given below:
+
+.. literalinclude:: ../../recipe_grid/static_site/templates/recipe_tables.css
+   :language: css
+
+
+"""  # noqa: E501
+
 from typing import cast, Optional, MutableMapping, List, Union, Tuple
 
 import re
@@ -307,7 +410,10 @@ def render_recipe_tree(
     Render a recipe tree as a HTML table.
 
     The ``id_prefix`` argument may be used to specify the prefix added to all
-    anchor IDs used in this recipe tree.
+    anchor IDs used in this recipe tree. The same prefix must be specified when
+    rendering every recipe tree within a series of :py:class:`Recipe` blocks.
+    When a single HTML page may contain multiple, separate recipes, different
+    prefixes should be used for each to ensure links to not conflict.
     """
     id: Optional[str] = None
     if isinstance(recipe_tree, SubRecipe) and len(recipe_tree.output_names) == 1:

@@ -77,3 +77,4 @@ TODO
    data_model.rst
    compiler.rst
    linting.rst
+   rendering.rst

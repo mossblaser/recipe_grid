@@ -1,7 +1,35 @@
-"""
-An data structure for describing tables generated from
-:py:mod:`recipe_grid.recipe` descriptions. (Another) intermediate
-representation prior to rendering.
+r"""
+The following output-agnostic data structure is used to represent a recipe in
+tabular form.
+
+The basic data structure consists of a :py:class:`Table` object which contains
+a set of nested lists containing a 2D array of :py:class:`Cell` and
+:py:class:`ExtendedCell` objects. Each entry in the array represents a cell in
+the table.
+
+Where a cell spans multiple rows or columns, the top-left cell is defined with
+a :py:class:`Cell` instance (with :py:attr:`Cell.rows` and
+:py:attr:`Cell.columns` set appropriately) and the occluded cells are filled
+with :py:class:`ExtendedCell` instances. For convenience, the
+:py:meth:`Table.from_dict` class method is provided which can automatically fill
+in :py:class:`ExtendedCell` instances when only :py:class`Cell`\ s are given.
+
+.. autoclass:: Table
+    :members:
+
+.. autoclass:: Cell
+    :members:
+    :undoc-members:
+
+.. autoclass:: ExtendedCell
+    :members:
+    :undoc-members:
+
+Cells have four borders whose display styles are dictated by the ``border_*``
+attributes of the :py:class:`Cell`. The border styles are:
+
+.. autoclass:: BorderType
+    :members:
 """
 
 from typing import (
@@ -30,8 +58,21 @@ T = TypeVar("T")
 
 class BorderType(Enum):
     none = auto()
+    """
+    No border. Used only for cells which are to be rendered 'outside' the
+    table.
+    """
+
     normal = auto()
+    """
+    A normal border style which will surround most cells.
+    """
+
     sub_recipe = auto()
+    """
+    A border drawn round a sub recipe; typically thicker than the normal border
+    style.
+    """
 
 
 @dataclass
@@ -64,6 +105,7 @@ class ExtendedCell(Generic[T]):
     """
 
     cell: Cell[T]
+    """A reference to the cell which occludes this cell."""
 
     drow: int
     dcolumn: int
@@ -150,6 +192,10 @@ class Table(Generic[T]):
         return cls(cast(Sequence[Sequence[Union[Cell[T], ExtendedCell[T]]]], cells))
 
     def to_dict(self) -> Mapping[Tuple[int, int], Cell[T]]:
+        r"""
+        Return a dictionary mapping from (row, column) to :py:class:`Cell`
+        (omitting :py:class:`ExtendedCell`\ s).
+        """
         return {
             (row, column): cell
             for (row, column), cell in self
@@ -158,20 +204,27 @@ class Table(Generic[T]):
 
     @property
     def columns(self) -> int:
+        """Number of columns in this table"""
         return len(self.cells[0])
 
     @property
     def rows(self) -> int:
+        """Number of rows in this table"""
         return len(self.cells)
 
     def __iter__(
         self,
     ) -> Iterator[Tuple[Tuple[int, int], Union[Cell[T], ExtendedCell[T]]]]:
+        """
+        Iterate over ((row, column), cell_or_extended_cell) tuples in raster
+        scan order.
+        """
         for row, row_cells in enumerate(self.cells):
             for column, cell in enumerate(row_cells):
                 yield (row, column), cell
 
     def __getitem__(self, index: Tuple[int, int]) -> Union[Cell[T], ExtendedCell[T]]:
+        """Get the entry at the specified row and column."""
         row, column = index
         return self.cells[row][column]
 
