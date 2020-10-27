@@ -76,3 +76,4 @@ TODO
    units.rst
    data_model.rst
    compiler.rst
+   linting.rst

@@ -1,5 +1,24 @@
 """
 A collection of (fairly basic) linting functions for sanity checking recipes.
+
+The following function will lint a (series of) :py:class:`Recipe` descriptions.
+
+.. autofunction:: check
+
+Linting errors are described by :py:class:`Lint` objects:
+
+.. autoclass:: Lint
+    :members:
+    :undoc-members:
+
+Different categories of linting errors are identified by members of the
+following enumeration. Further details, however, are only given as
+human-readable strings.
+
+.. autoclass:: LintKind
+    :members:
+    :undoc-members:
+
 """
 
 from typing import Iterable, Set, List, MutableMapping, Optional
