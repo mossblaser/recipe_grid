@@ -78,3 +78,4 @@ TODO
    compiler.rst
    linting.rst
    rendering.rst
+   scaled_value_string.rst
