@@ -118,6 +118,18 @@ example:
 As in this example, you are free to split the inputs to a step over multiple
 lines if this makes the recipe description easier to read.
 
+.. note::
+
+    If your step or ingredient name contains any characters more exciting than
+    letters and numbers you must enclose it in single or double quotes. For
+    example:
+
+    .. recipe::
+        :start-new-recipe:
+        :show-source:
+    
+        "fry (don't allow to burn)" ( 1 can of spam )
+
 
 Listing ingredients separately
 ``````````````````````````````
@@ -157,15 +169,24 @@ Grid will insert both the ingredient and the steps we defined.
 
     The syntax above relies on Recipe Grid being able to distinguish quantities
     and units from an ingredient's name. Recipe Grid understands common cooking
-    units but, when necessary, provides more explicit syntax 
-
+    units (see :ref:`units` for more unformation):
+    
+        .. rgunitlist::
+    
     If you're dealing with an unusual unit which Recipe Grid might not know
-    about you can surround the quantity and unit with curly brackets, for
-    example: ``{2 scoops} of ice cream``.
+    about, or you just prefer to be explicit, you can surround the quantity and
+    unit with curly brackets, for example:
+    
+    .. code:: text
+    
+        {2 scoops} of ice cream
 
-    Simillarly, if your ingredient name might be confused for a unit or
-    preposiition you can use quotes around the ingredient name, e.g. ``2 "KG
-    Spooner Brand Biscuits"``.
+    By contrast, if your ingredient name might be confused for a unit or
+    preposiition you can use quotes around the ingredient name, for example:
+    
+    .. code:: text
+    
+        2 "KG Spooner Brand Biscuits".
 
 
 Sub-recipes

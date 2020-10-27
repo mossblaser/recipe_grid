@@ -143,11 +143,16 @@ Quantities
     ImplicitQuantity ::= Number [KnownUnit]
     ExplicitQuantity ::= "{" Number [StaticString] "}"
 
-A quantity with optional unit. When a known unit is used, no surrounding curly
-braces are required. When a custom unit is used, or to be more explicit, the
-quantity and unit must be surrounded by curly braces.
+A quantity with optional unit.
 
-For the list of known unit names, see :py:mod:`recipe_grid.units`.
+When a known unit is used, no surrounding curly braces are required. The
+following (case insensitive) unit names may be used (see :ref:`units` for
+details):
+
+    .. rgunitlist::
+
+When a custom unit is used, or to be more explicit, the quantity and unit must
+be surrounded by curly braces.
 
 .. note::
 

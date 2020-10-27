@@ -9,6 +9,7 @@
 import os
 import sys
 
+sys.path.insert(0, os.path.abspath("./ext/"))
 sys.path.insert(0, os.path.abspath("../../recipe_grid"))
 
 
@@ -33,6 +34,7 @@ extensions = [
     "sphinx.ext.graphviz",
     "numpydoc",
     "recipe_grid.sphinx_ext",
+    "unit_listings",
 ]
 
 templates_path = []
@@ -50,6 +52,7 @@ intersphinx_mapping = {
     "python": ("http://docs.python.org/3", None),
     "peggie": ("https://peggie.readthedocs.io/en/latest/", None),
     "marko": ("https://marko-py.readthedocs.io/en/latest/", None),
+    "pint": ("https://pint.readthedocs.io/en/stable/", None),
 }
 
 # -- Options for HTML output -------------------------------------------------

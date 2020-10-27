@@ -1,9 +1,27 @@
 """
-A simple units and measures system.
+Recipe Grid has a simple understanding of various cooking-related units and can
+perform simple conversions between units of the same kind. The complete list of
+units is:
 
-This system is much less sophisticated than things like :py:mod:`pint` but
-consequently easier to understand and use for non-unit-conversion-related
-tasks and 'dubious' measures (e.g. 'garlic').
+.. rgunitbreakdown::
+
+Conversions are possible betweeen units in the same sublist and names listed
+together are aliases for one another.
+
+.. note::
+
+    This system is much less sophisticated than things like :py:mod:`pint` but
+    consequently easier to understand and use for non-unit-conversion-related
+    tasks and also for less conventional measures (e.g. 'cloves').
+
+Internal API
+------------
+
+The Unit system is available in the :py:data:`recipe_grid.units.UNIT_SYSTEM`
+which is an instance of the following class:
+
+.. autoclass:: recipe_grid.units.UnitSystem
+    :members:
 """
 
 from typing import (
@@ -88,12 +106,14 @@ class UnitTreeNode:
 class RelatedUnitSet:
     """A collection of related units."""
 
+    units: List[Unit]
+
     _name_to_node: MutableMapping[str, UnitTreeNode]
 
     def __init__(self, units: Iterable[Unit]):
+        self.units = list(units)
         self._name_to_node = {}
-
-        for i, unit in enumerate(units):
+        for i, unit in enumerate(self.units):
             node: UnitTreeNode
             node_definition: Optional[Tuple[Number, UnitTreeNode]]
 
@@ -167,6 +187,10 @@ class RelatedUnitSet:
 
 @dataclass
 class UnitSystem:
+    """
+    A container of unit conversions.
+    """
+
     unit_sets: Mapping[str, RelatedUnitSet]
 
     _name_to_unit_set: Mapping[str, RelatedUnitSet] = field(init=False)
@@ -182,15 +206,18 @@ class UnitSystem:
         return self.unit_sets[kind]
 
     def __contains__(self, unit_name: str) -> bool:
+        """Check if a unit name is supported."""
         return unit_name in self._name_to_unit_set
 
     def iter_names(self) -> Iterator[str]:
+        """Iterate over all defined unit names and aliases."""
         return iter(self._name_to_unit_set.keys())
 
     def iter_conversions_from(self, from_unit: str) -> Iterator[Tuple[Number, str]]:
         """
         Iterate over all possible conversions from the provided unit to all
-        other compatible units.
+        other compatible units. Iterates over pairs of multiplicative
+        conversion factor and other unit names.
         """
         return self._name_to_unit_set[from_unit].iter_conversions_from(from_unit)
 
