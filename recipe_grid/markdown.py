@@ -84,6 +84,25 @@ To write a literal curly brace, use ``{\{}`` for an opening brace and ``{\}}``
 for a closing brace.
 
 
+Titles
+======
+
+If a Markdown document starts with a H1-level heading containing no special
+formatting, the title of the document will be inferred from this.
+
+When this heading ends with one of the following forms (where ``<N>`` is the
+number of servings):
+
+* ``to serve <N>``
+* ``to make <N>``
+* ``serves <N>``
+* ``for <N>``
+* ``makes <N>``
+* ``serving <N>``
+
+The title will be inferred to be whatever came before this and the recipe will
+be assumed to be scaled to produce the specified number of servings.
+
 API
 ===
 
