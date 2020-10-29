@@ -1,6 +1,37 @@
 """
-The ``recipe-grid`` command for compiling a single recipe into a stand-alone
-HTML page.
+The ``recipe-grid`` command compiles a single Markdown recipe into a
+stand-alone HTML page.
+
+.. highlight:: bash
+
+Basic usage
+===========
+
+    $ recipe-grid RECIPE_SOURCE [OUTPUT_FILENAME]
+
+This will compile the recipe in the indicated markdown file. If no output
+filename is given, the input filename with the suffix replaced with '.html' is
+used.
+
+Scaling recipes
+===============
+
+You can scale the recipe by an arbitrary factor using the ``--scale`` or ``-S``
+argument. This takes integers (e.g. '2'), decimal numbers (e.g. '1.5') and
+fractions (e.g. '1/2' or '1 1/3').
+
+When the recipe begins with a H1-level title ending with a number of servings
+(e.g. 'Tiffin for 2'), you can alternatively use the ``--servings`` or ``-s``
+argument to scale the recipe. This argument takes a a number of servings to
+scale the recipe to and computes the scaling factor for you.
+
+Links and images
+================
+
+By default links to local files and images are embedded as ``data:`` URLs. This
+means that the generated HTML page is completely standalone and does not depend
+on any other files. This feature can be disabled using the
+``--no-embed-local-links`` or ``-E`` flag.
 """
 
 import sys
@@ -73,6 +104,7 @@ def main() -> None:
         "--embed-local-links",
         "-e",
         action="store_true",
+        default=True,
         help="""
             Replace all local link and image URLs with data: URLs embedding the
             linked resource directly into the HTML. This is the default mode.

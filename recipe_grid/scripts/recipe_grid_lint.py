@@ -1,5 +1,24 @@
 """
-The ``recipe-grid-lint`` command for linting recipes for possible mistakes.
+The ``recipe-grid-lint`` command automatically checks recipes in Markdown files
+for common mistakes such as misspelling ingredient or sub recipe names defined
+earlier in a recipe.
+
+Usage::
+
+    $ recipe-grid-lint FILENAME [...]
+
+If any potential issues are found, a explanations will be printed to stdout and
+a non-zero exit status will be returned. Otherwise, no messages will be
+produced and the exit status will be 0.
+
+Errors (e.g. syntax errors) are fatal and must be fixed before this recipe can
+be checked any further (or indeed processed by other Recipe Grid tools).
+
+In unusual cases, warnings may be produced for recipes which are actually
+correct. If desired, you can suppress warnings of a specific kind using the
+``--ignore`` or `--i`` argument.  Warning types are indicated in square
+brackets in warning messages.  This argument may be used multiple times to
+ignore multiple kinds of warning.
 """
 
 import sys

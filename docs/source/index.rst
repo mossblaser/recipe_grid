@@ -61,6 +61,9 @@ tools:
    markdown.rst
    sphinx.rst
    language_reference.rst
+   recipe_grid_command.rst
+   recipe_grid_site_command.rst
+   recipe_grid_lint_command.rst
 
 
 
