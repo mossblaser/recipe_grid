@@ -52,15 +52,15 @@ The best place to get started is with :ref:`the Recipe Grid tutorial <tutorial>`
    
    tutorial.rst
 
-More detailed documentation is also provided for the Recipe Grid language and
-tools:
+Once you've made it through the tutorial, the following reference covers the
+complete set of Recipe Grid tools and language features:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
-   markdown.rst
-   sphinx.rst
+   markdown_reference.rst
    language_reference.rst
+   grammar.rst
    recipe_grid_command.rst
    recipe_grid_site_command.rst
    recipe_grid_lint_command.rst
@@ -75,10 +75,11 @@ TODO
    :maxdepth: 2
    :caption: Contents:
    
-   grammar.rst
    units.rst
    data_model.rst
    compiler.rst
    linting.rst
    rendering.rst
    scaled_value_string.rst
+   sphinx.rst
+   markdown.rst
