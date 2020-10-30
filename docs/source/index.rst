@@ -10,15 +10,16 @@ for describing recipes in a tabular form, as illustrated by the following
 These recipes have several advantages over traditional recipe descriptions:
 
 * Recipes are typically more concise.
-* Quantities and method are shown together so no more cross-reference between
-  the two while cooking.
-* Steps, such as preparing vegetables, are never "hidden" away in an ingredients list 
-* Opportunities to carry out steps in parallel, or not, or in different orders are
-  easy to spot while still exposing a natural suggested order.
+* Ingredients and method are shown together so no need to cross-reference
+  between the two.
+* Parts of the method are never "hidden" in an ingredients list (e.g. '1 onion,
+  finely chopped')
+* Opportunities to reorder steps or do them in parallel (or not!) are easy to
+  spot while still providing a suggested order.
 
 Recipes are described in Markdown files using a convenient to write recipe
 description language. For example, the recipe above was generated from the
-following description:
+following Markdown:
 
 .. code:: md
 
@@ -42,6 +43,7 @@ following description:
             melt(chocolate)
         )
 
+
 Using Recipe Grid
 -----------------
 
@@ -52,8 +54,8 @@ The best place to get started is with :ref:`the Recipe Grid tutorial <tutorial>`
    
    tutorial.rst
 
-Once you've made it through the tutorial, the following reference covers the
-complete set of Recipe Grid tools and language features:
+Once you've made it through the tutorial, the following reference documentation
+covers the remaining details of the recipe grid language and command line tools.
 
 .. toctree::
    :maxdepth: 1
@@ -66,20 +68,62 @@ complete set of Recipe Grid tools and language features:
    recipe_grid_lint_command.rst
 
 
+The :py:mod:`recipe_grid` Python Library
+----------------------------------------
 
-TODO
-----
+Recipe Grid also provides a limited, stable(ish) Python API for parsing and
+rendering recipes.
 
+
+Recipe Compilation
+``````````````````
+
+Recipe Grid provides APIs for compiling recipes embedded in Markdown files
+(using the API in :py:mod:`recipe_grid.markdown`) or directly from recipe
+description language sources (see :py:mod:`recipe_grid.compiler`).
+
+.. toctree::
+   :maxdepth: 1
+   
+   markdown.rst
+   compiler.rst
+
+
+Recipe Data Structure
+`````````````````````
+
+Recipe's are parsed into :py:class:`~recipe_grid.recipe.Recipe` data structures
+which form the Recipe Grid data model. These structures abstractly describe the
+Directed Acyclic Graph (DAG) which defines a recipe.
+
+.. toctree::
+   :maxdepth: 1
+   
+   data_model.rst
+   scaled_value_string.rst
+   units.rst
+   linting.rst
+
+
+Recipe Rendering
+````````````````
+
+The :py:mod:`recipe_grid.renderer` module provides a framework for converting
+recipes into tabular form and then rendering these into a desired output
+format. This may be used to build alternative renderers for recipes.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
    
-   units.rst
-   data_model.rst
-   compiler.rst
-   linting.rst
    rendering.rst
-   scaled_value_string.rst
+
+Sphinx Recipe Grid Extension
+````````````````````````````
+
+Finally, a `Sphinx <https://www.sphinx-doc.org/en/master/>`_ extension is
+provided for embedding recipes within Sphinx documentation.
+
+.. toctree::
+   :maxdepth: 2
+   
    sphinx.rst
-   markdown.rst
