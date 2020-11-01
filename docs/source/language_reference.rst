@@ -52,7 +52,7 @@ useful for ingredients such as seasonings where no specific quantity is given.
 
 Examples:
 
-* ``spam``
+* ``salt``
 * ``2 onions``
 * ``1tsp of chilli powder``
 
@@ -80,16 +80,16 @@ previously defined sub recipe output name.
     ingredient.
 
 When a Quantity or Proportion are not given, the reference is assumed to
-consume the whole of the referenced value. When a Quantity or Proportion are
-given, the reference consumes only the specified amount, leaving the remainder
-to be consumed by other references.
+consume the whole of the referenced sub recipe. When a Quantity or Proportion
+are given, the reference consumes only the specified amount, leaving the
+remainder to be consumed by other references.
 
 .. note::
 
     Unitless Quantities and non-percentage Proportions present a potential
-    ambiguity (e.g. is '1/2 onion' a reference to half an onion (i.e. 1/2 is a
+    ambiguity (e.g. is '1/2 onion' a reference to half an onion (i.e. 1/2 is
     a Quantity) or half of the total quantity of onions (i.e. 1/2 is a
-    proportion)).
+    Proportion)).
 
     The ambiguity is resolved as follows: when a number is immediately followed
     by a preposition (i.e. "of" or "of the") or by an asterisk ("*"), it is
@@ -98,9 +98,10 @@ to be consumed by other references.
 
 References are substituted for the referenced sub recipes (i.e. inlined) when
 the reference is the only reference to that sub recipe, the sub recipe has only
-one output and the whole amount of that sub recipe is consumed. Where a recipe
-definition is divided into several parts in different parts of a document,
-however, substitution is not carried out.
+one output and the whole amount of that sub recipe is consumed.
+
+Inlining is not performed when referencing a sub recipe defined within a
+different block in documents which divide a recipe into multiple blocks.
 
 Examples:
 
@@ -151,8 +152,8 @@ details):
 
     .. rgunitlist::
 
-When a custom unit is used, or to be more explicit, the quantity and unit must
-be surrounded by curly braces.
+When a custom unit is used (or just to be more explicit) the explicit quantity
+syntax may be used where the number and unit are surrounded by curly braces.
 
 .. note::
 
@@ -258,9 +259,10 @@ Statements
     Statement ::= [OutputList ("=" | ":=")] LTRExpression EndOfLine
     OutputList ::= String ("," String)+
 
-A Statement defines a tree within a recipe and this tree may define sub recipe.
+A Statement defines a tree within a recipe which might (or might not) define
+sub recipe.
 
-A sub recipe is defined when an OutputList is given or when the LTRExpression
+A sub recipe is defined if an OutputList is given or when the LTRExpression
 defines a recipe tree containing any number of Steps and a single Ingredient.
 
 When an output list is given, a sub recipe with the named outputs is created.
@@ -344,8 +346,8 @@ UnquotedString
     Example: ``this is a string with 41 characters in it``
 
 SingleQuotedString
-    A string enclosed in single quotes (``'``). May contain single-character backslash
-    escape sequences (e.g. ``\'`` or ``\\n```). SingleQuotedStrings are treated
+    A string enclosed in single quotes (``'``). May contain single-character
+    backslash escape sequences (e.g. ``\'``). SingleQuotedStrings are treated
     as plain strings.
 
     Example: ``'this is a \'SingleQuotedString\''``
@@ -362,7 +364,7 @@ ScaledValueString
     sequences are supported. Unlike all other string types, substrings
     containing Numbers will be scaled along with all Quantities in the recipe.
 
-    Example: ``{pack of 8 hot dog rolls}``
+    Example: ``{divide into 8 burgers}``
 
     In the example above, the number (8) will be scaled with the recipe. For
     example if the recipe is halved, it will be replaced with 4.

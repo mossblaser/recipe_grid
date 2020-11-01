@@ -80,9 +80,9 @@ In the example above, the '4' and '16' in the opening paragraph will be scaled
 with the recipe. For example, when the recipe is scaled to 50%, the paragraph
 would be rewritten to contain '2 delicious burgers' and '8 meat balls'.
 
-Numbers may be integers (e.g. ``123``), decimals integers (e.g. ``1.23``) or
-fractions (e.g. ``4/3`` or ``1 1/3``). Other text within the curly braces will
-remain unchanged.
+Numbers may be integers (e.g. ``123``), decimals (e.g. ``1.23``) or fractions
+(e.g. ``4/3`` or ``1 1/3``). Other text within the curly braces will remain
+unchanged.
 
 To write a literal curly brace, use ``{\{}`` for an opening brace and ``{\}}``
 for a closing brace.

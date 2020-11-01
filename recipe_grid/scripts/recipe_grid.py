@@ -7,6 +7,8 @@ stand-alone HTML page.
 Basic usage
 ===========
 
+.. code:: text
+
     $ recipe-grid RECIPE_SOURCE [OUTPUT_FILENAME]
 
 This will compile the recipe in the indicated markdown file. If no output

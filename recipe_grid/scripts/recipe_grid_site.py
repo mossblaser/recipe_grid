@@ -39,7 +39,7 @@ Recipe Markdown files must start with a H1-level title giving the name of the
 recipe. If this title indicates the number of servings (e.g. 'Tiffin for 2'),
 the website will include scaled versions of this recipe to serve between 1 and
 10 people (by default). If the number of servings is not indicated, the recipe
-will not be scaled and will only appear with quantities left as-is.
+will not be scaled and will appear with quantities left as-is.
 
 .. note::
 
