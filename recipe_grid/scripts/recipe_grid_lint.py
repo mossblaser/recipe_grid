@@ -16,7 +16,7 @@ be checked any further (or indeed processed by other Recipe Grid tools).
 
 In unusual cases, warnings may be produced for recipes which are actually
 correct. If desired, you can suppress warnings of a specific kind using the
-``--ignore`` or `--i`` argument.  Warning types are indicated in square
+``--ignore`` or ``--i`` argument.  Warning types are indicated in square
 brackets in warning messages.  This argument may be used multiple times to
 ignore multiple kinds of warning.
 """

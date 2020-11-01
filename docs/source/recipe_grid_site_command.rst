@@ -1,3 +1,5 @@
+.. _recipe_grid_site_command:
+
 ``recipe-grid-site``: Recipe book static website generator
 ==========================================================
 

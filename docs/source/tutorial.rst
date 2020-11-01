@@ -13,8 +13,8 @@ Recipe description basics
 .. highlight:: md
 
 Recipes are not described directly in tabular form. Instead, these tables are
-generated from a simple textual description of the recipe. These descriptions
-are usually embedded in `Markdown <https://commonmark.org/>`_ documents.
+generated from a simple textual description of the recipe within a `Markdown
+<https://commonmark.org/>`_ document.
 
 The following example shows a simple recipe Markdown file::
 
@@ -28,7 +28,8 @@ The following example shows a simple recipe Markdown file::
             500ml water,
         )
 
-This is compiled into HTML using:
+This is compiled into HTML using the :ref:`recipe-grid <recipe_grid_command>`
+command:
 
 .. code:: bash
 
@@ -56,12 +57,13 @@ is just an ordinary Markdown file which you can structure however you like.
         print("Hello, world!")
         ```
 
-The ``recipe-grid`` command has a few options which allow us to automatically
-rescale the quantities in a recipe. In addition to the ``recipe-grid`` command
-(which compiles a single recipe into a standalone HTML page) a other commands
-are provided to, for example, produce a static 'recipe book' style website from
-a collection of recipes. We'll return to look at these commands and options at
-the end of this tutorial.
+The :ref:`recipe-grid <recipe_grid_command>` command has a few options which
+allow us to automatically rescale the quantities in a recipe. In addition to
+the :ref:`recipe-grid <recipe_grid_command>` command (which compiles a single
+recipe into a standalone HTML page) a other commands are provided to, for
+example, produce a static 'recipe book' style website from a collection of
+recipes. We'll return to look at these commands and options at the end of this
+tutorial.
 
 
 Recipe description syntax
@@ -157,8 +159,8 @@ description. For example:
     )
 
 When referring to an ingredient you only write the ingredient name, e.g. 'mixed
-herbs': the quantity and simple prepositions (e.g.  '1 tsp' and 'of') are
-omitted.
+herbs': the quantity (e.g. '1 tsp') and simple prepositions (e.g.  'of') should
+be omitted.
 
 Additional simple steps, separated by commas, can be defined for ingredients
 listed up-front, for example the onion has two steps listed: 'finely chopped'
@@ -168,8 +170,8 @@ Grid will insert both the ingredient and the steps we defined.
 .. note::
 
     The syntax above relies on Recipe Grid being able to distinguish quantities
-    and units from an ingredient's name. Recipe Grid understands common cooking
-    units (see :ref:`units` for more unformation):
+    and units from an ingredient's name. Recipe Grid knows about the following
+    common cooking units:
     
         .. rgunitlist::
     
@@ -186,7 +188,14 @@ Grid will insert both the ingredient and the steps we defined.
     
     .. code:: text
     
-        2 "KG Spooner Brand Biscuits".
+        2 "KG Spooner Brand Biscuits"
+
+.. note::
+
+    In many of these examples we've included the preposition 'of' in ingredient
+    descriptions purely to make them read better. This is completely optional
+    as far as the recipe description language is concerned: '1 tsp of mixed
+    herbs' and '1 tsp mixed herbs' are equally valid.
 
 
 Sub-recipes
@@ -218,8 +227,8 @@ final recipe.
 Sometimes it is helpful if a sub recipe is named and called out in the final
 recipe; particularly for more complex recipes, or recipes where some parts can
 be prepared in advance. Replacing the ``=`` symbol with ``:=`` in our sub
-recipe definition will cause Recipe Grid to identify the sub recipe in the
-generated table, for example, after modifying the example above we get:
+recipe definition will cause Recipe Grid to highlight and label the sub recipe
+in the generated table, for example, after modifying the example above we get:
 
 .. recipe::
     :start-new-recipe:
@@ -280,13 +289,12 @@ the top before baking.
 
 In this case, Recipe Grid splits the recipe into two tables: one for the tomato
 sauce and one for the remainder of the recipe. In the main part of the recipe
-the references to the earlier sub recipe contain links to the relevant sub
-recipe.
+the references to the tomato sauce contain links to the sub recipe.
 
 References to sub recipes follow a similar form to ingredients: they begin with
-a quantity (e.g. ``1/2`` or ``20g`` or ``remaining``)  followed by an optional
-preposition (e.g. 'of the') and then the name of the sub recipe being
-referenced.
+a quantity (e.g. ``20g``) or proportion (e.g. ``1/2 of the`` or ``50%`` or
+``remaining``)  followed by an optional preposition (e.g. 'of the') and then
+the name of the sub recipe being referenced.
 
 
 Sub recipes with multiple outputs
@@ -345,9 +353,11 @@ Will compile into:
 
 .. image:: /_static/split_recipe_example.png
 
-When recipes are split between indented blocks in this way, references to sub
-recipes in other indented blocks are not shown in place but instead shown as a
-reference.
+.. note::
+
+    You can only reference sub recipes defined earlier in the recipe
+    description, or in an earlier indented block. Forward references are not
+    allowed.
 
 
 Scaling recipes
@@ -417,8 +427,10 @@ And then the same recipe scaled up by a factor of two gives:
         )
     )
 
-The curly bracket syntax can also be used outside of the recipe description
-in the rest of the Markdown document.
+.. tip::
+
+    You can also use the curly bracket syntax in the rest of your Markdown
+    document, not just in indented recipe description blocks.
 
 .. note::
 
@@ -429,8 +441,8 @@ in the rest of the Markdown document.
 Linting
 -------
 
-Recipe Grid provides a linting tool, ``recipe-grid-lint``, which checks for
-common mistakes within recipes.
+Recipe Grid provides a linting tool, :ref:`recipe-grid-lint
+<recipe_grid_lint_command>`, which checks for common mistakes within recipes.
 
 For example, given the following recipe::
 
@@ -447,7 +459,7 @@ For example, given the following recipe::
 The linter will spot that the eggs were never used: in the recipe we mistakenly
 referenced 'egg' and not 'eggs'.
 
-.. code:: bash
+.. code:: text
 
     $ recipe-grid-lint path/to/recipe.md
     /path/to/recipe.md: Warning: Ingredient 'eggs' was defined but never used. [unused_ingredient]
@@ -459,17 +471,17 @@ Generating recipe book static websites
 --------------------------------------
 
 As well as compiling individual recipes into standalone HTML pages, Recipe Grid
-can also compile collections of recipes into a complete static website,
-suitable for use on- or offline.
+can also compile collections of recipes into a complete recipe book website
+using the :ref:`recipe-grid-site <recipe_grid_site_command>` command. The generated
+websites are completely static and may be used both on- and offline.
 
 To generate a recipe website, recipes should be collected together with
 filenames ending in ``.md``. If desired, recipes can be grouped into a
 directories which and displayed as browsable categories in the generated
 website.
 
-A ``index.md`` or ``README.md`` file may optionally be placed alongside the
-recipes whose contents is shown on the homepage or category pages.
-
+A ``README.md`` file may optionally be added to each directory and will be
+shown on the relevant recipe browsing pages.
 
 For example a site might have a directory tree as follows:
 
@@ -484,22 +496,8 @@ For example a site might have a directory tree as follows:
     | + dahl.md
     | + curry.md
 
-In this case the top-level ``README.md`` might look as follows::
-
-    My Recipe Website
-    =================
-
-    Here are some of my favourite recipes!
-
-The ``README.md`` in the ``pasta/`` directory might contain::
-
-    Pasta
-    =====
-
-    Oh I do like pasta dishes! I hope you'll like them too!
-
-A recipe website is then generated using the ``recipe-grid-site`` command as
-follows:
+A recipe website is then generated using the :ref:`recipe-grid-site
+<recipe_grid_site_command>` command as follows:
 
 .. code:: bash
 
