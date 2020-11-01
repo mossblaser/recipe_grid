@@ -452,7 +452,7 @@ class TestRecipePage:
             make_directory(
                 {
                     "recipe.md": "# A recipe for 3",
-                    "subcat/foobar.md": "# A recipe for 3",
+                    "subcat/foobar.baz.md": "# A recipe for 3",
                 }
             )
         )
@@ -461,10 +461,10 @@ class TestRecipePage:
         assert h.unscaled_categories.recipes[0].path == "/serves3/recipe.html"
 
         assert h.scaled_categories[1].subcategories[0].recipes[0].path == (
-            "/serves1/subcat/foobar.html"
+            "/serves1/subcat/foobar.baz.html"
         )
         assert h.unscaled_categories.subcategories[0].recipes[0].path == (
-            "/serves3/subcat/foobar.html"
+            "/serves3/subcat/foobar.baz.html"
         )
 
     def test_parent(self, make_directory: MakeDirectoryFn) -> None:

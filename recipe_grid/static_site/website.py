@@ -647,7 +647,7 @@ class RecipePage(Page):
         return (
             href.parent(self.parent.path)
             + "/"
-            + (self.recipe_source.name.rsplit(".")[0] + ".html")
+            + (self.recipe_source.name.rpartition(".")[0] + ".html")
         )
 
     def children(self) -> Iterator[Page]:
