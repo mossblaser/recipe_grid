@@ -24,3 +24,6 @@ jobs:
     - name: Run test suite
       run: |
         poetry run pytest
+    - name: Run linting checks
+      run: |
+        poetry run pre-commit run -a
