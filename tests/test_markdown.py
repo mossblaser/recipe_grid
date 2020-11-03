@@ -77,7 +77,7 @@ class TestRenderMarkdown:
             ),
             # Escape sequences
             (
-                r"Hello {\{} and {\}}.",
+                r"Hello \{ and \}.",
                 "<p>Hello { and }.</p>\n",
                 "<p>Hello { and }.</p>\n",
             ),

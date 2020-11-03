@@ -84,8 +84,8 @@ Numbers may be integers (e.g. ``123``), decimals (e.g. ``1.23``) or fractions
 (e.g. ``4/3`` or ``1 1/3``). Other text within the curly braces will remain
 unchanged.
 
-To write a literal curly brace, use ``{\{}`` for an opening brace and ``{\}}``
-for a closing brace.
+To write a literal curly brace, use ``\{`` for an opening brace and ``\}`` for
+a closing brace.
 
 
 Titles
