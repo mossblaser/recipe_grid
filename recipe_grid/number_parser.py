@@ -1,4 +1,4 @@
-from typing import Union, cast
+from typing import Union
 
 import re
 
@@ -20,7 +20,7 @@ def number(value: str) -> Union[int, float, Fraction]:
         integer = int(match["integer"]) if match["integer"] is not None else 0
         numerator = int(match["numerator"])
         denominator = int(match["denominator"])
-        return cast(Fraction, integer + Fraction(numerator, denominator))
+        return integer + Fraction(numerator, denominator)
     else:
         try:
             return int(value)
