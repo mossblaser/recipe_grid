@@ -1,0 +1,553 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recipe_grid.recipe: Recipe Data Model &#8212; Recipe Grid 2.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="recipe_grid.scaled_value_string: Scaled Value Strings" href="scaled_value_string.html" />
+    <link rel="prev" title="recipe_grid.compiler: Recipe description language compiler" href="compiler.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scaled_value_string.html" title="recipe_grid.scaled_value_string: Scaled Value Strings"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="compiler.html" title="recipe_grid.compiler: Recipe description language compiler"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.recipe</span></code>: Recipe Data Model</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-recipe_grid.recipe">
+<span id="recipe-grid-recipe-recipe-data-model"></span><span id="data-model"></span><h1><a class="reference internal" href="#module-recipe_grid.recipe" title="recipe_grid.recipe"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.recipe</span></code></a>: Recipe Data Model<a class="headerlink" href="#module-recipe_grid.recipe" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#module-recipe_grid.recipe" title="recipe_grid.recipe"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.recipe</span></code></a> module defines the Directed Acyclic Graph
+(DAG) data structure used to describe recipes.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Recipes are defined as a series of trees, principally consisting of
+<a class="reference internal" href="#recipe_grid.recipe.Ingredient" title="recipe_grid.recipe.Ingredient"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ingredient</span></code></a> nodes and <a class="reference internal" href="#recipe_grid.recipe.Step" title="recipe_grid.recipe.Step"><code class="xref py py-class docutils literal notranslate"><span class="pre">Step</span></code></a> nodes.</p>
+<p>An <a class="reference internal" href="#recipe_grid.recipe.Ingredient" title="recipe_grid.recipe.Ingredient"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ingredient</span></code></a> node contains a name and an optional quantity.</p>
+<p>A <a class="reference internal" href="#recipe_grid.recipe.Step" title="recipe_grid.recipe.Step"><code class="xref py py-class docutils literal notranslate"><span class="pre">Step</span></code></a> node contains a description of the step and a series of
+input nodes (children).</p>
+<p>A simple recipe might only consist of a single tree of <a class="reference internal" href="#recipe_grid.recipe.Ingredient" title="recipe_grid.recipe.Ingredient"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ingredient</span></code></a>
+and <a class="reference internal" href="#recipe_grid.recipe.Step" title="recipe_grid.recipe.Step"><code class="xref py py-class docutils literal notranslate"><span class="pre">Step</span></code></a> nodes. For example, here’s how a simple pasta meal might
+be represented.</p>
+digraph foo {
+
+   subgraph {
+       node [shape=ellipse]
+
+       onion [label=&lt;Onion&lt;br/&gt;(Ingredient)&gt;]
+       tomatoes [label=&lt;Chopped Tomatoes&lt;br/&gt;(Ingredient)&gt;]
+       pasta [label=&lt;Pasta&lt;br/&gt;(Ingredient)&gt;]
+   }
+
+   subgraph {
+       node [shape=rectangle]
+
+       chop [label=&lt;Chop&lt;br/&gt;(Step)&gt;]
+       fry [label=&lt;Fry&lt;br/&gt;(Step)&gt;]
+       boildown [label=&lt;Boil down&lt;br/&gt;(Step)&gt;]
+       boil [label=&lt;Boil&lt;br/&gt;(Step)&gt;]
+       mix [label=&lt;Mix&lt;br/&gt;(Step)&gt;]
+   }
+
+   chop -&gt; onion;
+
+   fry -&gt; chop;
+
+   boildown -&gt; fry;
+   boildown -&gt; tomatoes;
+
+   boil -&gt; pasta;
+
+   mix -&gt; boildown;
+   mix -&gt; boil;
+}<p>Sometimes a sub tree within a recipe might be identified as its own sub recipe
+and given an emphasising border and title in the rendered recipe table.  For
+example, in the recipe above we might make the pasta sauce a sub recipe. To
+represent this, a <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a> node type is used which always has exactly one
+child and one or more named outputs. In this example, there is only one output
+(‘Pasta sauce’).  We’ll return to the case with multiple named outputs later.</p>
+digraph foo {
+
+   subgraph {
+       node [shape=ellipse]
+
+       onion [label=&lt;Onion&lt;br/&gt;(Ingredient)&gt;]
+       tomatoes [label=&lt;Chopped Tomatoes&lt;br/&gt;(Ingredient)&gt;]
+       pasta [label=&lt;Pasta&lt;br/&gt;(Ingredient)&gt;]
+   }
+
+   subgraph {
+       node [shape=rectangle]
+
+       chop [label=&lt;Chop&lt;br/&gt;(Step)&gt;]
+       fry [label=&lt;Fry&lt;br/&gt;(Step)&gt;]
+       boildown [label=&lt;Boil down&lt;br/&gt;(Step)&gt;]
+       boil [label=&lt;Boil&lt;br/&gt;(Step)&gt;]
+       mix [label=&lt;Mix&lt;br/&gt;(Step)&gt;]
+   }
+
+   subgraph {
+       node [shape=Mrecord]
+
+       sauce [label=&quot;{&lt;fs&gt;Pasta sauce|&lt;fo&gt;(SubRecipe)}&quot;]
+   }
+
+   chop -&gt; onion;
+
+   fry -&gt; chop;
+
+   boildown -&gt; fry;
+   boildown -&gt; tomatoes;
+
+   sauce:fo -&gt; boildown;
+
+   boil -&gt; pasta;
+
+   mix -&gt; sauce:fs:n;
+   mix -&gt; boil;
+}<p>In other cases, an ingredient or whole sub recipe may be split into parts and
+used separately. In this case, a <a class="reference internal" href="#recipe_grid.recipe.Reference" title="recipe_grid.recipe.Reference"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reference</span></code></a> node may be used to
+refer to a <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a> which must be the root of a previous tree in the
+recipe. For example, in the recipe below, a Sub Recipe for grated cheese is
+referenced in two places, with 75% being mixed into the main recipe and 25%
+being used to top it:</p>
+digraph foo {
+
+   subgraph {
+       node [shape=ellipse]
+
+       cheese [label=&lt;Cheese&lt;br/&gt;(Ingredient)&gt;]
+       white_sauce [label=&lt;White sauce&lt;br/&gt;(Ingredient)&gt;]
+       pasta [label=&lt;Pasta&lt;br/&gt;(Ingredient)&gt;]
+   }
+
+   subgraph {
+       node [shape=rectangle]
+
+       grate [label=&lt;Grate&lt;br/&gt;(Step)&gt;]
+       mix [label=&lt;Mix&lt;br/&gt;(Step)&gt;]
+       top [label=&lt;Top&lt;br/&gt;(Step)&gt;]
+   }
+
+   subgraph {
+       node [shape=diamond]
+
+       refm [label=&lt;75%&lt;br/&gt;(Reference)&gt;]
+       reft [label=&lt;25%&lt;br/&gt;(Reference)&gt;]
+   }
+
+   subgraph {
+       node [shape=Mrecord]
+
+       grated_cheese [label=&quot;{&lt;fc&gt;Grated cheese|&lt;fo&gt;(SubRecipe)}&quot;]
+   }
+
+   grate -&gt; cheese;
+   grated_cheese:fo -&gt; grate;
+
+   mix -&gt; refm;
+   mix -&gt; white_sauce;
+   mix -&gt; pasta;
+
+   top -&gt; mix;
+   top -&gt; reft;
+
+   subgraph {
+         edge [constraint=false,style=dashed];
+
+         refm:sw -&gt; grated_cheese:fc:n
+         reft:sw -&gt; grated_cheese:fc:n
+   }
+}<p>A final case is where a <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a> has more than one output. This might occur
+when, for example, when vegetables are boiled and both the vegetables and the
+water are reserved and used in a later step. Each output may then be referenced
+separately by <a class="reference internal" href="#recipe_grid.recipe.Reference" title="recipe_grid.recipe.Reference"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reference</span></code></a> nodes. <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a> nodes with more than
+one output must be the root of a recipe tree.</p>
+digraph foo {
+   subgraph {
+       node [shape=ellipse]
+
+       vegetables [label=&lt;Vegetables&lt;br/&gt;(Ingredient)&gt;]
+       gravy_granules [label=&lt;Gravy granules&lt;br/&gt;(Ingredient)&gt;]
+   }
+
+   subgraph {
+       node [shape=rectangle]
+
+       boil [label=&lt;Boil, reserving water&lt;br/&gt;(Step)&gt;]
+       make [label=&lt;Make gravy&lt;br/&gt;(Step)&gt;]
+       pour [label=&lt;Pour over&lt;br/&gt;(Step)&gt;]
+   }
+
+   subgraph {
+       node [shape=diamond]
+
+       refv [label=&lt;(Reference)&gt;]
+       refw [label=&lt;(Reference)&gt;]
+   }
+
+   subgraph {
+       node [shape=Mrecord]
+
+       boiled_veg [label=&quot;{{&lt;fv&gt;Boiled Vegetables|&lt;fw&gt;Water}|&lt;fo&gt;(SubRecipe)}&quot;]
+   }
+
+   boil -&gt; vegetables;
+   boiled_veg -&gt; boil;
+
+   make -&gt; gravy_granules;
+   make -&gt; refw;
+
+   pour -&gt; make;
+   pour -&gt; refv;
+
+   subgraph {
+       edge [constraint=false,style=dashed];
+
+       refv:sw -&gt; boiled_veg:fv:n
+       refw:sw -&gt; boiled_veg:fw:n
+   }
+}</div>
+<div class="section" id="data-structures">
+<h2>Data structures<a class="headerlink" href="#data-structures" title="Permalink to this headline">¶</a></h2>
+<p>A Recipe is defined at its root by a <a class="reference internal" href="#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code></a> instance. In a simple
+document there will be a single <a class="reference internal" href="#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code></a> instance which contains the
+entire DAG for that recipe. For more complex documents where the recipe is
+presented in several sections, each section of the recipe will be represented
+by its own <a class="reference internal" href="#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code></a> with back-references to prior <a class="reference internal" href="#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code></a>s in <a class="reference internal" href="#recipe_grid.recipe.Recipe.follows" title="recipe_grid.recipe.Recipe.follows"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Recipe.follows</span></code></a>.</p>
+<dl class="py class">
+<dt id="recipe_grid.recipe.Recipe">
+<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.recipe.</code><code class="sig-name descname">Recipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">recipe_trees</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span><a class="reference internal" href="#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode">recipe_grid.recipe.RecipeTreeNode</a><span class="p">, </span><span class="p">…</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">follows</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference internal" href="#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe">Recipe</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.recipe.Recipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>A recipe, defined in terms of a series of recipe trees. Later trees may
+reference the outputs of earlier trees resulting in a Directed Acyclic
+Graph (DAG) structure describing a recipe.</p>
+<dl class="py attribute">
+<dt id="recipe_grid.recipe.Recipe.recipe_trees">
+<code class="sig-name descname">recipe_trees</code><em class="property">: Tuple<span class="p">[</span><a class="reference internal" href="#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode">recipe_grid.recipe.RecipeTreeNode</a><span class="p">, </span><span class="p">…</span><span class="p">]</span></em><a class="headerlink" href="#recipe_grid.recipe.Recipe.recipe_trees" title="Permalink to this definition">¶</a></dt>
+<dd><p>The recipe tree roots for this <a class="reference internal" href="#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="recipe_grid.recipe.Recipe.follows">
+<code class="sig-name descname">follows</code><em class="property">: Optional<span class="p">[</span><a class="reference internal" href="#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe">recipe_grid.recipe.Recipe</a><span class="p">]</span></em><em class="property"> = None</em><a class="headerlink" href="#recipe_grid.recipe.Recipe.follows" title="Permalink to this definition">¶</a></dt>
+<dd><p>If this recipe contains <a class="reference internal" href="#recipe_grid.recipe.Reference" title="recipe_grid.recipe.Reference"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reference</span></code></a>s to <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a>s in another <a class="reference internal" href="#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code></a>, this parameter should be set accordingly.
+(References are looked for recursively.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="recipe_grid.recipe.Recipe.scale">
+<code class="sig-name descname">scale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">factor</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.9)">fractions.Fraction</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe">recipe_grid.recipe.Recipe</a><a class="headerlink" href="#recipe_grid.recipe.Recipe.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of this recipe with all scalable values and quantities
+scaled by the given factor.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="dag-structure">
+<h3>DAG Structure<a class="headerlink" href="#dag-structure" title="Permalink to this headline">¶</a></h3>
+<p>Recipe trees are in turn defined using subclasses of
+<a class="reference internal" href="#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecipeTreeNode</span></code></a>:</p>
+<dl class="py class">
+<dt id="recipe_grid.recipe.RecipeTreeNode">
+<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.recipe.</code><code class="sig-name descname">RecipeTreeNode</code><a class="headerlink" href="#recipe_grid.recipe.RecipeTreeNode" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="recipe_grid.recipe.RecipeTreeNode.iter_children">
+<code class="sig-name descname">iter_children</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Iterable<span class="p">[</span><a class="reference internal" href="#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode">recipe_grid.recipe.RecipeTreeNode</a><span class="p">]</span><a class="headerlink" href="#recipe_grid.recipe.RecipeTreeNode.iter_children" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over the children of this node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="recipe_grid.recipe.RecipeTreeNode.substitute">
+<code class="sig-name descname">substitute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">old</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode">recipe_grid.recipe.RecipeTreeNode</a></span></em>, <em class="sig-param"><span class="n">new</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode">recipe_grid.recipe.RecipeTreeNode</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode">recipe_grid.recipe.RecipeTreeNode</a><a class="headerlink" href="#recipe_grid.recipe.RecipeTreeNode.substitute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of this recipe tree with the node <code class="docutils literal notranslate"><span class="pre">old</span></code> replaced with
+<code class="docutils literal notranslate"><span class="pre">new</span></code>. (The old tree will remain intact).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="recipe_grid.recipe.Ingredient">
+<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.recipe.</code><code class="sig-name descname">Ingredient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">description</span><span class="p">:</span> <span class="n"><a class="reference internal" href="scaled_value_string.html#recipe_grid.scaled_value_string.ScaledValueString" title="recipe_grid.scaled_value_string.ScaledValueString">recipe_grid.scaled_value_string.ScaledValueString</a></span></em>, <em class="sig-param"><span class="n">quantity</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference internal" href="#recipe_grid.recipe.Quantity" title="recipe_grid.recipe.Quantity">recipe_grid.recipe.Quantity</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.recipe.Ingredient" title="Permalink to this definition">¶</a></dt>
+<dd><p>A leaf node in a tree describing an ingredient to be used.</p>
+<dl class="py attribute">
+<dt id="recipe_grid.recipe.Ingredient.description">
+<code class="sig-name descname">description</code><em class="property">: <a class="reference internal" href="scaled_value_string.html#recipe_grid.scaled_value_string.ScaledValueString" title="recipe_grid.scaled_value_string.ScaledValueString">recipe_grid.scaled_value_string.ScaledValueString</a></em><a class="headerlink" href="#recipe_grid.recipe.Ingredient.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>A description of the ingredient.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="recipe_grid.recipe.Ingredient.quantity">
+<code class="sig-name descname">quantity</code><em class="property">: Optional<span class="p">[</span><a class="reference internal" href="#recipe_grid.recipe.Quantity" title="recipe_grid.recipe.Quantity">recipe_grid.recipe.Quantity</a><span class="p">]</span></em><em class="property"> = None</em><a class="headerlink" href="#recipe_grid.recipe.Ingredient.quantity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The quantity of the ingredient, of specified. If None, the ingredient is
+quantity-less.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="recipe_grid.recipe.Step">
+<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.recipe.</code><code class="sig-name descname">Step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">description</span><span class="p">:</span> <span class="n"><a class="reference internal" href="scaled_value_string.html#recipe_grid.scaled_value_string.ScaledValueString" title="recipe_grid.scaled_value_string.ScaledValueString">recipe_grid.scaled_value_string.ScaledValueString</a></span></em>, <em class="sig-param"><span class="n">inputs</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span><a class="reference internal" href="#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode">recipe_grid.recipe.RecipeTreeNode</a><span class="p">, </span><span class="p">…</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.recipe.Step" title="Permalink to this definition">¶</a></dt>
+<dd><p>A node in a tree where the node represents a step in a recipe (e.g. ‘mix’)
+and the children represent the inputs to that step.  Children may be other
+<a class="reference internal" href="#recipe_grid.recipe.Step" title="recipe_grid.recipe.Step"><code class="xref py py-class docutils literal notranslate"><span class="pre">Step</span></code></a> instances, <a class="reference internal" href="#recipe_grid.recipe.Ingredient" title="recipe_grid.recipe.Ingredient"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ingredient</span></code></a> instances or
+<a class="reference internal" href="#recipe_grid.recipe.Reference" title="recipe_grid.recipe.Reference"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reference</span></code></a> instances referring to outputs of other
+<a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a>s.</p>
+<dl class="py attribute">
+<dt id="recipe_grid.recipe.Step.description">
+<code class="sig-name descname">description</code><em class="property">: <a class="reference internal" href="scaled_value_string.html#recipe_grid.scaled_value_string.ScaledValueString" title="recipe_grid.scaled_value_string.ScaledValueString">recipe_grid.scaled_value_string.ScaledValueString</a></em><a class="headerlink" href="#recipe_grid.recipe.Step.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>A description of the step to be carried out.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="recipe_grid.recipe.Step.inputs">
+<code class="sig-name descname">inputs</code><em class="property">: Tuple<span class="p">[</span><a class="reference internal" href="#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode">recipe_grid.recipe.RecipeTreeNode</a><span class="p">, </span><span class="p">…</span><span class="p">]</span></em><a class="headerlink" href="#recipe_grid.recipe.Step.inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The inputs to (i.e. children) of this step.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="recipe_grid.recipe.SubRecipe">
+<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.recipe.</code><code class="sig-name descname">SubRecipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sub_tree</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode">recipe_grid.recipe.RecipeTreeNode</a></span></em>, <em class="sig-param"><span class="n">output_names</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span><a class="reference internal" href="scaled_value_string.html#recipe_grid.scaled_value_string.ScaledValueString" title="recipe_grid.scaled_value_string.ScaledValueString">recipe_grid.scaled_value_string.ScaledValueString</a><span class="p">, </span><span class="p">…</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">show_output_names</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.recipe.SubRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>A sub recipe is a node representing a logical division in a recipe with
+some semantic significance.  For example, a pie recipe may divide the
+recipe into two sub recipes: one for the filling and another for the
+pastry.</p>
+<dl class="py attribute">
+<dt id="recipe_grid.recipe.SubRecipe.sub_tree">
+<code class="sig-name descname">sub_tree</code><em class="property">: <a class="reference internal" href="#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode">recipe_grid.recipe.RecipeTreeNode</a></em><a class="headerlink" href="#recipe_grid.recipe.SubRecipe.sub_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>The steps describing this sub-recipe.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="recipe_grid.recipe.SubRecipe.output_names">
+<code class="sig-name descname">output_names</code><em class="property">: Tuple<span class="p">[</span><a class="reference internal" href="scaled_value_string.html#recipe_grid.scaled_value_string.ScaledValueString" title="recipe_grid.scaled_value_string.ScaledValueString">recipe_grid.scaled_value_string.ScaledValueString</a><span class="p">, </span><span class="p">…</span><span class="p">]</span></em><a class="headerlink" href="#recipe_grid.recipe.SubRecipe.output_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>One or more names given to the outputs of this sub recipe.</p>
+<p>In the simple case there will be exactly one named output. In our pie
+recipe example, the sub recipe for the filling might have a single output
+named “Filling” and the pastry sub recipe might have one named “Pastry”.</p>
+<p>For sub recipes which produce multiple outputs, names for these must be
+enumerated. For example, a sub recipe describing boiling some vegetables
+where both the vegetables and water will be used, two output names (e.g.
+“Boiled Vegetables” and “Vegetable Water” might be given).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sub recipes with a single output name may appear anywhere within a
+recipe tree. Where a SubRecipe is not at the root of a recipe it will
+typically be rendered inline but inset and labelled with the output
+name.</p>
+<p>Sub recipes with more than one named output may only be used as the
+root of a recipe tree.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="recipe_grid.recipe.SubRecipe.show_output_names">
+<code class="sig-name descname">show_output_names</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></em><em class="property"> = True</em><a class="headerlink" href="#recipe_grid.recipe.SubRecipe.show_output_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies whether the output name(s) for this subrecipe should be rendered.
+For example when a sub-recipe consists of a single ingredient (e.g. ‘300g
+spam’) with a single output (e.g. ‘spam’), adding extra labelling would
+just be a distraction and so this setting should be False.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="recipe_grid.recipe.Reference">
+<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.recipe.</code><code class="sig-name descname">Reference</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sub_recipe</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe">recipe_grid.recipe.SubRecipe</a></span></em>, <em class="sig-param"><span class="n">output_index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">amount</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference internal" href="#recipe_grid.recipe.Quantity" title="recipe_grid.recipe.Quantity">recipe_grid.recipe.Quantity</a><span class="p">, </span><a class="reference internal" href="#recipe_grid.recipe.Proportion" title="recipe_grid.recipe.Proportion">recipe_grid.recipe.Proportion</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Proportion(value=1.0, percentage=False, remainder_wording=None, preposition='')</span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.recipe.Reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>A reference to a named output of a <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a>.</p>
+<dl class="py attribute">
+<dt id="recipe_grid.recipe.Reference.output_index">
+<code class="sig-name descname">output_index</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></em><em class="property"> = 0</em><a class="headerlink" href="#recipe_grid.recipe.Reference.output_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a> and output index being referenced. Only sub
+recipes which form the root of a recipe tree may be referenced.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="recipe_grid.recipe.Reference.amount">
+<code class="sig-name descname">amount</code><em class="property">: Union<span class="p">[</span><a class="reference internal" href="#recipe_grid.recipe.Quantity" title="recipe_grid.recipe.Quantity">recipe_grid.recipe.Quantity</a><span class="p">, </span><a class="reference internal" href="#recipe_grid.recipe.Proportion" title="recipe_grid.recipe.Proportion">recipe_grid.recipe.Proportion</a><span class="p">]</span></em><em class="property"> = Proportion(value=1.0, percentage=False, remainder_wording=None, preposition='')</em><a class="headerlink" href="#recipe_grid.recipe.Reference.amount" title="Permalink to this definition">¶</a></dt>
+<dd><p>The amount of the referenced output to use. Default: all of it.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="quantities-and-proportions">
+<h3>Quantities and Proportions<a class="headerlink" href="#quantities-and-proportions" title="Permalink to this headline">¶</a></h3>
+<p>Absolute quantities (for ingredients and references) and relative proportions
+(for references only) are defined as follows:</p>
+<dl class="py class">
+<dt id="recipe_grid.recipe.Quantity">
+<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.recipe.</code><code class="sig-name descname">Quantity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.9)">fractions.Fraction</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">unit</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">value_unit_spacing</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">preposition</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.recipe.Quantity" title="Permalink to this definition">¶</a></dt>
+<dd><p>An absolute quantity.</p>
+<p>Suggested rendering:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="o">.</span><span class="n">value</span>
+<span class="o">+</span> <span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">value_unit_spacing</span> <span class="o">+</span> <span class="n">q</span><span class="o">.</span><span class="n">unit</span> <span class="k">if</span> <span class="n">q</span><span class="o">.</span><span class="n">unit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="o">+</span> <span class="n">q</span><span class="o">.</span><span class="n">preposition</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt id="recipe_grid.recipe.Proportion">
+<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.recipe.</code><code class="sig-name descname">Proportion</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.9)">fractions.Fraction</a><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">percentage</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">remainder_wording</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">preposition</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.recipe.Proportion" title="Permalink to this definition">¶</a></dt>
+<dd><p>A relative proportion.</p>
+<p>Suggested rendering:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span>
+    <span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">if</span> <span class="n">q</span><span class="o">.</span><span class="n">percentage</span> <span class="k">else</span> <span class="n">q</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">q</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span>
+    <span class="n">q</span><span class="o">.</span><span class="n">remainder_wording</span>
+<span class="p">)</span>
+<span class="o">+</span> <span class="n">q</span><span class="o">.</span><span class="n">preposition</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="exceptions">
+<h3>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h3>
+<p>The DAG structure invariants are enforced by checks in their constructors and
+any non-conforming input will produce a <a class="reference internal" href="#recipe_grid.recipe.RecipeInvariantError" title="recipe_grid.recipe.RecipeInvariantError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">RecipeInvariantError</span></code></a>
+subclass.</p>
+<dl class="py exception">
+<dt id="recipe_grid.recipe.RecipeInvariantError">
+<em class="property">exception </em><code class="sig-prename descclassname">recipe_grid.recipe.</code><code class="sig-name descname">RecipeInvariantError</code><a class="headerlink" href="#recipe_grid.recipe.RecipeInvariantError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for exceptions thrown when an invariant of the
+<a class="reference internal" href="#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code></a> data structure is violated.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="recipe_grid.recipe.MultiOutputSubRecipeUsedAsNonRootNodeError">
+<em class="property">exception </em><code class="sig-prename descclassname">recipe_grid.recipe.</code><code class="sig-name descname">MultiOutputSubRecipeUsedAsNonRootNodeError</code><a class="headerlink" href="#recipe_grid.recipe.MultiOutputSubRecipeUsedAsNonRootNodeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thrown when a <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a> with more than one named output is
+added as non-root node in a recipe tree.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="recipe_grid.recipe.OutputIndexError">
+<em class="property">exception </em><code class="sig-prename descclassname">recipe_grid.recipe.</code><code class="sig-name descname">OutputIndexError</code><a class="headerlink" href="#recipe_grid.recipe.OutputIndexError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thrown when a <a class="reference internal" href="#recipe_grid.recipe.Reference" title="recipe_grid.recipe.Reference"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reference</span></code></a> refers to output which does not exist
+in the referenced <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="recipe_grid.recipe.ZeroOutputSubRecipeError">
+<em class="property">exception </em><code class="sig-prename descclassname">recipe_grid.recipe.</code><code class="sig-name descname">ZeroOutputSubRecipeError</code><a class="headerlink" href="#recipe_grid.recipe.ZeroOutputSubRecipeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thrown if a <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a> is defined with no named outputs.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="recipe_grid.recipe.ReferenceToInvalidSubRecipeError">
+<em class="property">exception </em><code class="sig-prename descclassname">recipe_grid.recipe.</code><code class="sig-name descname">ReferenceToInvalidSubRecipeError</code><a class="headerlink" href="#recipe_grid.recipe.ReferenceToInvalidSubRecipeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thrown if a <a class="reference internal" href="#recipe_grid.recipe.Reference" title="recipe_grid.recipe.Reference"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reference</span></code></a> refers to a <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a> node
+which is not a root node of a proceeding recipe tree in the same
+<a class="reference internal" href="#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code></a>.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.recipe</span></code>: Recipe Data Model</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#data-structures">Data structures</a><ul>
+<li><a class="reference internal" href="#dag-structure">DAG Structure</a></li>
+<li><a class="reference internal" href="#quantities-and-proportions">Quantities and Proportions</a></li>
+<li><a class="reference internal" href="#exceptions">Exceptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="compiler.html"
+                        title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.compiler</span></code>: Recipe description language compiler</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="scaled_value_string.html"
+                        title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.scaled_value_string</span></code>: Scaled Value Strings</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/data_model.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scaled_value_string.html" title="recipe_grid.scaled_value_string: Scaled Value Strings"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="compiler.html" title="recipe_grid.compiler: Recipe description language compiler"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.recipe</span></code>: Recipe Data Model</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.0.
+    </div>
+  </body>
+</html>

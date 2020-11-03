@@ -1,0 +1,233 @@
+/**
+ * CSS For styling recipe grid tables, and nothing else.
+ */
+
+
+/**
+ * Colour definitions.
+ *
+ * Warning: There are a couple of SVGs in data URLs below which unfortunately
+ * have these colours hard-coded and so need to be changed. Search for
+ * 'data:image/svg+xml;utf8' in your editor...
+ */
+:root {
+    --rg-table-normal-colour: var(--normal-colour, #000000);
+    --rg-table-accent-colour: var(--accent-colour, #FE5E41);
+    --rg-table-inverted-fg-colour: var(--inverted-fg-colour,#FFFFFF);
+}
+
+/**
+ * General table layout
+ */
+table.rg-table {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    
+    border-spacing : 0;
+    border-collapse : collapse;
+}
+
+table.rg-table tr td {
+    text-align : left;
+    vertical-align: middle;
+    
+    margin : 0;
+    padding : 0;
+    
+    padding-left  : 10px;
+    padding-right : 10px;
+    padding-top   : 3px;
+    padding-bottom: 3px;
+    
+    border-style : solid;
+    border-width : 1px;
+    border-color : var(--rg-table-normal-colour);
+}
+
+/**
+ * Border specifying classes.
+ */
+
+table.rg-table tr td.rg-border-right-none { border-right-style: none; }
+table.rg-table tr td.rg-border-left-none { border-left-style: none; }
+table.rg-table tr td.rg-border-top-none { border-top-style: none; }
+table.rg-table tr td.rg-border-bottom-none { border-bottom-style: none; }
+
+table.rg-table tr td.rg-border-right-sub-recipe { border-right-width: 3px; }
+table.rg-table tr td.rg-border-left-sub-recipe { border-left-width: 3px; }
+table.rg-table tr td.rg-border-top-sub-recipe { border-top-width: 3px; }
+table.rg-table tr td.rg-border-bottom-sub-recipe { border-bottom-width: 3px; }
+
+
+/**
+ * Specialisations for cell types (e.g. ingredient or sub recipe header)
+ */
+
+table.rg-table tr td.rg-ingredient {
+    font-weight: 600;
+}
+
+table.rg-table tr td.rg-reference {
+    font-style: italic;
+}
+
+table.rg-table tr td.rg-reference a:before {
+    content: "\2196";
+}
+
+table.rg-table tr td.rg-sub-recipe-header {
+    background-color: var(--rg-table-normal-colour);
+    color: var(--rg-table-inverted-fg-colour);
+    border-color: var(--rg-table-normal-colour);
+    
+    border-top: none;
+}
+
+table.rg-table tr td.rg-sub-recipe-outputs {
+    padding: 0;
+}
+
+table.rg-table tr td.rg-sub-recipe-outputs ul {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    
+    padding: 0;
+    margin: 0;
+}
+
+table.rg-table tr td.rg-sub-recipe-outputs ul li {
+    display: block;
+    font-weight: bold;
+    
+    margin: 0;
+    padding-left  : 32px;
+    padding-right : 8px;
+    padding-top   : 3px;
+    padding-bottom: 3px;
+    
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    
+    background-repeat: no-repeat;
+    background-position-x: left;
+    background-position-y: center;
+    /* NB: The fill colour in this image should be modified to be 
+     * the same as --rg-table-normal-colour */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 6.35 3.175"><path d="M4.058 0v1.191H0v.794h4.058v1.19L6.35 1.588 4.058 0z" fill="%23000000"/></svg>');
+}
+
+
+/**
+ * Unit conversion popups
+ */
+.rg-quantity-with-conversions ul.rg-quantity-conversions {
+    position: absolute;
+    z-index: 999;
+    
+    margin: -8px;
+    margin-top: 4px;
+    padding: 8px;
+    
+    background-color: white;
+    
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+    
+    border-radius: 4px;
+    
+    filter: drop-shadow(4px 4px 8px #00000033);
+    
+    list-style: none;
+    text-align: left;
+}
+
+/* Draw an arrow pointing up at the value. */
+.rg-quantity-with-conversions ul.rg-quantity-conversions:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -16px;
+    
+    box-sizing: content-box;
+    width: 0;
+    height: 0;
+    
+    border-style: solid;
+    border-color: black;
+    border-width: 8px;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    
+}
+
+.rg-quantity-with-conversions ul.rg-quantity-conversions li {
+    padding-bottom: 8px;
+}
+.rg-quantity-with-conversions ul.rg-quantity-conversions li:last-child {
+    padding-bottom: 0;
+}
+
+/* Show on unit conversions on mouseover/focus */
+.rg-quantity-with-conversions:focus {
+    outline: none;
+}
+.rg-quantity-with-conversions .rg-quantity-conversions {
+    visibility: hidden;
+}
+.rg-quantity-with-conversions:hover .rg-quantity-conversions,
+.rg-quantity-with-conversions:focus-within .rg-quantity-conversions {
+    visibility: visible;
+    pointer-events: auto;
+}
+.rg-quantity-with-conversions:hover .rg-quantity-conversions {
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* Hide conversions in print */
+@media print {
+    .rg-quantity-with-conversions .rg-quantity-conversions {
+        display: none;
+    }
+}
+
+
+/**
+ * Apply accent colouring when a table cell is targeted.
+ */
+
+table.rg-table:target {
+    border-color : var(--rg-table-accent-colour);
+}
+table.rg-table:target tr td.rg-border-right-sub-recipe {
+    border-right-color: var(--rg-table-accent-colour);
+}
+table.rg-table:target tr td.rg-border-left-sub-recipe {
+    border-left-color: var(--rg-table-accent-colour);
+}
+table.rg-table:target tr td.rg-border-top-sub-recipe {
+    border-top-color: var(--rg-table-accent-colour);
+}
+table.rg-table:target tr td.rg-border-bottom-sub-recipe {
+    border-bottom-color: var(--rg-table-accent-colour);
+}
+
+
+table.rg-table:target tr td.rg-sub-recipe-header {
+    background-color: var(--rg-table-accent-colour);
+    color: var(--rg-table-inverted-fg-colour);
+    border-color: var(--rg-table-accent-colour);
+}
+
+table.rg-table tr td.rg-sub-recipe-outputs ul li:target {
+    color: var(--rg-table-inverted-fg-colour);
+    background-color: var(--rg-table-accent-colour);
+    
+    /* NB: The fill colour in this image should be modified to be 
+     * the same as --rg-table-inverted-fg-colour */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 6.35 3.175"><path d="M4.058 0v1.191H0v.794h4.058v1.19L6.35 1.588 4.058 0z" fill="%23FFFFFF"/></svg>');
+}

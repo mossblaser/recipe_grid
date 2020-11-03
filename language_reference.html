@@ -1,0 +1,446 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Description Language Reference &#8212; Recipe Grid 2.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Formal Recipe Description Language Grammar" href="grammar.html" />
+    <link rel="prev" title="Markdown Recipe Syntax Reference" href="markdown_reference.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="grammar.html" title="Formal Recipe Description Language Grammar"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="markdown_reference.html" title="Markdown Recipe Syntax Reference"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Recipe Description Language Reference</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="recipe-description-language-reference">
+<span id="language-reference"></span><h1>Recipe Description Language Reference<a class="headerlink" href="#recipe-description-language-reference" title="Permalink to this headline">¶</a></h1>
+<p>This page provides a detailed and relatively low-level description of the
+recipe description language accepted by Recipe Grid.</p>
+<p>Unlike the formal definition of the recipe description language
+(<a class="reference internal" href="grammar.html#grammar"><span class="std std-ref">Formal Recipe Description Language Grammar</span></a>), this description is intended for human consumption and so its
+description differs slightly in structure and rigour in the name of easier
+understanding.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For a high-level, tutorial introduction to the recipe description language,
+you may prefer <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">the tutorial</span></a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It may be helpful to be aware of <a class="reference internal" href="data_model.html#data-model"><span class="std std-ref">the Recipe Grid data model</span></a> to understand certain details below.</p>
+</div>
+<div class="section" id="recipe-building-blocks">
+<h2>Recipe Building Blocks<a class="headerlink" href="#recipe-building-blocks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ingredients">
+<h3>Ingredients<a class="headerlink" href="#ingredients" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Ingredient <span class="o">::=</span> [Quantity [&quot;of&quot; | &quot;of the&quot;]] String
+</pre></div>
+</div>
+<p>An ingredient is defined by an optional quantity and proposition, followed by a
+name.</p>
+<p>Aside from display purposes, an ingredient’s name may be used to infer the name
+for a sub recipe involving only this ingredient but otherwise has no special
+meaning.</p>
+<p>The optional preposition (‘of’ or ‘of the’) is allowed for readability and does
+not form part of the ingredient name.</p>
+<p>When no quantity is given, the ingredient is treated as unscaled. This is
+useful for ingredients such as seasonings where no specific quantity is given.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">salt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">onions</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1tsp</span> <span class="pre">of</span> <span class="pre">chilli</span> <span class="pre">powder</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="references">
+<h3>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Reference <span class="o">::=</span> [(Quantity | Proportion) [&quot;of&quot; | &quot;of the&quot;]] String
+</pre></div>
+</div>
+<p>A reference to a sub recipe output consists of an optional quantity or
+proportion and preposition and then the name of the sub recipe output being
+referenced.</p>
+<p>The String at the end of the reference must (case insensitively) match a
+previously defined sub recipe output name.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is a (potential) ambiguity between what is a reference and what is an
+ingredient, for example “Spam” or “100g of the spam” could both plausibly
+be an ingredient or a reference. This ambiguity is resolved by determining
+if the name provided has already been defined as a sub recipe output. If it
+has then the input is parsed as a reference, otherwise it is parsed as an
+ingredient.</p>
+</div>
+<p>When a Quantity or Proportion are not given, the reference is assumed to
+consume the whole of the referenced sub recipe. When a Quantity or Proportion
+are given, the reference consumes only the specified amount, leaving the
+remainder to be consumed by other references.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unitless Quantities and non-percentage Proportions present a potential
+ambiguity (e.g. is ‘1/2 onion’ a reference to half an onion (i.e. 1/2 is
+a Quantity) or half of the total quantity of onions (i.e. 1/2 is a
+Proportion)).</p>
+<p>The ambiguity is resolved as follows: when a number is immediately followed
+by a preposition (i.e. “of” or “of the”) or by an asterisk (“*”), it is
+treated as a proportion. Otherwise, the number is treated as a unitless
+quantity.</p>
+</div>
+<p>References are substituted for the referenced sub recipes (i.e. inlined) when
+the reference is the only reference to that sub recipe, the sub recipe has only
+one output and the whole amount of that sub recipe is consumed.</p>
+<p>Inlining is not performed when referencing a sub recipe defined within a
+different block in documents which divide a recipe into multiple blocks.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">spam</span></code> (the whole of sub recipe ‘spam’)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">tomatoes</span></code> (2 of the unitless sub recipe ‘tomatoes’)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">100g</span> <span class="pre">cheese</span></code> (100g of the sub recipe ‘cheese’)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1/2</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">eggs</span></code> (half of the sub recipe ‘eggs’)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1/2</span> <span class="pre">*</span> <span class="pre">eggs</span></code> (half of the sub recipe ‘eggs’)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">50%</span> <span class="pre">pastry</span></code> (half of the sub recipe ‘pastry’)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">remaining</span> <span class="pre">pastry</span></code> (any remaining amount of the sub recipe ‘pastry’)</p></li>
+</ul>
+</div>
+<div class="section" id="steps">
+<h3>Steps<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Step <span class="o">::=</span> String &quot;(&quot; Expression (&quot;,&quot; Expression)* [&quot;,&quot;]  &quot;)&quot;
+</pre></div>
+</div>
+<p>A step consists of a String describing the step followed by a parenthesised,
+comma-delimited list of input Expressions (i.e. other Steps, Ingredients or
+References). There must always be at least one input.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Steps may include line breaks between Expressions within the perenthesised
+list of inputs. (Normally line breaks are not allowed.)</p>
+</div>
+<p>Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">whip</span> <span class="pre">until</span> <span class="pre">thick</span> <span class="pre">(double</span> <span class="pre">cream)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fry</span> <span class="pre">(1</span> <span class="pre">egg,</span> <span class="pre">oil)</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="quantities">
+<h3>Quantities<a class="headerlink" href="#quantities" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Quantity <span class="o">::=</span> ImplicitQuantity | ExplicitQuantity
+ImplicitQuantity <span class="o">::=</span> Number [KnownUnit]
+ExplicitQuantity <span class="o">::=</span> &quot;{&quot; Number [StaticString] &quot;}&quot;
+</pre></div>
+</div>
+<p>A quantity with optional unit.</p>
+<p>When a known unit is used, no surrounding curly braces are required. The
+following (case insensitive) unit names may be used (see <a class="reference internal" href="units.html#units"><span class="std std-ref">recipe_grid.units: Unit conversions</span></a> for
+details):</p>
+<blockquote>
+<div><p>bag, bags, box, boxen, boxes, bulb, bulbs, can, cans, clove, cloves, cup, cups, g, gram, grams, kg, kilo, kilogram, kilograms, kilos, knob, knobs, l, lb, lbs, litre, mill, milliliter, milliliters, mills, ml, ounce, ounces, oz, ozs, pack, packet, packets, packs, pinch, pinches, pint, pints, pound, pounds, rasher, rashers, sachet, sachets, sack, sacks, strip, strips, table spoon, table spoons, tablespoon, tablespoons, tbsp, tbsps, tea spoon, tea spoons, teaspoon, teaspoons, tin, tins, tsp, tsps</p>
+</div></blockquote>
+<p>When a custom unit is used (or just to be more explicit) the explicit quantity
+syntax may be used where the number and unit are surrounded by curly braces.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is a potential for ambiguity between the explicit syntax here and the
+ScaledValueString syntax. The input is always parsed as an ExplicitQuantity
+when it appears at the start of an Ingredient or Reference and starts with
+a Number. To force a ScaledValueString in this case, you could add <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>
+(an empty string) before the ScaledValueString.</p>
+</div>
+<p>Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">tsp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{2</span> <span class="pre">tsp}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{2</span> <span class="pre">large</span> <span class="pre">sacks}</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="proportions">
+<h3>Proportions<a class="headerlink" href="#proportions" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Proportion <span class="o">::=</span> (Number [&quot;*&quot; | &quot;%&quot;]) | Remainder
+Remainder <span class="o">::=</span> &quot;remaining&quot; | &quot;remainder&quot; | &quot;rest&quot; | &quot;left over&quot;
+</pre></div>
+</div>
+<p>A relative proportion of a quantity. Either a Number, optionally followed by a
+asterisk (<code class="docutils literal notranslate"><span class="pre">*</span></code>) or followed by a percent symbol (<code class="docutils literal notranslate"><span class="pre">%</span></code>), or a phrase meaning
+‘remainder’.</p>
+<p>When a Number is given followed by nothing or by a asterisk (<code class="docutils literal notranslate"><span class="pre">*</span></code>), the
+proportion is interpreted as a number in the range 0.0 (none) and 1.0 (all).</p>
+<p>When the Number is followed by a percent symbol (<code class="docutils literal notranslate"><span class="pre">%</span></code>) it is interpreted as a
+percentage (i.e. 0.0 means None and 100.0 means all).</p>
+<p>Finally, when a Remainder phrase (e.g. ‘remaining’) is given, the proportion is
+interpreted to mean ‘all of the substance which has not already been accounted
+for’.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See the note about how ambiguities between Proportions and Quantities in
+References are resolved in the References section above.</p>
+</div>
+<p>Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0.5</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0.5</span> <span class="pre">*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">50%</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">remaining</span></code></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="top-level-structure">
+<h2>Top-Level Structure<a class="headerlink" href="#top-level-structure" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="expressions">
+<h3>Expressions<a class="headerlink" href="#expressions" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Expression <span class="o">::=</span> Ingredient | Reference | Step | &quot;(&quot; LTRExpression &quot;)&quot;
+</pre></div>
+</div>
+<p>An expression represents a sub tree within a recipe. Typically these are
+Ingredients, References and Steps defined using the syntax defined above.</p>
+<p>If desired, a Left-to-Right expression (e.g. “2 onions, chopped, fried”) may be
+used but it must be wrapped in parentheses.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">can</span> <span class="pre">of</span> <span class="pre">spam</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">boil(egg)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(2</span> <span class="pre">onions,</span> <span class="pre">chopped,</span> <span class="pre">fried)</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="left-to-right-expressions">
+<h3>Left-to-Right Expressions<a class="headerlink" href="#left-to-right-expressions" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>LTRExpression <span class="o">::=</span> Expression (&quot;,&quot; String)*
+</pre></div>
+</div>
+<p>An Expression optionally processed by a series of comma-delimited steps. Each
+comma-delimited String following the Expression is turned into a step taking
+the item to its left as its only input.</p>
+<p>The left-to-right expression syntax is provided to make it more natural to
+express cases where an ingredient has a series of steps applied to it (and only
+it). For example instead of writing “fry(chop(2 onions))” you can write “2
+onions, chop, fry”.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">banana,</span> <span class="pre">peeled</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">onions,</span> <span class="pre">chopped,</span> <span class="pre">fried</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fry(bacon,</span> <span class="pre">oil),</span> <span class="pre">chop</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">can</span> <span class="pre">of</span> <span class="pre">spam</span></code> (no following steps, still technically a LTR expression)</p></li>
+</ul>
+</div>
+<div class="section" id="statements">
+<h3>Statements<a class="headerlink" href="#statements" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Statement <span class="o">::=</span> [OutputList (&quot;=&quot; | &quot;:=&quot;)] LTRExpression EndOfLine
+OutputList <span class="o">::=</span> String (&quot;,&quot; String)+
+</pre></div>
+</div>
+<p>A Statement defines a tree within a recipe which might (or might not) define
+sub recipe.</p>
+<p>A sub recipe is defined if an OutputList is given or when the LTRExpression
+defines a recipe tree containing any number of Steps and a single Ingredient.</p>
+<p>When an output list is given, a sub recipe with the named outputs is created.
+The choice between “:=” and “=” defines whether, if substituted for a reference
+(inlined), the sub recipe should be shown with a title and thick border or not
+(respectively).</p>
+<p>When no output list is given and the LTRExpression contains only a single
+Ingredient (e.g. “1 can of spam” or “2 onions, sliced, fried”) a sub recipe
+with a single output with the name inferred from the Ingredient is created. In
+this special case, the sub recipe output name is always omitted in rendered
+outputs since it should be obvious from the ingredient’s name.</p>
+<p>In all other cases, no sub recipe is defined (though the tree of Steps,
+Ingredients and References will still be added to the final recipe).</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">onion,</span> <span class="pre">chopped,</span> <span class="pre">fried</span></code> (implicitly defines a sub recipe called ‘onion’)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mixed</span> <span class="pre">herbs</span> <span class="pre">=</span> <span class="pre">mix(basil,</span> <span class="pre">origarno,</span> <span class="pre">thyme)</span></code> (defines a sub recipe called
+‘mixed herbs’)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sauce</span> <span class="pre">:=</span> <span class="pre">boil</span> <span class="pre">down(tomatoes,</span> <span class="pre">herbs)</span></code> (defines a sub recipe called ‘sauce’
+which will be outlined and labelled in the final recipe)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">boiled</span> <span class="pre">veg,</span> <span class="pre">veg</span> <span class="pre">water</span> <span class="pre">=</span> <span class="pre">drain</span> <span class="pre">reserving</span> <span class="pre">water</span> <span class="pre">(boil(300g</span> <span class="pre">veg,</span> <span class="pre">1l</span> <span class="pre">water))</span></code>
+(defines a sub recipe with two outputs, ‘boiled veg’ and ‘veg water)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fry(egg,</span> <span class="pre">oil)</span></code> (does <em>not</em> implicitly define a sub recipe as multiple
+ingredients involved)</p></li>
+</ul>
+</div>
+<div class="section" id="recipe-descriptions">
+<h3>Recipe Descriptions<a class="headerlink" href="#recipe-descriptions" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>RecipeDescription <span class="o">::=</span> Statement+
+</pre></div>
+</div>
+<p>The root of the grammar, a series of statements.</p>
+</div>
+</div>
+<div class="section" id="literal-values">
+<h2>Literal Values<a class="headerlink" href="#literal-values" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="numbers">
+<h3>Numbers<a class="headerlink" href="#numbers" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Number <span class="o">::=</span> Decimal | Fraction
+Decimal <span class="o">::=</span> DIGITS [&quot;.&quot; DIGITS]
+Fraction <span class="o">::=</span> [DIGITS] DIGITS &quot;/&quot; DIGITS
+</pre></div>
+</div>
+<p>Numbers may be given as integers (e.g. “123”), decimal numbers (e.g. “1.3”),
+two part fractions (e.g. “4/3”) or three part fractions (e.g. “1 1/3”).</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">123</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1.23</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1/3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">2/3</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="strings">
+<h3>Strings<a class="headerlink" href="#strings" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>String <span class="o">::=</span> (StaticString | ScaledValueString)+
+StaticString <span class="o">::=</span> (UnquotedString | SingleQuotedString | DoubleQuotedString)+
+</pre></div>
+</div>
+<p>There are four kinds of strings matched by String:</p>
+<dl>
+<dt>UnquotedString</dt><dd><p>A naked string, without any quotes around it. It may be made up of any
+series of characters excluding <code class="docutils literal notranslate"><span class="pre">&quot;',:=/(){}</span></code> and starting with any
+non-whitespace character and ends with any non-whitespace character. There
+are no escape characters. UnquotedStrings are treated as plain strings.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">this</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">string</span> <span class="pre">with</span> <span class="pre">41</span> <span class="pre">characters</span> <span class="pre">in</span> <span class="pre">it</span></code></p>
+</dd>
+<dt>SingleQuotedString</dt><dd><p>A string enclosed in single quotes (<code class="docutils literal notranslate"><span class="pre">'</span></code>). May contain single-character
+backslash escape sequences (e.g. <code class="docutils literal notranslate"><span class="pre">\'</span></code>). SingleQuotedStrings are treated
+as plain strings.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">'this</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">\'SingleQuotedString\''</span></code></p>
+</dd>
+<dt>DoubleQuotedString</dt><dd><p>A string enclosed in double quotes (<code class="docutils literal notranslate"><span class="pre">&quot;</span></code>). Identical to SingleQuotedString
+except for the type of quotes.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">&quot;this</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">\&quot;DoubleQuotedString\&quot;&quot;</span></code></p>
+</dd>
+<dt>ScaledValueString</dt><dd><p>A string enclosed in curly braces (<code class="docutils literal notranslate"><span class="pre">{</span></code> and <code class="docutils literal notranslate"><span class="pre">}</span></code>). Like
+SingleQuotedString and DoubleQuotedString, single character backslash escape
+sequences are supported. Unlike all other string types, substrings
+containing Numbers will be scaled along with all Quantities in the recipe.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">{divide</span> <span class="pre">into</span> <span class="pre">8</span> <span class="pre">burgers}</span></code></p>
+<p>In the example above, the number (8) will be scaled with the recipe. For
+example if the recipe is halved, it will be replaced with 4.</p>
+</dd>
+</dl>
+<p>A String (or StaticString) may consist of any sequence of adjacent string types
+which will be concatenated together in the parsed string literal, including any
+whitespace between them. For example the string <code class="docutils literal notranslate"><span class="pre">pack</span> <span class="pre">of</span> <span class="pre">{8}</span> <span class="pre">hot</span> <span class="pre">dog</span> <span class="pre">rolls</span>
+<span class="pre">&quot;(pre-sliced)&quot;</span></code> will be parsed as a string literal containing <code class="docutils literal notranslate"><span class="pre">pack</span> <span class="pre">of</span> <span class="pre">8</span> <span class="pre">hot</span>
+<span class="pre">dog</span> <span class="pre">rolls</span> <span class="pre">(pre-sliced)</span></code> where the ‘8’ is a number which will be rescaled with
+the recipe.</p>
+<p>See also <a class="reference internal" href="scaled_value_string.html#module-recipe_grid.scaled_value_string" title="recipe_grid.scaled_value_string"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.scaled_value_string</span></code></a>.</p>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Recipe Description Language Reference</a><ul>
+<li><a class="reference internal" href="#recipe-building-blocks">Recipe Building Blocks</a><ul>
+<li><a class="reference internal" href="#ingredients">Ingredients</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+<li><a class="reference internal" href="#steps">Steps</a></li>
+<li><a class="reference internal" href="#quantities">Quantities</a></li>
+<li><a class="reference internal" href="#proportions">Proportions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#top-level-structure">Top-Level Structure</a><ul>
+<li><a class="reference internal" href="#expressions">Expressions</a></li>
+<li><a class="reference internal" href="#left-to-right-expressions">Left-to-Right Expressions</a></li>
+<li><a class="reference internal" href="#statements">Statements</a></li>
+<li><a class="reference internal" href="#recipe-descriptions">Recipe Descriptions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#literal-values">Literal Values</a><ul>
+<li><a class="reference internal" href="#numbers">Numbers</a></li>
+<li><a class="reference internal" href="#strings">Strings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="markdown_reference.html"
+                        title="previous chapter">Markdown Recipe Syntax Reference</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="grammar.html"
+                        title="next chapter">Formal Recipe Description Language Grammar</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/language_reference.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="grammar.html" title="Formal Recipe Description Language Grammar"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="markdown_reference.html" title="Markdown Recipe Syntax Reference"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Recipe Description Language Reference</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.0.
+    </div>
+  </body>
+</html>

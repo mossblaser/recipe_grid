@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recipe_grid.scaled_value_string: Scaled Value Strings &#8212; Recipe Grid 2.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="recipe_grid.units: Unit conversions" href="units.html" />
+    <link rel="prev" title="recipe_grid.recipe: Recipe Data Model" href="data_model.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="units.html" title="recipe_grid.units: Unit conversions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="data_model.html" title="recipe_grid.recipe: Recipe Data Model"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.scaled_value_string</span></code>: Scaled Value Strings</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-recipe_grid.scaled_value_string">
+<span id="recipe-grid-scaled-value-string-scaled-value-strings"></span><h1><a class="reference internal" href="#module-recipe_grid.scaled_value_string" title="recipe_grid.scaled_value_string"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.scaled_value_string</span></code></a>: Scaled Value Strings<a class="headerlink" href="#module-recipe_grid.scaled_value_string" title="Permalink to this headline">¶</a></h1>
+<p>A string type in which embedded numerical values can be re-scaled.</p>
+<dl class="py class">
+<dt id="recipe_grid.scaled_value_string.ScaledValueString">
+<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.scaled_value_string.</code><code class="sig-name descname">ScaledValueString</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.9)">fractions.Fraction</a><span class="p">, </span>Sequence<span class="p">[</span>Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.9)">fractions.Fraction</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.scaled_value_string.ScaledValueString" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string which contains some numerical values which may be re-scaled by a
+fixed factor.</p>
+<p>This type is very specifically aimed at strings within recipes of the style
+“divide into 8 burgers about 10cm in diameter”. Here when the recipe is
+scaled up or down, the ‘8’ should be scaled but the ‘10’ should not. Here a
+<a class="reference internal" href="#recipe_grid.scaled_value_string.ScaledValueString" title="recipe_grid.scaled_value_string.ScaledValueString"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScaledValueString</span></code></a> would be defined like so:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">for_8_burgers</span> <span class="o">=</span> <span class="n">ScaledValueString</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="s2">&quot;divide into &quot;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s2">&quot; burgers about 10cm in diameter&quot;</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This could be scaled up like so:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">for_16_burgers</span> <span class="o">=</span> <span class="n">for_8_burgers</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">for_16_burgers</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<span class="go">&#39;divide into 16 burgers about 10cm in diameter&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="data_model.html"
+                        title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.recipe</span></code>: Recipe Data Model</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="units.html"
+                        title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.units</span></code>: Unit conversions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scaled_value_string.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="units.html" title="recipe_grid.units: Unit conversions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="data_model.html" title="recipe_grid.recipe: Recipe Data Model"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.scaled_value_string</span></code>: Scaled Value Strings</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.0.
+    </div>
+  </body>
+</html>

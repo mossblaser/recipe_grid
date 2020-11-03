@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recipe_grid.units: Unit conversions &#8212; Recipe Grid 2.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="recipe_grid.lint: Recipe linting" href="linting.html" />
+    <link rel="prev" title="recipe_grid.scaled_value_string: Scaled Value Strings" href="scaled_value_string.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="linting.html" title="recipe_grid.lint: Recipe linting"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scaled_value_string.html" title="recipe_grid.scaled_value_string: Scaled Value Strings"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.units</span></code>: Unit conversions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-recipe_grid.units">
+<span id="recipe-grid-units-unit-conversions"></span><span id="units"></span><h1><a class="reference internal" href="#module-recipe_grid.units" title="recipe_grid.units"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.units</span></code></a>: Unit conversions<a class="headerlink" href="#module-recipe_grid.units" title="Permalink to this headline">¶</a></h1>
+<p>Recipe Grid has a simple understanding of various cooking-related units and can
+perform simple conversions between units of the same kind. The complete list of
+units is:</p>
+<ul class="simple">
+<li><p>Mass:<ul>
+<li><p>g, gram, grams</p></li>
+<li><p>kg, kilo, kilos, kilogram, kilograms</p></li>
+<li><p>lb, lbs, pound, pounds</p></li>
+<li><p>oz, ozs, ounce, ounces</p></li>
+</ul>
+</p></li>
+<li><p>Volume:<ul>
+<li><p>l, litre</p></li>
+<li><p>ml, mill, mills, milliliter, milliliters</p></li>
+<li><p>tsp, tsps, teaspoons, teaspoon, tea spoon, tea spoons</p></li>
+<li><p>tbsp, tbsps, tablespoon, tablespoons, table spoon, table spoons</p></li>
+<li><p>cup, cups</p></li>
+<li><p>pint, pints</p></li>
+</ul>
+</p></li>
+<li><p>Clove:<ul>
+<li><p>clove, cloves</p></li>
+</ul>
+</p></li>
+<li><p>Bulb:<ul>
+<li><p>bulb, bulbs</p></li>
+</ul>
+</p></li>
+<li><p>Can:<ul>
+<li><p>can, cans, tin, tins</p></li>
+</ul>
+</p></li>
+<li><p>Pinch:<ul>
+<li><p>pinch, pinches</p></li>
+</ul>
+</p></li>
+<li><p>Knob:<ul>
+<li><p>knob, knobs</p></li>
+</ul>
+</p></li>
+<li><p>Packet:<ul>
+<li><p>packet, packets, pack, packs</p></li>
+</ul>
+</p></li>
+<li><p>Box:<ul>
+<li><p>box, boxes, boxen</p></li>
+</ul>
+</p></li>
+<li><p>Bag:<ul>
+<li><p>bag, bags</p></li>
+</ul>
+</p></li>
+<li><p>Sack:<ul>
+<li><p>sack, sacks</p></li>
+</ul>
+</p></li>
+<li><p>Sachet:<ul>
+<li><p>sachet, sachets</p></li>
+</ul>
+</p></li>
+<li><p>Rasher:<ul>
+<li><p>rasher, rashers</p></li>
+</ul>
+</p></li>
+<li><p>Strip:<ul>
+<li><p>strip, strips</p></li>
+</ul>
+</p></li>
+</ul>
+<p>Conversions are possible betweeen units in the same sublist and names listed
+together are aliases for one another.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This system is much less sophisticated than things like <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#module-pint" title="(in pint v0.16.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pint</span></code></a> but
+consequently easier to understand and use for non-unit-conversion-related
+tasks and also for less conventional measures (e.g. ‘cloves’).</p>
+</div>
+<div class="section" id="internal-api">
+<h2>Internal API<a class="headerlink" href="#internal-api" title="Permalink to this headline">¶</a></h2>
+<p>The Unit system is available in the <code class="xref py py-data docutils literal notranslate"><span class="pre">recipe_grid.units.UNIT_SYSTEM</span></code>
+which is an instance of the following class:</p>
+<dl class="py class">
+<dt id="recipe_grid.units.UnitSystem">
+<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.units.</code><code class="sig-name descname">UnitSystem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">unit_sets</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>recipe_grid.units.RelatedUnitSet<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.units.UnitSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>A container of unit conversions.</p>
+<dl class="py method">
+<dt id="recipe_grid.units.UnitSystem.iter_names">
+<code class="sig-name descname">iter_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Iterator<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><a class="headerlink" href="#recipe_grid.units.UnitSystem.iter_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over all defined unit names and aliases.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="recipe_grid.units.UnitSystem.iter_conversions_from">
+<code class="sig-name descname">iter_conversions_from</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">from_unit</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span> &#x2192; Iterator<span class="p">[</span>Tuple<span class="p">[</span>Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.9)">fractions.Fraction</a><span class="p">]</span><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><span class="p">]</span><a class="headerlink" href="#recipe_grid.units.UnitSystem.iter_conversions_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over all possible conversions from the provided unit to all
+other compatible units. Iterates over pairs of multiplicative
+conversion factor and other unit names.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="recipe_grid.units.UnitSystem.convert_between">
+<code class="sig-name descname">convert_between</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">from_unit</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">to_unit</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.9)">fractions.Fraction</a><span class="p">]</span><a class="headerlink" href="#recipe_grid.units.UnitSystem.convert_between" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the multiplicative conversion factor to convert from one unit
+to another.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.units</span></code>: Unit conversions</a><ul>
+<li><a class="reference internal" href="#internal-api">Internal API</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="scaled_value_string.html"
+                        title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.scaled_value_string</span></code>: Scaled Value Strings</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="linting.html"
+                        title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.lint</span></code>: Recipe linting</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/units.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="linting.html" title="recipe_grid.lint: Recipe linting"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scaled_value_string.html" title="recipe_grid.scaled_value_string: Scaled Value Strings"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.units</span></code>: Unit conversions</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.0.
+    </div>
+  </body>
+</html>

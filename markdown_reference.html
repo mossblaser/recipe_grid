@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Markdown Recipe Syntax Reference &#8212; Recipe Grid 2.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Recipe Description Language Reference" href="language_reference.html" />
+    <link rel="prev" title="Recipe Grid Tutorial" href="tutorial.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="language_reference.html" title="Recipe Description Language Reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tutorial.html" title="Recipe Grid Tutorial"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Markdown Recipe Syntax Reference</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="markdown-recipe-syntax-reference">
+<span id="markdown-reference"></span><h1>Markdown Recipe Syntax Reference<a class="headerlink" href="#markdown-recipe-syntax-reference" title="Permalink to this headline">¶</a></h1>
+<p>Recipe Grid extends Markdown syntax to provide a convenient way of describing
+recipes within a document. The <a class="reference external" href="https://commonmark.org/">CommonMark</a> Markdown
+standard is supported with a small number of extensions described below.</p>
+<div class="section" id="embedded-recipes">
+<h2>Embedded recipes<a class="headerlink" href="#embedded-recipes" title="Permalink to this headline">¶</a></h2>
+<p>Recipes descriptions should be embedded either in indented code blocks or
+fenced codeblocks with <code class="docutils literal notranslate"><span class="pre">recipe</span></code> given as the ‘info string’.  For example:</p>
+<div class="highlight-md notranslate"><div class="highlight"><pre><span></span><span class="gh">A Sample Markdown File</span>
+<span class="gh">======================</span>
+
+The following will be compiled as a recipe:
+
+<span class="sb">    fry(</span>
+<span class="sb">        1 egg,</span>
+<span class="sb">        1tsp oil,</span>
+<span class="sb">    )</span>
+
+So will:
+
+<span class="sb">```recipe</span>
+<span class="s">fry(</span>
+<span class="s">    1 egg,</span>
+<span class="s">    1tsp oil,</span>
+<span class="s">)</span>
+<span class="sb">```</span>
+</pre></div>
+</div>
+<p>To create an ordinary code block, use a fenced block <em>without</em> <code class="docutils literal notranslate"><span class="pre">recipe</span></code> as
+the info string.</p>
+<p>Recipe descriptions may be split between several blocks with later blocks being
+able to reference sub recipes in earlier blocks. For example:</p>
+<div class="highlight-md notranslate"><div class="highlight"><pre><span></span><span class="gh">Pizza</span>
+<span class="gh">=====</span>
+
+First make pizza sauce:
+
+<span class="sb">    pizza sauce = boil down(tomatos, herbs)</span>
+
+Next put it on a pizza:
+
+<span class="sb">    top(1 pizza base, pizza sauce, cheese)</span>
+</pre></div>
+</div>
+<p>If for some reason you wish to start a new recipe part way through your
+document (and prevent sub recipes being inadvertently redefined), start this
+new recipe with a fenced code block with <code class="docutils literal notranslate"><span class="pre">new-recipe</span></code> as the info string.</p>
+</div>
+<div class="section" id="scaleable-values">
+<h2>Scaleable values<a class="headerlink" href="#scaleable-values" title="Permalink to this headline">¶</a></h2>
+<p>In addition to embedding recipes within a Markdown document, it is also
+possible to mark up numbers within the document which will be scaled along with
+ingredient quantities when the recipe is scaled. This is achieved by enclosing
+number-containing text within curly braces (<code class="docutils literal notranslate"><span class="pre">{</span></code> and <code class="docutils literal notranslate"><span class="pre">}</span></code>), as is supported
+by the recipe description language. For example:</p>
+<div class="highlight-md notranslate"><div class="highlight"><pre><span></span><span class="gh">Burgers for 4</span>
+<span class="gh">=============</span>
+
+Makes {4} delicious burgers, but can also be used to make {16} meat balls.
+
+...
+</pre></div>
+</div>
+<p>In the example above, the ‘4’ and ‘16’ in the opening paragraph will be scaled
+with the recipe. For example, when the recipe is scaled to 50%, the paragraph
+would be rewritten to contain ‘2 delicious burgers’ and ‘8 meat balls’.</p>
+<p>Numbers may be integers (e.g. <code class="docutils literal notranslate"><span class="pre">123</span></code>), decimals (e.g. <code class="docutils literal notranslate"><span class="pre">1.23</span></code>) or fractions
+(e.g. <code class="docutils literal notranslate"><span class="pre">4/3</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">1/3</span></code>). Other text within the curly braces will remain
+unchanged.</p>
+<p>To write a literal curly brace, use <code class="docutils literal notranslate"><span class="pre">\{</span></code> for an opening brace and <code class="docutils literal notranslate"><span class="pre">\}</span></code> for
+a closing brace.</p>
+</div>
+<div class="section" id="titles">
+<h2>Titles<a class="headerlink" href="#titles" title="Permalink to this headline">¶</a></h2>
+<p>If a Markdown document starts with a H1-level heading containing no special
+formatting, the title of the document will be inferred from this.</p>
+<p>When this heading ends with one of the following forms (where <code class="docutils literal notranslate"><span class="pre">&lt;N&gt;</span></code> is the
+number of servings):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">to</span> <span class="pre">serve</span> <span class="pre">&lt;N&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to</span> <span class="pre">make</span> <span class="pre">&lt;N&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">serves</span> <span class="pre">&lt;N&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">&lt;N&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">makes</span> <span class="pre">&lt;N&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">serving</span> <span class="pre">&lt;N&gt;</span></code></p></li>
+</ul>
+<p>The title will be inferred to be whatever came before this and the recipe will
+be assumed to be scaled to produce the specified number of servings.</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Markdown Recipe Syntax Reference</a><ul>
+<li><a class="reference internal" href="#embedded-recipes">Embedded recipes</a></li>
+<li><a class="reference internal" href="#scaleable-values">Scaleable values</a></li>
+<li><a class="reference internal" href="#titles">Titles</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tutorial.html"
+                        title="previous chapter">Recipe Grid Tutorial</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="language_reference.html"
+                        title="next chapter">Recipe Description Language Reference</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/markdown_reference.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="language_reference.html" title="Recipe Description Language Reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tutorial.html" title="Recipe Grid Tutorial"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Markdown Recipe Syntax Reference</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.0.
+    </div>
+  </body>
+</html>

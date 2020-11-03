@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recipe-grid-site: Recipe book static website generator &#8212; Recipe Grid 2.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="recipe-grid-lint: Recipe linter" href="recipe_grid_lint_command.html" />
+    <link rel="prev" title="recipe-grid: Standalone recipe compiler" href="recipe_grid_command.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="recipe_grid_lint_command.html" title="recipe-grid-lint: Recipe linter"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="recipe_grid_command.html" title="recipe-grid: Standalone recipe compiler"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">recipe-grid-site</span></code>: Recipe book static website generator</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-recipe_grid.scripts.recipe_grid_site">
+<span id="recipe-grid-site-recipe-book-static-website-generator"></span><span id="recipe-grid-site-command"></span><h1><code class="docutils literal notranslate"><span class="pre">recipe-grid-site</span></code>: Recipe book static website generator<a class="headerlink" href="#module-recipe_grid.scripts.recipe_grid_site" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">recipe-grid-site</span></code> command generates recipe book style websites from a
+directory of Markdown recipe sources.</p>
+<p>Given a directory containing a collection of recipes (as detailed below) the
+static site generator is used like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ recipe-grid-site INPUT_DIR OUTPUT_DIR
+</pre></div>
+</div>
+<p>Generated websites are entirely static and may be browsed locally or hosted
+using any static web hosting service.</p>
+<div class="section" id="input-directory-structure">
+<h2>Input directory structure<a class="headerlink" href="#input-directory-structure" title="Permalink to this headline">¶</a></h2>
+<p>Each recipe should be placed in its own Markdown file, using a <code class="docutils literal notranslate"><span class="pre">.md</span></code>
+extension. These may be placed in a single directory or organised into a
+hierarchy of subdirectories. When subdirectories are used, the generated
+website will allow visitors to browse the recipes according to this structure.</p>
+<p>An example hierarchy is illustrated below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+-</span> <span class="n">my_recipe_website</span><span class="o">/</span>
+<span class="o">|</span>  <span class="o">+-</span> <span class="n">pasta</span><span class="o">/</span>
+<span class="o">|</span>  <span class="o">|</span>  <span class="o">+-</span> <span class="n">spag_bol</span><span class="o">.</span><span class="n">md</span>
+<span class="o">|</span>  <span class="o">|</span>  <span class="o">+-</span> <span class="n">lasagne</span><span class="o">.</span><span class="n">md</span>
+<span class="o">|</span>  <span class="o">|</span>  <span class="o">...</span>
+<span class="o">|</span>  <span class="o">+-</span> <span class="n">indian</span><span class="o">/</span>
+<span class="o">|</span>  <span class="o">|</span>  <span class="o">+-</span> <span class="n">mains</span><span class="o">/</span>
+<span class="o">|</span>  <span class="o">|</span>  <span class="o">|</span>  <span class="o">+-</span> <span class="n">channa_masala</span><span class="o">.</span><span class="n">md</span>
+<span class="o">|</span>  <span class="o">|</span>  <span class="o">|</span>  <span class="o">+-</span> <span class="n">tikka_masala</span><span class="o">.</span><span class="n">md</span>
+<span class="o">|</span>  <span class="o">|</span>  <span class="o">+-</span> <span class="n">sides</span><span class="o">/</span>
+<span class="o">|</span>  <span class="o">|</span>  <span class="o">|</span>  <span class="o">+-</span> <span class="n">saag_aloo</span><span class="o">.</span><span class="n">md</span>
+<span class="o">|</span>  <span class="o">|</span>  <span class="o">|</span>  <span class="o">+-</span> <span class="n">roti</span><span class="o">.</span><span class="n">md</span>
+<span class="o">|</span>  <span class="o">|</span>  <span class="o">...</span>
+<span class="o">|</span>  <span class="o">...</span>
+</pre></div>
+</div>
+<p>Recipe Markdown files must start with a H1-level title giving the name of the
+recipe. If this title indicates the number of servings (e.g. ‘Tiffin for 2’),
+the website will include scaled versions of this recipe to serve between 1 and
+10 people (by default). If the number of servings is not indicated, the recipe
+will not be scaled and will appear with quantities left as-is.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The maximum serving count shown on the website may be changed from the
+default of 10 using the <code class="docutils literal notranslate"><span class="pre">--max-servings</span></code> or <code class="docutils literal notranslate"><span class="pre">-s</span></code> argument. The value
+chosen must be at least as large as the largest number of servings any
+recipe is given for.</p>
+</div>
+<p>By default, the recipe website’s name and category names are inferred from the
+directory names. In the example above, for instance, the website would be named
+“My recipe website” and the categories “Pasta”, “Indian” and so on. Directory
+name are automatically prettified and may be named using <code class="docutils literal notranslate"><span class="pre">snake_case</span></code>,
+<code class="docutils literal notranslate"><span class="pre">CammelCase</span></code> or <code class="docutils literal notranslate"><span class="pre">contain</span> <span class="pre">real</span> <span class="pre">spaces</span></code>.</p>
+</div>
+<div class="section" id="readme-files">
+<h2>Readme files<a class="headerlink" href="#readme-files" title="Permalink to this headline">¶</a></h2>
+<p>You can optionally add a readme files (named <code class="docutils literal notranslate"><span class="pre">README.md</span></code> or <code class="docutils literal notranslate"><span class="pre">index.md</span></code>) to
+your directory hierarchy in order customise the website and category names and
+to add introductory text.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It doesn’t matter if you use <code class="docutils literal notranslate"><span class="pre">index.md</span></code> or <code class="docutils literal notranslate"><span class="pre">README.md</span></code>: both work,
+choose whatever brings you the most fulfilment in life.</p>
+</div>
+<p>The contents of the readme file in the top directory, if provided, will be
+shown on the homepage while readme files in subdirectories will be shown on
+their respective category browsing pages.</p>
+<p>Readme files must start with a H1-level title giving the name for the website
+(in the case of the top-level readme) or the name of the category (for other
+readme files). These titles override the titles automatically inferred from the
+directory names.</p>
+<p>These Markdown files are processed as vanilla <a class="reference external" href="https://commonmark.org/">CommonMark Markdown</a> and cannot contain recipes themselves.</p>
+</div>
+<div class="section" id="links-and-images">
+<h2>Links and images<a class="headerlink" href="#links-and-images" title="Permalink to this headline">¶</a></h2>
+<p>All local files and images linked to or used in recipe and readme Markdown
+files will be copied into the generated static website.</p>
+<p>Links to a recipe markdown file within the site will be rewritten as links to
+the compiled recipe page on the website.</p>
+<p>Links to subdirectories or readme Markdown files will be rewritten to point to
+the corresponding category browsing page.</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">recipe-grid-site</span></code>: Recipe book static website generator</a><ul>
+<li><a class="reference internal" href="#input-directory-structure">Input directory structure</a></li>
+<li><a class="reference internal" href="#readme-files">Readme files</a></li>
+<li><a class="reference internal" href="#links-and-images">Links and images</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="recipe_grid_command.html"
+                        title="previous chapter"><code class="docutils literal notranslate"><span class="pre">recipe-grid</span></code>: Standalone recipe compiler</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="recipe_grid_lint_command.html"
+                        title="next chapter"><code class="docutils literal notranslate"><span class="pre">recipe-grid-lint</span></code>: Recipe linter</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/recipe_grid_site_command.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="recipe_grid_lint_command.html" title="recipe-grid-lint: Recipe linter"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="recipe_grid_command.html" title="recipe-grid: Standalone recipe compiler"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">recipe-grid-site</span></code>: Recipe book static website generator</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.0.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recipe_grid.lint: Recipe linting &#8212; Recipe Grid 2.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="recipe_grid.renderer: Rendering recipes as tables" href="rendering.html" />
+    <link rel="prev" title="recipe_grid.units: Unit conversions" href="units.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="rendering.html" title="recipe_grid.renderer: Rendering recipes as tables"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="units.html" title="recipe_grid.units: Unit conversions"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.lint</span></code>: Recipe linting</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-recipe_grid.lint">
+<span id="recipe-grid-lint-recipe-linting"></span><h1><a class="reference internal" href="#module-recipe_grid.lint" title="recipe_grid.lint"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.lint</span></code></a>: Recipe linting<a class="headerlink" href="#module-recipe_grid.lint" title="Permalink to this headline">¶</a></h1>
+<p>A collection of (fairly basic) linting functions for sanity checking recipes.</p>
+<p>The following function will lint a (series of) <code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code> descriptions.</p>
+<dl class="py function">
+<dt id="recipe_grid.lint.check">
+<code class="sig-prename descclassname">recipe_grid.lint.</code><code class="sig-name descname">check</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">recipe_blocks</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span><a class="reference internal" href="data_model.html#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe">recipe_grid.recipe.Recipe</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Iterable<span class="p">[</span><a class="reference internal" href="#recipe_grid.lint.Lint" title="recipe_grid.lint.Lint">recipe_grid.lint.Lint</a><span class="p">]</span><a class="headerlink" href="#recipe_grid.lint.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run all linting checks against a given recipe.</p>
+</dd></dl>
+
+<p>Linting errors are described by <a class="reference internal" href="#recipe_grid.lint.Lint" title="recipe_grid.lint.Lint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lint</span></code></a> objects:</p>
+<dl class="py class">
+<dt id="recipe_grid.lint.Lint">
+<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.lint.</code><code class="sig-name descname">Lint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">kind</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#recipe_grid.lint.LintKind" title="recipe_grid.lint.LintKind">recipe_grid.lint.LintKind</a></span></em>, <em class="sig-param"><span class="n">description</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.lint.Lint" title="Permalink to this definition">¶</a></dt>
+<dd><p>A description a piece of lint found in a recipe.</p>
+<dl class="py attribute">
+<dt id="recipe_grid.lint.Lint.kind">
+<code class="sig-name descname">kind</code><em class="property">: <a class="reference internal" href="#recipe_grid.lint.LintKind" title="recipe_grid.lint.LintKind">recipe_grid.lint.LintKind</a></em><a class="headerlink" href="#recipe_grid.lint.Lint.kind" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="recipe_grid.lint.Lint.description">
+<code class="sig-name descname">description</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#recipe_grid.lint.Lint.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p>Different categories of linting errors are identified by members of the
+following enumeration. Further details, however, are only given as
+human-readable strings.</p>
+<dl class="py class">
+<dt id="recipe_grid.lint.LintKind">
+<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.lint.</code><code class="sig-name descname">LintKind</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.lint.LintKind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kinds of lint.</p>
+<dl class="py attribute">
+<dt id="recipe_grid.lint.LintKind.unused_ingredient">
+<code class="sig-name descname">unused_ingredient</code><em class="property"> = 1</em><a class="headerlink" href="#recipe_grid.lint.LintKind.unused_ingredient" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="recipe_grid.lint.LintKind.sub_recipe_quantity_unknown">
+<code class="sig-name descname">sub_recipe_quantity_unknown</code><em class="property"> = 2</em><a class="headerlink" href="#recipe_grid.lint.LintKind.sub_recipe_quantity_unknown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="recipe_grid.lint.LintKind.sub_recipe_reference_incompatible_units">
+<code class="sig-name descname">sub_recipe_reference_incompatible_units</code><em class="property"> = 3</em><a class="headerlink" href="#recipe_grid.lint.LintKind.sub_recipe_reference_incompatible_units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="recipe_grid.lint.LintKind.sub_recipe_reference_non_positive_remainder">
+<code class="sig-name descname">sub_recipe_reference_non_positive_remainder</code><em class="property"> = 4</em><a class="headerlink" href="#recipe_grid.lint.LintKind.sub_recipe_reference_non_positive_remainder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="recipe_grid.lint.LintKind.sub_recipe_not_used_up">
+<code class="sig-name descname">sub_recipe_not_used_up</code><em class="property"> = 5</em><a class="headerlink" href="#recipe_grid.lint.LintKind.sub_recipe_not_used_up" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="recipe_grid.lint.LintKind.sub_recipe_used_too_much">
+<code class="sig-name descname">sub_recipe_used_too_much</code><em class="property"> = 6</em><a class="headerlink" href="#recipe_grid.lint.LintKind.sub_recipe_used_too_much" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="units.html"
+                        title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.units</span></code>: Unit conversions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="rendering.html"
+                        title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer</span></code>: Rendering recipes as tables</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/linting.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="rendering.html" title="recipe_grid.renderer: Rendering recipes as tables"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="units.html" title="recipe_grid.units: Unit conversions"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.lint</span></code>: Recipe linting</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.0.
+    </div>
+  </body>
+</html>

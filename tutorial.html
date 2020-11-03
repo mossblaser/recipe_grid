@@ -1,0 +1,874 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Grid Tutorial &#8212; Recipe Grid 2.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Markdown Recipe Syntax Reference" href="markdown_reference.html" />
+    <link rel="prev" title="Recipe Grid" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="markdown_reference.html" title="Markdown Recipe Syntax Reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Recipe Grid"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Recipe Grid Tutorial</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="recipe-grid-tutorial">
+<span id="tutorial"></span><h1>Recipe Grid Tutorial<a class="headerlink" href="#recipe-grid-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial will give you an introduction to Recipe Grid including its recipe
+description language and tools for compiling recipes into stand-alone HTML
+pages or complete recipe websites.</p>
+<div class="section" id="recipe-description-basics">
+<h2>Recipe description basics<a class="headerlink" href="#recipe-description-basics" title="Permalink to this headline">¶</a></h2>
+<p>Recipes are not described directly in tabular form. Instead, these tables are
+generated from a simple textual description of the recipe within a <a class="reference external" href="https://commonmark.org/">Markdown</a> document.</p>
+<p>The following example shows a simple recipe Markdown file:</p>
+<div class="highlight-md notranslate"><div class="highlight"><pre><span></span><span class="gh">Boiled egg for 1</span>
+<span class="gh">================</span>
+
+A fairly boring recipe...
+
+<span class="sb">    boil for 3.5 minutes (</span>
+<span class="sb">        1 egg,</span>
+<span class="sb">        500ml water,</span>
+<span class="sb">    )</span>
+</pre></div>
+</div>
+<p>This is compiled into HTML using the <a class="reference internal" href="recipe_grid_command.html#recipe-grid-command"><span class="std std-ref">recipe-grid</span></a>
+command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ recipe-grid path/to/my_recipe.md
+</pre></div>
+</div>
+<p>Which produces a file called <code class="docutils literal notranslate"><span class="pre">my_recipe.html</span></code> which looks like this:</p>
+<img alt="_images/boiled_egg_example.png" src="_images/boiled_egg_example.png" />
+<p>As you can see, the textual recipe description in the indented block in the
+Markdown file has been converted into the tabular form (we’ll look at this
+syntax in greater detail shortly). Aside from these indented blocks, a recipe
+is just an ordinary Markdown file which you can structure however you like.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In Markdown indented blocks are usually used for code listings but are
+co-opted by Recipe Grid for recipe descriptions. If you want to include an
+ordinary code block in your recipe, you can do so using a Markdown ‘fenced’
+block like so:</p>
+<div class="highlight-md notranslate"><div class="highlight"><pre><span></span>Here is a code listing:
+
+<span class="sb">```</span>
+<span class="sb">print(&quot;Hello, world!&quot;)</span>
+<span class="sb">```</span>
+</pre></div>
+</div>
+</div>
+<p>The <a class="reference internal" href="recipe_grid_command.html#recipe-grid-command"><span class="std std-ref">recipe-grid</span></a> command has a few options which
+allow us to automatically rescale the quantities in a recipe. In addition to
+the <a class="reference internal" href="recipe_grid_command.html#recipe-grid-command"><span class="std std-ref">recipe-grid</span></a> command (which compiles a single
+recipe into a standalone HTML page) a other commands are provided to, for
+example, produce a static ‘recipe book’ style website from a collection of
+recipes. We’ll return to look at these commands and options at the end of this
+tutorial.</p>
+</div>
+<div class="section" id="recipe-description-syntax">
+<h2>Recipe description syntax<a class="headerlink" href="#recipe-description-syntax" title="Permalink to this headline">¶</a></h2>
+<p>The central feature of Recipe Grid is its recipe description language which is
+compiled into the tabular form which appears in a compiled recipe. Lets take a
+look at this language.</p>
+<p>For brevity, in the examples below we’ll just show the recipe descriptions. To
+compile these you’ll need to place them in an indented block in a Markdown file
+and compile them using the <code class="docutils literal notranslate"><span class="pre">recipe-grid</span></code> command as illustrated above.</p>
+<div class="section" id="ingredients-and-steps">
+<h3>Ingredients and steps<a class="headerlink" href="#ingredients-and-steps" title="Permalink to this headline">¶</a></h3>
+<p>Recipe Grid recipes are described in terms of <em>ingredients</em> and <em>steps</em> which
+are carried out on these ingredients.</p>
+<p>An ingredient is usually defined by writing a quantity next to a name, for
+example <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">large</span> <span class="pre">eggs</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">tbsp</span> <span class="pre">of</span> <span class="pre">oil</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Quantities can be given as either decimal numbers or as fractions. For
+example <code class="docutils literal notranslate"><span class="pre">3.5</span></code> and <code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">1/2</span></code> could both be used to mean three-and-a-half.</p>
+</div>
+<p>A step is defined by a description, followed by a pair of parentheses
+containing the inputs to that step. For example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>fry(2 large eggs, 1 tbsp of oil)
+</pre></div>
+</div>
+<div class="rg-recipe-block">
+  <table class="rg-table">
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe"><span class="rg-quantity-unitless rg-scaled-value">2</span> large eggs</td>
+      <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="2">fry</td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          1 tbsp<ul class="rg-quantity-conversions">
+            <li>0.015 l</li>
+            <li>15 ml</li>
+            <li>3 tsp</li>
+            <li>0.063 cup</li>
+            <li>0.026 pint</li>
+          </ul>
+        </span> of oil
+      </td>
+    </tr>
+  </table>
+</div><p>A recipe typically consists of a hierarchy of steps and ingredients, for
+example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>put in rolls (
+    fry until soft (
+        slice(1 large onion),
+        1 tbsp of oil
+    ),
+    boil(4 hot dog sausages),
+    sliced(4 hot dog rolls),
+)
+</pre></div>
+</div>
+<div class="rg-recipe-block">
+  <table class="rg-table">
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe"><span class="rg-quantity-unitless rg-scaled-value">1</span> large onion</td>
+      <td class="rg-step rg-border-top-sub-recipe">slice</td>
+      <td class="rg-step rg-border-top-sub-recipe" rowspan="2">fry until soft</td>
+      <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="4">put in rolls</td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe" colspan="2">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          1 tbsp<ul class="rg-quantity-conversions">
+            <li>0.015 l</li>
+            <li>15 ml</li>
+            <li>3 tsp</li>
+            <li>0.063 cup</li>
+            <li>0.026 pint</li>
+          </ul>
+        </span> of oil
+      </td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe"><span class="rg-quantity-unitless rg-scaled-value">4</span> hot dog sausages</td>
+      <td class="rg-step" colspan="2">boil</td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe"><span class="rg-quantity-unitless rg-scaled-value">4</span> hot dog rolls</td>
+      <td class="rg-step rg-border-bottom-sub-recipe" colspan="2">sliced</td>
+    </tr>
+  </table>
+</div><p>As in this example, you are free to split the inputs to a step over multiple
+lines if this makes the recipe description easier to read.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If your step or ingredient name contains any characters more exciting than
+letters and numbers you must enclose it in single or double quotes. For
+example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&quot;fry (don&#39;t allow to burn)&quot; ( 1 can of spam )
+</pre></div>
+</div>
+<div class="rg-recipe-block">
+  <table class="rg-table" id="sub-recipe-2-spam">
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe"><span class="rg-quantity-without-conversions rg-scaled-value">1 can</span> of spam</td>
+      <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe">fry (don&#x27;t allow to burn)</td>
+    </tr>
+  </table>
+</div></div>
+</div>
+<div class="section" id="listing-ingredients-separately">
+<h3>Listing ingredients separately<a class="headerlink" href="#listing-ingredients-separately" title="Permalink to this headline">¶</a></h3>
+<p>Often when you’re translating a traditional recipe into the recipe description
+syntax you already have a list of quantities and ingredients. Rather than
+manually transcribing these quantities, it is possible to copy-and-paste a list
+of ingredients up-front and refer back to these later in the recipe
+description. For example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>400g of chopped tomatoes
+1 tsp of mixed herbs
+1 onion, finely chopped, fried
+200g of mozzarella, grated
+1 pizza base
+
+top (
+    mozzarella,
+    boil down(chopped tomatoes, mixed herbs, onion),
+    pizza base,
+)
+</pre></div>
+</div>
+<div class="rg-recipe-block">
+  <table class="rg-table">
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          200g<ul class="rg-quantity-conversions">
+            <li><sup>1</sup>&frasl;<sub>5</sub>kg</li>
+            <li>0.441lb</li>
+            <li>7.05oz</li>
+          </ul>
+        </span> of mozzarella
+      </td>
+      <td class="rg-step rg-border-top-sub-recipe" colspan="3">grated</td>
+      <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="5">top</td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe" colspan="3">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          400g<ul class="rg-quantity-conversions">
+            <li><sup>2</sup>&frasl;<sub>5</sub>kg</li>
+            <li>0.882lb</li>
+            <li>14.1oz</li>
+          </ul>
+        </span> of chopped tomatoes
+      </td>
+      <td class="rg-step" rowspan="3">boil down</td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe" colspan="3">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          1 tsp<ul class="rg-quantity-conversions">
+            <li>0.005 l</li>
+            <li>5 ml</li>
+            <li><sup>1</sup>&frasl;<sub>3</sub> tbsp</li>
+            <li>0.021 cup</li>
+            <li>0.009 pint</li>
+          </ul>
+        </span> of mixed herbs
+      </td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe"><span class="rg-quantity-unitless rg-scaled-value">1</span> onion</td>
+      <td class="rg-step">finely chopped</td>
+      <td class="rg-step">fried</td>
+    </tr>
+    <tr><td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe" colspan="4"><span class="rg-quantity-unitless rg-scaled-value">1</span> pizza base</td></tr>
+  </table>
+</div><p>When referring to an ingredient you only write the ingredient name, e.g. ‘mixed
+herbs’: the quantity (e.g. ‘1 tsp’) and simple prepositions (e.g.  ‘of’) should
+be omitted.</p>
+<p>Additional simple steps, separated by commas, can be defined for ingredients
+listed up-front, for example the onion has two steps listed: ‘finely chopped’
+and ‘fried’. In the recipe description later on where we say ‘onion’ Recipe
+Grid will insert both the ingredient and the steps we defined.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The syntax above relies on Recipe Grid being able to distinguish quantities
+and units from an ingredient’s name. Recipe Grid knows about the following
+common cooking units:</p>
+<blockquote>
+<div><p>bag, bags, box, boxen, boxes, bulb, bulbs, can, cans, clove, cloves, cup, cups, g, gram, grams, kg, kilo, kilogram, kilograms, kilos, knob, knobs, l, lb, lbs, litre, mill, milliliter, milliliters, mills, ml, ounce, ounces, oz, ozs, pack, packet, packets, packs, pinch, pinches, pint, pints, pound, pounds, rasher, rashers, sachet, sachets, sack, sacks, strip, strips, table spoon, table spoons, tablespoon, tablespoons, tbsp, tbsps, tea spoon, tea spoons, teaspoon, teaspoons, tin, tins, tsp, tsps</p>
+</div></blockquote>
+<p>If you’re dealing with an unusual unit which Recipe Grid might not know
+about, or you just prefer to be explicit, you can surround the quantity and
+unit with curly brackets, for example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{2 scoops} of ice cream
+</pre></div>
+</div>
+<p>By contrast, if your ingredient name might be confused for a unit or
+preposiition you can use quotes around the ingredient name, for example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>2 &quot;KG Spooner Brand Biscuits&quot;
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In many of these examples we’ve included the preposition ‘of’ in ingredient
+descriptions purely to make them read better. This is completely optional
+as far as the recipe description language is concerned: ‘1 tsp of mixed
+herbs’ and ‘1 tsp mixed herbs’ are equally valid.</p>
+</div>
+</div>
+<div class="section" id="sub-recipes">
+<h3>Sub-recipes<a class="headerlink" href="#sub-recipes" title="Permalink to this headline">¶</a></h3>
+<p>Recipe Grid allows recipes to be broken up into sub-recipes which can make them
+easier to write. For example, we can break the pizza sauce from the previous
+recipe into its own sub-recipe like so:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pizza sauce = boil down (
+    400g chopped tomatoes,
+    1 tsp mixed herbs,
+    fried(finely chopped(1 onion)),
+)
+
+top (
+    grated(200g mozzarella),
+    pizza sauce,
+    1 pizza base,
+)
+</pre></div>
+</div>
+<div class="rg-recipe-block">
+  <table class="rg-table">
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          200g<ul class="rg-quantity-conversions">
+            <li><sup>1</sup>&frasl;<sub>5</sub>kg</li>
+            <li>0.441lb</li>
+            <li>7.05oz</li>
+          </ul>
+        </span> mozzarella
+      </td>
+      <td class="rg-step rg-border-top-sub-recipe" colspan="3">grated</td>
+      <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="5">top</td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe" colspan="3">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          400g<ul class="rg-quantity-conversions">
+            <li><sup>2</sup>&frasl;<sub>5</sub>kg</li>
+            <li>0.882lb</li>
+            <li>14.1oz</li>
+          </ul>
+        </span> chopped tomatoes
+      </td>
+      <td class="rg-step" rowspan="3">boil down</td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe" colspan="3">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          1 tsp<ul class="rg-quantity-conversions">
+            <li>0.005 l</li>
+            <li>5 ml</li>
+            <li><sup>1</sup>&frasl;<sub>3</sub> tbsp</li>
+            <li>0.021 cup</li>
+            <li>0.009 pint</li>
+          </ul>
+        </span> mixed herbs
+      </td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe"><span class="rg-quantity-unitless rg-scaled-value">1</span> onion</td>
+      <td class="rg-step">finely chopped</td>
+      <td class="rg-step">fried</td>
+    </tr>
+    <tr><td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe" colspan="4"><span class="rg-quantity-unitless rg-scaled-value">1</span> pizza base</td></tr>
+  </table>
+</div><p>Notice that, once compiled, the sub recipe is seamlessly combined into the
+final recipe.</p>
+<p>Sometimes it is helpful if a sub recipe is named and called out in the final
+recipe; particularly for more complex recipes, or recipes where some parts can
+be prepared in advance. Replacing the <code class="docutils literal notranslate"><span class="pre">=</span></code> symbol with <code class="docutils literal notranslate"><span class="pre">:=</span></code> in our sub
+recipe definition will cause Recipe Grid to highlight and label the sub recipe
+in the generated table, for example, after modifying the example above we get:</p>
+<div class="rg-recipe-block">
+  <table class="rg-table">
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          200g<ul class="rg-quantity-conversions">
+            <li><sup>1</sup>&frasl;<sub>5</sub>kg</li>
+            <li>0.441lb</li>
+            <li>7.05oz</li>
+          </ul>
+        </span> mozzarella
+      </td>
+      <td class="rg-step rg-border-top-sub-recipe" colspan="3">grated</td>
+      <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="6">top</td>
+    </tr>
+    <tr><td class="rg-sub-recipe-header rg-border-left-sub-recipe rg-border-right-sub-recipe rg-border-top-sub-recipe" colspan="4">pizza sauce</td></tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe" colspan="3">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          400g<ul class="rg-quantity-conversions">
+            <li><sup>2</sup>&frasl;<sub>5</sub>kg</li>
+            <li>0.882lb</li>
+            <li>14.1oz</li>
+          </ul>
+        </span> chopped tomatoes
+      </td>
+      <td class="rg-step rg-border-right-sub-recipe rg-border-bottom-sub-recipe" rowspan="3">boil down</td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe" colspan="3">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          1 tsp<ul class="rg-quantity-conversions">
+            <li>0.005 l</li>
+            <li>5 ml</li>
+            <li><sup>1</sup>&frasl;<sub>3</sub> tbsp</li>
+            <li>0.021 cup</li>
+            <li>0.009 pint</li>
+          </ul>
+        </span> mixed herbs
+      </td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe"><span class="rg-quantity-unitless rg-scaled-value">1</span> onion</td>
+      <td class="rg-step rg-border-bottom-sub-recipe">finely chopped</td>
+      <td class="rg-step rg-border-bottom-sub-recipe">fried</td>
+    </tr>
+    <tr><td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe" colspan="4"><span class="rg-quantity-unitless rg-scaled-value">1</span> pizza base</td></tr>
+  </table>
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The up-front ingredient syntax described in the previous section is
+actually just a short-hand for creating a sub recipes. When a single
+ingredient (with any number of steps acting on it) is defined on its own, a
+sub recipe with the ingredient’s name is automatically created.</p>
+</div>
+</div>
+<div class="section" id="splitting-recipe-components-up">
+<h3>Splitting recipe components up<a class="headerlink" href="#splitting-recipe-components-up" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes recipes call for ingredients or sub recipes to be split into parts
+which are then used separately. For example in the following recipe for
+enchiladas, some of the sauce is mixed with the chicken and some is poured over
+the top before baking.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>tomato sauce = boil down (
+    400g chopped tomatoes,
+    spices,
+)
+
+bake until golden (
+    pour over(
+        fill (
+            simmer for 5 minutes (
+                fry (
+                    200g chicken,
+                    sliced(1 onion),
+                ),
+                2/3 of the tomato sauce,
+            ),
+            4 tortilla wraps,
+        ),
+        remaining tomato sauce,
+        100g grated cheese,
+    )
+)
+</pre></div>
+</div>
+<div class="rg-recipe-block">
+  <table class="rg-table" id="sub-recipe-6-tomato-sauce">
+    <tr><td class="rg-sub-recipe-header rg-border-left-sub-recipe rg-border-right-sub-recipe rg-border-top-sub-recipe" colspan="2">tomato sauce</td></tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          400g<ul class="rg-quantity-conversions">
+            <li><sup>2</sup>&frasl;<sub>5</sub>kg</li>
+            <li>0.882lb</li>
+            <li>14.1oz</li>
+          </ul>
+        </span> chopped tomatoes
+      </td>
+      <td class="rg-step rg-border-right-sub-recipe rg-border-bottom-sub-recipe" rowspan="2">boil down</td>
+    </tr>
+    <tr><td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe">spices</td></tr>
+  </table>
+  <table class="rg-table">
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe" colspan="2">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          200g<ul class="rg-quantity-conversions">
+            <li><sup>1</sup>&frasl;<sub>5</sub>kg</li>
+            <li>0.441lb</li>
+            <li>7.05oz</li>
+          </ul>
+        </span> chicken
+      </td>
+      <td class="rg-step rg-border-top-sub-recipe" rowspan="2">fry</td>
+      <td class="rg-step rg-border-top-sub-recipe" rowspan="3">simmer for 5 minutes</td>
+      <td class="rg-step rg-border-top-sub-recipe" rowspan="4">fill</td>
+      <td class="rg-step rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="6">pour over</td>
+      <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="6">bake until golden</td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe"><span class="rg-quantity-unitless rg-scaled-value">1</span> onion</td>
+      <td class="rg-step">sliced</td>
+    </tr>
+    <tr><td class="rg-reference rg-border-left-sub-recipe" colspan="3"><a href="#sub-recipe-6-tomato-sauce"><span class="rg-proportion"><sup>2</sup>&frasl;<sub>3</sub> of the</span> tomato sauce</a></td></tr>
+    <tr><td class="rg-ingredient rg-border-left-sub-recipe" colspan="4"><span class="rg-quantity-unitless rg-scaled-value">4</span> tortilla wraps</td></tr>
+    <tr><td class="rg-reference rg-border-left-sub-recipe" colspan="5"><a href="#sub-recipe-6-tomato-sauce"><span class="rg-proportion-remainder">remaining</span> tomato sauce</a></td></tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe" colspan="5">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          100g<ul class="rg-quantity-conversions">
+            <li>0.1kg</li>
+            <li>0.22lb</li>
+            <li>3.53oz</li>
+          </ul>
+        </span> grated cheese
+      </td>
+    </tr>
+  </table>
+</div><p>In this case, Recipe Grid splits the recipe into two tables: one for the tomato
+sauce and one for the remainder of the recipe. In the main part of the recipe
+the references to the tomato sauce contain links to the sub recipe.</p>
+<p>References to sub recipes follow a similar form to ingredients: they begin with
+a quantity (e.g. <code class="docutils literal notranslate"><span class="pre">20g</span></code>) or proportion (e.g. <code class="docutils literal notranslate"><span class="pre">1/2</span> <span class="pre">of</span> <span class="pre">the</span></code> or <code class="docutils literal notranslate"><span class="pre">50%</span></code> or
+<code class="docutils literal notranslate"><span class="pre">remaining</span></code>)  followed by an optional preposition (e.g. ‘of the’) and then
+the name of the sub recipe being referenced.</p>
+</div>
+<div class="section" id="sub-recipes-with-multiple-outputs">
+<h3>Sub recipes with multiple outputs<a class="headerlink" href="#sub-recipes-with-multiple-outputs" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes a step may produce multiple things. For example, after boiling some
+vegetables you may wish to use both the vegetables and the water they were
+boiled in. To do this, you can define a sub recipe to have multiple outputs
+like so:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>boiled veg, veg water = drain reserving water(
+    boil(
+        carrots,
+        peas,
+    )
+)
+
+pour over (
+    make gravy (5 tsp of gravy browning, veg water),
+    boiled veg,
+)
+</pre></div>
+</div>
+<div class="rg-recipe-block">
+  <table class="rg-table">
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe">carrots</td>
+      <td class="rg-step rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="2">boil</td>
+      <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="2">drain reserving water</td>
+      <td class="rg-sub-recipe-outputs rg-border-right-none rg-border-top-none rg-border-bottom-none" rowspan="2">
+        <ul class="rg-sub-recipe-output-list">
+          <li id="sub-recipe-7-boiled-veg">boiled veg</li>
+          <li id="sub-recipe-7-veg-water">veg water</li>
+        </ul>
+      </td>
+    </tr>
+    <tr><td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe">peas</td></tr>
+  </table>
+  <table class="rg-table">
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          5 tsp<ul class="rg-quantity-conversions">
+            <li>0.025 l</li>
+            <li>25 ml</li>
+            <li>1 <sup>2</sup>&frasl;<sub>3</sub> tbsp</li>
+            <li>0.106 cup</li>
+            <li>0.044 pint</li>
+          </ul>
+        </span> of gravy browning
+      </td>
+      <td class="rg-step rg-border-top-sub-recipe" rowspan="2">make gravy</td>
+      <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="3">pour over</td>
+    </tr>
+    <tr><td class="rg-reference rg-border-left-sub-recipe"><a href="#sub-recipe-7-veg-water">veg water</a></td></tr>
+    <tr><td class="rg-reference rg-border-left-sub-recipe rg-border-bottom-sub-recipe" colspan="2"><a href="#sub-recipe-7-boiled-veg">boiled veg</a></td></tr>
+  </table>
+</div></div>
+<div class="section" id="mixing-prose-and-recipe-tables">
+<h3>Mixing prose and recipe tables<a class="headerlink" href="#mixing-prose-and-recipe-tables" title="Permalink to this headline">¶</a></h3>
+<p>For particularly complicated recipes it is possible to split a recipe into sub
+recipes which appear at different points in the document. To do this, simply
+create multiple indented blocks in your markdown document which define sub
+recipes which reference each other. For example:</p>
+<div class="highlight-md notranslate"><div class="highlight"><pre><span></span><span class="gh">Pizza for 2</span>
+<span class="gh">===========</span>
+
+First you should make some pizza sauce:
+
+<span class="sb">    pizza sauce = boil down (</span>
+<span class="sb">        400g chopped tomatoes,</span>
+<span class="sb">        1 tsp mixed herbs,</span>
+<span class="sb">        fried(finely chopped(1 onion)),</span>
+<span class="sb">    )</span>
+
+Then once you&#39;ve done that you can go ahead and make some pizza:
+
+<span class="sb">    top (</span>
+<span class="sb">        grated(200g mozzarella),</span>
+<span class="sb">        pizza sauce,</span>
+<span class="sb">        1 pizza base,</span>
+<span class="sb">    )</span>
+</pre></div>
+</div>
+<p>Will compile into:</p>
+<img alt="_images/split_recipe_example.png" src="_images/split_recipe_example.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can only reference sub recipes defined earlier in the recipe
+description, or in an earlier indented block. Forward references are not
+allowed.</p>
+</div>
+</div>
+</div>
+<div class="section" id="scaling-recipes">
+<h2>Scaling recipes<a class="headerlink" href="#scaling-recipes" title="Permalink to this headline">¶</a></h2>
+<p>Recipe Grid can automatically rescale quantities in recipes. Using the
+<code class="docutils literal notranslate"><span class="pre">recipe-grid</span></code> command, this is achieved by adding the <code class="docutils literal notranslate"><span class="pre">--scale</span></code> argument
+followed by a scaling factor. For example, to compile a recipe, halving all of
+the quantities we would write:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ recipe-grid --scale <span class="m">1</span>/2 path/to/recipe.md
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When the scaling factor is given as an integer or a fraction, quantities in
+the recipe will be shown as fractions too (where the denominator is
+sensible). Using a decimal number (e.g. <code class="docutils literal notranslate"><span class="pre">0.5</span></code>) will cause all quantities
+to be shown as decimal numbers.</p>
+</div>
+<p>When a recipe’s main title ends with a phrase like <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">3</span></code> or <code class="docutils literal notranslate"><span class="pre">serves</span> <span class="pre">7</span></code>,
+the <code class="docutils literal notranslate"><span class="pre">--servings</span></code> argument can be used instead, taking the desired number of
+servings to make (saving hand-calculating the appropriate scaling factor).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ recipe-grid --servings <span class="m">3</span> path/to/recipe.md
+</pre></div>
+</div>
+<p>In either case, when the recipe is compiled, a subtitle is added indicating any
+scaling applied:</p>
+<img alt="_images/scaling_example.png" src="_images/scaling_example.png" />
+<p>Sometimes your recipe may contain numbers which ought to be scaled with the
+ingredient quantities. For example, in a burger recipe you might have a step
+which says ‘divide into 4 patties’. To make a number scale with the recipe you
+can enclose it in curly brackets, for example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>grill for 10 minutes (
+    divide into {4} patties (
+        mash together(
+            450g minced beef,
+            finely chopped(1 onion),
+            1 tsp mixed herbs,
+        )
+    )
+)
+</pre></div>
+</div>
+<div class="rg-recipe-block">
+  <table class="rg-table">
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe" colspan="2">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          450g<ul class="rg-quantity-conversions">
+            <li>0.45kg</li>
+            <li>0.992lb</li>
+            <li>15.9oz</li>
+          </ul>
+        </span> minced beef
+      </td>
+      <td class="rg-step rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="3">mash together</td>
+      <td class="rg-step rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="3">divide into <span class="rg-scaled-value">4</span> patties</td>
+      <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="3">grill for 10 minutes</td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe"><span class="rg-quantity-unitless rg-scaled-value">1</span> onion</td>
+      <td class="rg-step">finely chopped</td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe" colspan="2">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          1 tsp<ul class="rg-quantity-conversions">
+            <li>0.005 l</li>
+            <li>5 ml</li>
+            <li><sup>1</sup>&frasl;<sub>3</sub> tbsp</li>
+            <li>0.021 cup</li>
+            <li>0.009 pint</li>
+          </ul>
+        </span> mixed herbs
+      </td>
+    </tr>
+  </table>
+</div><p>And then the same recipe scaled up by a factor of two gives:</p>
+<div class="rg-recipe-block">
+  <table class="rg-table">
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-top-sub-recipe" colspan="2">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          900g<ul class="rg-quantity-conversions">
+            <li>0.9kg</li>
+            <li>1.98lb</li>
+            <li>31.7oz</li>
+          </ul>
+        </span> minced beef
+      </td>
+      <td class="rg-step rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="3">mash together</td>
+      <td class="rg-step rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="3">divide into <span class="rg-scaled-value">8</span> patties</td>
+      <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe" rowspan="3">grill for 10 minutes</td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe"><span class="rg-quantity-unitless rg-scaled-value">2</span> onion</td>
+      <td class="rg-step">finely chopped</td>
+    </tr>
+    <tr>
+      <td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe" colspan="2">
+        <span class="rg-quantity-with-conversions rg-scaled-value" tabindex="0">
+          2 tsp<ul class="rg-quantity-conversions">
+            <li>0.01 l</li>
+            <li>10 ml</li>
+            <li><sup>2</sup>&frasl;<sub>3</sub> tbsp</li>
+            <li>0.042 cup</li>
+            <li>0.018 pint</li>
+          </ul>
+        </span> mixed herbs
+      </td>
+    </tr>
+  </table>
+</div><div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can also use the curly bracket syntax in the rest of your Markdown
+document, not just in indented recipe description blocks.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To get a literal <code class="docutils literal notranslate"><span class="pre">{</span></code> or <code class="docutils literal notranslate"><span class="pre">}</span></code> character you can use <code class="docutils literal notranslate"><span class="pre">{\{}</span></code> or <code class="docutils literal notranslate"><span class="pre">{\}}</span></code>
+respectively.</p>
+</div>
+</div>
+<div class="section" id="linting">
+<h2>Linting<a class="headerlink" href="#linting" title="Permalink to this headline">¶</a></h2>
+<p>Recipe Grid provides a linting tool, <a class="reference internal" href="recipe_grid_lint_command.html#recipe-grid-lint-command"><span class="std std-ref">recipe-grid-lint</span></a>, which checks for common mistakes within recipes.</p>
+<p>For example, given the following recipe:</p>
+<div class="highlight-md notranslate"><div class="highlight"><pre><span></span><span class="gh">Boiled egg for 1</span>
+<span class="gh">================</span>
+
+A simple recipe, with a simple mistake...
+
+<span class="sb">    2 eggs</span>
+<span class="sb">    500ml water</span>
+
+    boil(egg, water)
+</pre></div>
+</div>
+<p>The linter will spot that the eggs were never used: in the recipe we mistakenly
+referenced ‘egg’ and not ‘eggs’.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ recipe-grid-lint path/to/recipe.md
+/path/to/recipe.md: Warning: Ingredient &#39;eggs&#39; was defined but never used. [unused_ingredient]
+</pre></div>
+</div>
+<p>When no issues are found, the command exits without printing anything.</p>
+</div>
+<div class="section" id="generating-recipe-book-static-websites">
+<h2>Generating recipe book static websites<a class="headerlink" href="#generating-recipe-book-static-websites" title="Permalink to this headline">¶</a></h2>
+<p>As well as compiling individual recipes into standalone HTML pages, Recipe Grid
+can also compile collections of recipes into a complete recipe book website
+using the <a class="reference internal" href="recipe_grid_site_command.html#recipe-grid-site-command"><span class="std std-ref">recipe-grid-site</span></a> command. The generated
+websites are completely static and may be used both on- and offline.</p>
+<p>To generate a recipe website, recipes should be collected together with
+filenames ending in <code class="docutils literal notranslate"><span class="pre">.md</span></code>. If desired, recipes can be grouped into a
+directories which and displayed as browsable categories in the generated
+website.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">README.md</span></code> file may optionally be added to each directory and will be
+shown on the relevant recipe browsing pages.</p>
+<p>For example a site might have a directory tree as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>+ README.md
++ pasta/
+| + README.md
+| + spaghetti.md
+| + lasagne.md
++ indian/
+| + dahl.md
+| + curry.md
+</pre></div>
+</div>
+<p>A recipe website is then generated using the <a class="reference internal" href="recipe_grid_site_command.html#recipe-grid-site-command"><span class="std std-ref">recipe-grid-site</span></a> command as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ recipe-grid-site path/to/recipes/dir/ path/to/output/dir/
+</pre></div>
+</div>
+<p>The generated website can then be opened in a browser and used locally or
+uploaded to a static web hosting service and used online.</p>
+<img alt="_images/site_example_home.png" src="_images/site_example_home.png" />
+<img alt="_images/site_example_categories.png" src="_images/site_example_categories.png" />
+<img alt="_images/site_example_category.png" src="_images/site_example_category.png" />
+<img alt="_images/site_example_recipe.png" src="_images/site_example_recipe.png" />
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Recipe Grid Tutorial</a><ul>
+<li><a class="reference internal" href="#recipe-description-basics">Recipe description basics</a></li>
+<li><a class="reference internal" href="#recipe-description-syntax">Recipe description syntax</a><ul>
+<li><a class="reference internal" href="#ingredients-and-steps">Ingredients and steps</a></li>
+<li><a class="reference internal" href="#listing-ingredients-separately">Listing ingredients separately</a></li>
+<li><a class="reference internal" href="#sub-recipes">Sub-recipes</a></li>
+<li><a class="reference internal" href="#splitting-recipe-components-up">Splitting recipe components up</a></li>
+<li><a class="reference internal" href="#sub-recipes-with-multiple-outputs">Sub recipes with multiple outputs</a></li>
+<li><a class="reference internal" href="#mixing-prose-and-recipe-tables">Mixing prose and recipe tables</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#scaling-recipes">Scaling recipes</a></li>
+<li><a class="reference internal" href="#linting">Linting</a></li>
+<li><a class="reference internal" href="#generating-recipe-book-static-websites">Generating recipe book static websites</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Recipe Grid</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="markdown_reference.html"
+                        title="next chapter">Markdown Recipe Syntax Reference</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/tutorial.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="markdown_reference.html" title="Markdown Recipe Syntax Reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Recipe Grid"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Recipe Grid Tutorial</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.0.
+    </div>
+  </body>
+</html>

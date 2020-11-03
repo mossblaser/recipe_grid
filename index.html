@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Grid &#8212; Recipe Grid 2.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Recipe Grid Tutorial" href="tutorial.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tutorial.html" title="Recipe Grid Tutorial"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Recipe Grid</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="recipe-grid">
+<h1>Recipe Grid<a class="headerlink" href="#recipe-grid" title="Permalink to this headline">¶</a></h1>
+<p>Recipe Grid is a collection of standalone utilities and also a Python library
+for describing recipes in a tabular form, as illustrated by the following
+(rather tasty) recipe below for tiffin:</p>
+<img alt="_images/tiffin_example.png" src="_images/tiffin_example.png" />
+<p>These recipes have several advantages over traditional recipe descriptions:</p>
+<ul class="simple">
+<li><p>Recipes are typically more concise.</p></li>
+<li><p>Ingredients and method are shown together so no need to cross-reference
+between the two.</p></li>
+<li><p>Parts of the method are never “hidden” in an ingredients list (e.g. ‘1 onion,
+finely chopped’)</p></li>
+<li><p>Opportunities to reorder steps or do them in parallel (or not!) are easy to
+spot while still providing a suggested order.</p></li>
+</ul>
+<p>Recipes are described in Markdown files using a convenient to write recipe
+description language. For example, the recipe above was generated from the
+following Markdown:</p>
+<div class="highlight-md notranslate"><div class="highlight"><pre><span></span><span class="gh">Tiffin</span>
+<span class="gh">======</span>
+
+A delicious, chocolatey treat.
+
+<span class="sb">    6 tsp of cocoa powder</span>
+<span class="sb">    2 tbsp of golden syrup</span>
+<span class="sb">    1/2 cup of butter</span>
+<span class="sb">    1/2 cup of sugar</span>
+<span class="sb">    16oz of digestives</span>
+<span class="sb">    200g of chocolate</span>
+
+    cover(
+        mix(
+            heat until bubbling (cocoa powder, golden syrup, butter, sugar),
+            crush(digestives)
+        ),
+        melt(chocolate)
+    )
+</pre></div>
+</div>
+<div class="section" id="using-recipe-grid">
+<h2>Using Recipe Grid<a class="headerlink" href="#using-recipe-grid" title="Permalink to this headline">¶</a></h2>
+<p>The best place to get started is with <a class="reference internal" href="tutorial.html#tutorial"><span class="std std-ref">the Recipe Grid tutorial</span></a>:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Recipe Grid Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#recipe-description-basics">Recipe description basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#recipe-description-syntax">Recipe description syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#scaling-recipes">Scaling recipes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#linting">Linting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#generating-recipe-book-static-websites">Generating recipe book static websites</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Once you’ve made it through the tutorial, the following reference documentation
+covers the remaining details of the recipe grid language and command line tools.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="markdown_reference.html">Markdown Recipe Syntax Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language_reference.html">Recipe Description Language Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Formal Recipe Description Language Grammar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipe_grid_command.html"><code class="docutils literal notranslate"><span class="pre">recipe-grid</span></code>: Standalone recipe compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipe_grid_site_command.html"><code class="docutils literal notranslate"><span class="pre">recipe-grid-site</span></code>: Recipe book static website generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipe_grid_lint_command.html"><code class="docutils literal notranslate"><span class="pre">recipe-grid-lint</span></code>: Recipe linter</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="the-recipe-grid-python-library">
+<h2>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid</span></code> Python Library<a class="headerlink" href="#the-recipe-grid-python-library" title="Permalink to this headline">¶</a></h2>
+<p>Recipe Grid also provides a limited, stable(ish) Python API for parsing and
+rendering recipes.</p>
+<div class="section" id="recipe-compilation">
+<h3>Recipe Compilation<a class="headerlink" href="#recipe-compilation" title="Permalink to this headline">¶</a></h3>
+<p>Recipe Grid provides APIs for compiling recipes embedded in Markdown files
+(using the API in <a class="reference internal" href="markdown.html#module-recipe_grid.markdown" title="recipe_grid.markdown"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.markdown</span></code></a>) or directly from recipe
+description language sources (see <a class="reference internal" href="compiler.html#module-recipe_grid.compiler" title="recipe_grid.compiler"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.compiler</span></code></a>).</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="markdown.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.markdown</span></code>: Markdown recipe compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.compiler</span></code>: Recipe description language compiler</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="recipe-data-structure">
+<h3>Recipe Data Structure<a class="headerlink" href="#recipe-data-structure" title="Permalink to this headline">¶</a></h3>
+<p>Recipe’s are parsed into <a class="reference internal" href="data_model.html#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code></a> data structures
+which form the Recipe Grid data model. These structures abstractly describe the
+Directed Acyclic Graph (DAG) which defines a recipe.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="data_model.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.recipe</span></code>: Recipe Data Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scaled_value_string.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.scaled_value_string</span></code>: Scaled Value Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.units</span></code>: Unit conversions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.lint</span></code>: Recipe linting</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="recipe-rendering">
+<h3>Recipe Rendering<a class="headerlink" href="#recipe-rendering" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="rendering.html#module-recipe_grid.renderer" title="recipe_grid.renderer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer</span></code></a> module provides a framework for converting
+recipes into tabular form and then rendering these into a desired output
+format. This may be used to build alternative renderers for recipes.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rendering.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer</span></code>: Rendering recipes as tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rendering.html#module-recipe_grid.renderer.table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.table</span></code>: Abstract table description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rendering.html#module-recipe_grid.renderer.recipe_to_table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.recipe_to_table</span></code>: <code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code> transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rendering.html#module-recipe_grid.renderer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.html</span></code>: HTML Table Renderer</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="sphinx-recipe-grid-extension">
+<h3>Sphinx Recipe Grid Extension<a class="headerlink" href="#sphinx-recipe-grid-extension" title="Permalink to this headline">¶</a></h3>
+<p>Finally, a <a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a> extension is
+provided for embedding recipes within Sphinx documentation.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sphinx.html">Recipe Grid Sphinx Extension</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sphinx.html#referencing-earlier-recipes">Referencing earlier recipes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx.html#starting-a-new-recipe">Starting a new recipe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx.html#scaling">Scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx.html#showing-sources">Showing sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx.html#internals">Internals</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Recipe Grid</a><ul>
+<li><a class="reference internal" href="#using-recipe-grid">Using Recipe Grid</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-recipe-grid-python-library">The <code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid</span></code> Python Library</a><ul>
+<li><a class="reference internal" href="#recipe-compilation">Recipe Compilation</a></li>
+<li><a class="reference internal" href="#recipe-data-structure">Recipe Data Structure</a></li>
+<li><a class="reference internal" href="#recipe-rendering">Recipe Rendering</a></li>
+<li><a class="reference internal" href="#sphinx-recipe-grid-extension">Sphinx Recipe Grid Extension</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tutorial.html"
+                        title="next chapter">Recipe Grid Tutorial</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tutorial.html" title="Recipe Grid Tutorial"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Recipe Grid</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.0.
+    </div>
+  </body>
+</html>

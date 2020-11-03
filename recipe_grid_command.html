@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recipe-grid: Standalone recipe compiler &#8212; Recipe Grid 2.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="recipe-grid-site: Recipe book static website generator" href="recipe_grid_site_command.html" />
+    <link rel="prev" title="Formal Recipe Description Language Grammar" href="grammar.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="recipe_grid_site_command.html" title="recipe-grid-site: Recipe book static website generator"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="grammar.html" title="Formal Recipe Description Language Grammar"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">recipe-grid</span></code>: Standalone recipe compiler</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-recipe_grid.scripts.recipe_grid">
+<span id="recipe-grid-standalone-recipe-compiler"></span><span id="recipe-grid-command"></span><h1><code class="docutils literal notranslate"><span class="pre">recipe-grid</span></code>: Standalone recipe compiler<a class="headerlink" href="#module-recipe_grid.scripts.recipe_grid" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">recipe-grid</span></code> command compiles a single Markdown recipe into a
+stand-alone HTML page.</p>
+<div class="section" id="basic-usage">
+<h2>Basic usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ recipe-grid RECIPE_SOURCE [OUTPUT_FILENAME]
+</pre></div>
+</div>
+<p>This will compile the recipe in the indicated markdown file. If no output
+filename is given, the input filename with the suffix replaced with ‘.html’ is
+used.</p>
+</div>
+<div class="section" id="scaling-recipes">
+<h2>Scaling recipes<a class="headerlink" href="#scaling-recipes" title="Permalink to this headline">¶</a></h2>
+<p>You can scale the recipe by an arbitrary factor using the <code class="docutils literal notranslate"><span class="pre">--scale</span></code> or <code class="docutils literal notranslate"><span class="pre">-S</span></code>
+argument. This takes integers (e.g. ‘2’), decimal numbers (e.g. ‘1.5’) and
+fractions (e.g. ‘1/2’ or ‘1 1/3’).</p>
+<p>When the recipe begins with a H1-level title ending with a number of servings
+(e.g. ‘Tiffin for 2’), you can alternatively use the <code class="docutils literal notranslate"><span class="pre">--servings</span></code> or <code class="docutils literal notranslate"><span class="pre">-s</span></code>
+argument to scale the recipe. This argument takes a a number of servings to
+scale the recipe to and computes the scaling factor for you.</p>
+</div>
+<div class="section" id="links-and-images">
+<h2>Links and images<a class="headerlink" href="#links-and-images" title="Permalink to this headline">¶</a></h2>
+<p>By default links to local files and images are embedded as <code class="docutils literal notranslate"><span class="pre">data:</span></code> URLs. This
+means that the generated HTML page is completely standalone and does not depend
+on any other files. This feature can be disabled using the
+<code class="docutils literal notranslate"><span class="pre">--no-embed-local-links</span></code> or <code class="docutils literal notranslate"><span class="pre">-E</span></code> flag.</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">recipe-grid</span></code>: Standalone recipe compiler</a><ul>
+<li><a class="reference internal" href="#basic-usage">Basic usage</a></li>
+<li><a class="reference internal" href="#scaling-recipes">Scaling recipes</a></li>
+<li><a class="reference internal" href="#links-and-images">Links and images</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="grammar.html"
+                        title="previous chapter">Formal Recipe Description Language Grammar</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="recipe_grid_site_command.html"
+                        title="next chapter"><code class="docutils literal notranslate"><span class="pre">recipe-grid-site</span></code>: Recipe book static website generator</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/recipe_grid_command.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="recipe_grid_site_command.html" title="recipe-grid-site: Recipe book static website generator"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="grammar.html" title="Formal Recipe Description Language Grammar"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">recipe-grid</span></code>: Standalone recipe compiler</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.0.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recipe-grid-lint: Recipe linter &#8212; Recipe Grid 2.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="recipe_grid.markdown: Markdown recipe compiler" href="markdown.html" />
+    <link rel="prev" title="recipe-grid-site: Recipe book static website generator" href="recipe_grid_site_command.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="markdown.html" title="recipe_grid.markdown: Markdown recipe compiler"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="recipe_grid_site_command.html" title="recipe-grid-site: Recipe book static website generator"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">recipe-grid-lint</span></code>: Recipe linter</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-recipe_grid.scripts.recipe_grid_lint">
+<span id="recipe-grid-lint-recipe-linter"></span><span id="recipe-grid-lint-command"></span><h1><code class="docutils literal notranslate"><span class="pre">recipe-grid-lint</span></code>: Recipe linter<a class="headerlink" href="#module-recipe_grid.scripts.recipe_grid_lint" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">recipe-grid-lint</span></code> command automatically checks recipes in Markdown files
+for common mistakes such as misspelling ingredient or sub recipe names defined
+earlier in a recipe.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ recipe-grid-lint FILENAME [...]
+</pre></div>
+</div>
+<p>If any potential issues are found, a explanations will be printed to stdout and
+a non-zero exit status will be returned. Otherwise, no messages will be
+produced and the exit status will be 0.</p>
+<p>Errors (e.g. syntax errors) are fatal and must be fixed before this recipe can
+be checked any further (or indeed processed by other Recipe Grid tools).</p>
+<p>In unusual cases, warnings may be produced for recipes which are actually
+correct. If desired, you can suppress warnings of a specific kind using the
+<code class="docutils literal notranslate"><span class="pre">--ignore</span></code> or <code class="docutils literal notranslate"><span class="pre">--i</span></code> argument.  Warning types are indicated in square
+brackets in warning messages.  This argument may be used multiple times to
+ignore multiple kinds of warning.</p>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="recipe_grid_site_command.html"
+                        title="previous chapter"><code class="docutils literal notranslate"><span class="pre">recipe-grid-site</span></code>: Recipe book static website generator</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="markdown.html"
+                        title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.markdown</span></code>: Markdown recipe compiler</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/recipe_grid_lint_command.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="markdown.html" title="recipe_grid.markdown: Markdown recipe compiler"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="recipe_grid_site_command.html" title="recipe-grid-site: Recipe book static website generator"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Recipe Grid 2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">recipe-grid-lint</span></code>: Recipe linter</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.0.
+    </div>
+  </body>
+</html>
