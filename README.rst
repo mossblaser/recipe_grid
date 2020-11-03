@@ -52,7 +52,9 @@ You can install recipe grid from `PyPI
 
     $ pip install recipe_grid
 
-Then head over to the tutorial (LINK: TODO)
+Then head over to `the tutorial
+<https://mossblaser.github.io/recipe_grid/tutorial.html>`_ or jump straight
+into the `main documentation <https://mossblaser.github.io/recipe_grid/>`_.
 
 Development
 -----------
