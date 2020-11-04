@@ -10,6 +10,10 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
+    - name: Set up graphviz
+      run: |
+        sudo apt-get -yq update
+        sudo apt-get -yq install graphviz
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
