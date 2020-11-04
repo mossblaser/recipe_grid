@@ -200,7 +200,13 @@ class TestRecipeCompiler:
     def test_reference_has_no_inferred_name(self) -> None:
         sub_recipe = SubRecipe(Ingredient(SVS("spam")), (SVS("spam"),), False)
         assert compile(["spam\nspam\nspam"]) == [
-            Recipe((sub_recipe, Reference(sub_recipe, 0), Reference(sub_recipe, 0),)),
+            Recipe(
+                (
+                    sub_recipe,
+                    Reference(sub_recipe, 0),
+                    Reference(sub_recipe, 0),
+                )
+            ),
         ]
 
     def test_compilation_of_steps(self) -> None:
@@ -268,7 +274,9 @@ class TestRecipeCompiler:
                     ),
                     # No unit
                     SubRecipe(
-                        Ingredient(SVS("eggs"), Quantity(2.0)), (SVS("eggs"),), False,
+                        Ingredient(SVS("eggs"), Quantity(2.0)),
+                        (SVS("eggs"),),
+                        False,
                     ),
                     # With spacing between number and unit
                     SubRecipe(
@@ -283,7 +291,10 @@ class TestRecipeCompiler:
                         Ingredient(
                             SVS("dog food"),
                             Quantity(
-                                1, "can", value_unit_spacing=" ", preposition=" of",
+                                1,
+                                "can",
+                                value_unit_spacing=" ",
+                                preposition=" of",
                             ),
                         ),
                         (SVS("dog food"),),
@@ -353,7 +364,9 @@ class TestRecipeCompiler:
 
     def test_dont_inline_multi_output_subrecipes(self) -> None:
         sub_recipe = SubRecipe(
-            Ingredient(SVS("spam")), (SVS("meat"), SVS("tin")), True,
+            Ingredient(SVS("spam")),
+            (SVS("meat"), SVS("tin")),
+            True,
         )
         assert compile(["meat, tin = spam\nfry(meat, eggs)"]) == [
             Recipe(
@@ -361,7 +374,10 @@ class TestRecipeCompiler:
                     sub_recipe,
                     Step(
                         SVS("fry"),
-                        (Reference(sub_recipe, 0), Ingredient(SVS("eggs")),),
+                        (
+                            Reference(sub_recipe, 0),
+                            Ingredient(SVS("eggs")),
+                        ),
                     ),
                 )
             )
@@ -369,7 +385,9 @@ class TestRecipeCompiler:
 
     def test_dont_inline_partial_uses_of_a_subrecipe(self) -> None:
         sub_recipe = SubRecipe(
-            Ingredient(SVS("spam"), Quantity(100, "g")), (SVS("spam"),), False,
+            Ingredient(SVS("spam"), Quantity(100, "g")),
+            (SVS("spam"),),
+            False,
         )
         assert compile(["100g spam\nfry(50g spam, eggs)"]) == [
             Recipe(
@@ -388,7 +406,9 @@ class TestRecipeCompiler:
 
     def test_dont_inline_definitions_from_earlier_blocks(self) -> None:
         sub_recipe = SubRecipe(
-            Ingredient(SVS("spam"), Quantity(100, "g")), (SVS("spam"),), False,
+            Ingredient(SVS("spam"), Quantity(100, "g")),
+            (SVS("spam"),),
+            False,
         )
         recipe0 = Recipe((sub_recipe,))
         recipe1 = Recipe(

@@ -36,7 +36,8 @@ class TestStep:
         )
 
         assert step.scale(3) == Step(
-            SVS(["fry in ", 12, " blocks"]), (Ingredient(SVS("spam"), Quantity(6)),),
+            SVS(["fry in ", 12, " blocks"]),
+            (Ingredient(SVS("spam"), Quantity(6)),),
         )
 
 
@@ -75,7 +76,9 @@ class TestReference:
 
         assert Reference(sr_2, 0).scale(3) == Reference(sr_6, 0)
         assert Reference(sr_2, 0, Quantity(100, "g")).scale(3) == Reference(
-            sr_6, 0, Quantity(300, "g"),
+            sr_6,
+            0,
+            Quantity(300, "g"),
         )
 
 

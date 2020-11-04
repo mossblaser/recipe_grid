@@ -249,7 +249,8 @@ class TestRightPadTable:
 class TestSetBorderAroundTable:
     def test_single_cell(self) -> None:
         assert set_border_around_table(
-            Table.from_dict({(0, 0): Cell(123)}), BorderType.none,
+            Table.from_dict({(0, 0): Cell(123)}),
+            BorderType.none,
         ) == Table.from_dict(
             {
                 (0, 0): Cell(
@@ -264,7 +265,8 @@ class TestSetBorderAroundTable:
 
     def test_single_extended_cell(self) -> None:
         assert set_border_around_table(
-            Table.from_dict({(0, 0): Cell(123, columns=3, rows=3)}), BorderType.none,
+            Table.from_dict({(0, 0): Cell(123, columns=3, rows=3)}),
+            BorderType.none,
         ) == Table.from_dict(
             {
                 (0, 0): Cell(

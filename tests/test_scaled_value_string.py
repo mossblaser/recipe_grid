@@ -57,7 +57,8 @@ def test_constructor(
     ],
 )
 def test_render(
-    arg: Union[str, Number, Sequence[Union[str, Number]]], exp: str,
+    arg: Union[str, Number, Sequence[Union[str, Number]]],
+    exp: str,
 ) -> None:
     svs = ScaledValueString(arg)
     assert svs.render() == exp
@@ -67,7 +68,10 @@ def test_render(
 def test_render_custom_formatters() -> None:
     svs = ScaledValueString(["foo", 123])
     assert (
-        svs.render(format_number=lambda n: str(-n), format_string=lambda s: s.upper(),)
+        svs.render(
+            format_number=lambda n: str(-n),
+            format_string=lambda s: s.upper(),
+        )
         == "FOO-123"
     )
 

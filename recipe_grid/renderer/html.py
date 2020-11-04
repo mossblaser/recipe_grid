@@ -184,11 +184,14 @@ def render_number(number: Union[float, int, Fraction]) -> str:
 
 def render_quantity(quantity: Quantity) -> str:
     if quantity.unit is None:
-        return t(
-            "span",
-            render_number(quantity.value),
-            class_="rg-quantity-unitless rg-scaled-value",
-        ) + html.escape(quantity.preposition)
+        return (
+            t(
+                "span",
+                render_number(quantity.value),
+                class_="rg-quantity-unitless rg-scaled-value",
+            )
+            + html.escape(quantity.preposition)
+        )
     else:
         alternative_forms: List[Tuple[Union[float, int, Fraction], str]] = []
 
@@ -223,25 +226,31 @@ def render_quantity(quantity: Quantity) -> str:
         ]
 
         if len(all_forms) == 1:
-            return t(
-                "span",
-                all_forms[0],
-                class_="rg-quantity-without-conversions rg-scaled-value",
-            ) + html.escape(quantity.preposition)
+            return (
+                t(
+                    "span",
+                    all_forms[0],
+                    class_="rg-quantity-without-conversions rg-scaled-value",
+                )
+                + html.escape(quantity.preposition)
+            )
         else:
-            return t(
-                "span",
-                (
-                    all_forms[0]
-                    + t(
-                        "ul",
-                        "\n".join(t("li", form) for form in all_forms[1:]),
-                        class_="rg-quantity-conversions",
-                    )
-                ),
-                class_="rg-quantity-with-conversions rg-scaled-value",
-                tabindex="0",
-            ) + html.escape(quantity.preposition)
+            return (
+                t(
+                    "span",
+                    (
+                        all_forms[0]
+                        + t(
+                            "ul",
+                            "\n".join(t("li", form) for form in all_forms[1:]),
+                            class_="rg-quantity-conversions",
+                        )
+                    ),
+                    class_="rg-quantity-with-conversions rg-scaled-value",
+                    tabindex="0",
+                )
+                + html.escape(quantity.preposition)
+            )
 
 
 def render_proportion(proportion: Proportion) -> str:

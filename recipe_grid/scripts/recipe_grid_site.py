@@ -146,7 +146,9 @@ def main() -> None:
 
     try:
         generate_static_site(
-            args.recipes, args.output, max_servings=args.max_servings,
+            args.recipes,
+            args.output,
+            max_servings=args.max_servings,
         )
     except StaticSiteError as e:
         sys.stderr.write(f"{e}\n")

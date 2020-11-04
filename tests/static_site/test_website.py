@@ -160,7 +160,10 @@ class TestHomePage:
         assert h.parent is None
 
     def test_max_servings(self, make_directory: MakeDirectoryFn) -> None:
-        h = HomePage.from_root_directory(make_directory({}), max_servings=5,)
+        h = HomePage.from_root_directory(
+            make_directory({}),
+            max_servings=5,
+        )
         assert set(h.scaled_categories) == set(range(1, 5 + 1))
 
     def test_sources_with_readme(
@@ -505,7 +508,8 @@ class TestRecipePage:
     def test_max_servings_too_low(self, make_directory: MakeDirectoryFn) -> None:
         with pytest.raises(MaxServingsLowerThanLargestRecipeError):
             HomePage.from_root_directory(
-                make_directory({"recipe.md": "# Food for 5000"}), max_servings=5,
+                make_directory({"recipe.md": "# Food for 5000"}),
+                max_servings=5,
             )
 
     def test_resolve_local_links_stage(

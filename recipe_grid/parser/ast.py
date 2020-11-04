@@ -174,7 +174,9 @@ class String(AST):
     def __init__(
         self,
         value: Union[
-            str, Tuple[int, str], List[Union["Substring", "InterpolatedValue"]],
+            str,
+            Tuple[int, str],
+            List[Union["Substring", "InterpolatedValue"]],
         ],
     ) -> None:
         if isinstance(value, str):
@@ -294,7 +296,8 @@ class RecipeTransformer(peggie.ParseTreeTransformer):
                 if current_string_segment:
                     out.append(
                         Substring(
-                            current_string_segment_offset, current_string_segment,
+                            current_string_segment_offset,
+                            current_string_segment,
                         )
                     )
                 current_string_segment = ""
@@ -315,7 +318,10 @@ class RecipeTransformer(peggie.ParseTreeTransformer):
 
         if current_string_segment_offset is not None:
             out.append(
-                Substring(current_string_segment_offset, current_string_segment,)
+                Substring(
+                    current_string_segment_offset,
+                    current_string_segment,
+                )
             )
 
         return out

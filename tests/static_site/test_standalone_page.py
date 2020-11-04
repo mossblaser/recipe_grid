@@ -9,11 +9,15 @@ from recipe_grid.static_site.standalone_page import generate_standalone_page
 
 class TestGenerateStandalonePage:
     @pytest.mark.parametrize(
-        "markdown", ["No title at all", "# Title with no servings count"],
+        "markdown",
+        ["No title at all", "# Title with no servings count"],
     )
     @pytest.mark.parametrize("scale", [None, 1, 3])
     def test_title_not_required_when_servings_not_given(
-        self, tmp_path: Path, markdown: str, scale: Optional[int],
+        self,
+        tmp_path: Path,
+        markdown: str,
+        scale: Optional[int],
     ) -> None:
         filename = tmp_path / "file.md"
 

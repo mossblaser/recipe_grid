@@ -202,7 +202,8 @@ class TestEnumerateRecipeDirectory:
         )
 
     @pytest.mark.parametrize(
-        "readme_filename", ["index.md", "INDEX.md", "readme.md", "README.md"],
+        "readme_filename",
+        ["index.md", "INDEX.md", "readme.md", "README.md"],
     )
     def test_readme(self, tmp_path: Path, readme_filename: str) -> None:
         path = tmp_path / "test_dir"

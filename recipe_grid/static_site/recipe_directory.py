@@ -46,7 +46,11 @@ def dirname_to_title(filename: str) -> str:
     "My dir name" would all become "My dir name".
     """
     # Surround numbers in whitespace
-    filename = re.sub(r"[0-9]+", lambda match: f" {match.group(0)} ", filename,)
+    filename = re.sub(
+        r"[0-9]+",
+        lambda match: f" {match.group(0)} ",
+        filename,
+    )
 
     # Add spaces at camel-case word boundaries
     filename = re.sub(

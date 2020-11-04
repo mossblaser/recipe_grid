@@ -44,7 +44,10 @@ class TestCheckForUnusedIngredients:
         "recipe, exp_description",
         [
             # Referenced by typo
-            ("1 egg\nfry(eggs, oil)", "Ingredient 'egg' was defined but never used.",),
+            (
+                "1 egg\nfry(eggs, oil)",
+                "Ingredient 'egg' was defined but never used.",
+            ),
             # Unknown unit means mismatch
             (
                 "1 foobar of egg\nfry(egg, oil)",

@@ -381,7 +381,8 @@ class Quantity:
         else:
             try:
                 other_to_self_scale = UNIT_SYSTEM.convert_between(
-                    other.unit.lower(), self.unit.lower(),
+                    other.unit.lower(),
+                    self.unit.lower(),
                 )
             except KeyError:  # No conversion available
                 if self.unit.lower() == other.unit.lower():
@@ -545,7 +546,8 @@ class Step(RecipeTreeNode):
             return new
         else:
             return replace(
-                self, inputs=tuple(node.substitute(old, new) for node in self.inputs),
+                self,
+                inputs=tuple(node.substitute(old, new) for node in self.inputs),
             )
 
     def scale(self, factor: Union[int, float, Fraction]) -> "Step":
@@ -586,7 +588,8 @@ class Reference(RecipeTreeNode):
             return new
         else:
             return replace(
-                self, sub_recipe=cast(Reference, self.sub_recipe.substitute(old, new)),
+                self,
+                sub_recipe=cast(Reference, self.sub_recipe.substitute(old, new)),
             )
 
     def scale(self, factor: Union[int, float, Fraction]) -> "Reference":
@@ -655,7 +658,10 @@ class SubRecipe(RecipeTreeNode):
         if self == old:
             return new
         else:
-            return replace(self, sub_tree=self.sub_tree.substitute(old, new),)
+            return replace(
+                self,
+                sub_tree=self.sub_tree.substitute(old, new),
+            )
 
     def scale(self, factor: Union[int, float, Fraction]) -> "SubRecipe":
         return replace(

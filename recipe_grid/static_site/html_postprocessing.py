@@ -258,7 +258,9 @@ def add_recipe_scaling_links(
 
 
 def embed_local_links_as_data_urls(
-    tree: lxml.etree.Element, source: Path, root: Path,
+    tree: lxml.etree.Element,
+    source: Path,
+    root: Path,
 ) -> None:
     """
     A post-processing stage which converts local URLs into data URLs containing

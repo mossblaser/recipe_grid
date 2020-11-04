@@ -47,7 +47,9 @@ def generate_standalone_page(
         the referenced file contents embedded.
     """
     recipe = compile_recipe_markdown(
-        input_file, require_title=False, require_servings=servings is not None,
+        input_file,
+        require_title=False,
+        require_servings=servings is not None,
     )
 
     if scale is not None:
@@ -73,5 +75,6 @@ def generate_standalone_page(
         )
 
     return standalone_recipe_template.render(
-        title=recipe.title if recipe.title is not None else "Recipe", body=recipe_html,
+        title=recipe.title if recipe.title is not None else "Recipe",
+        body=recipe_html,
     )

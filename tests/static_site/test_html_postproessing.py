@@ -179,13 +179,16 @@ class TestResolveLocalLinks:
         from_path: str,
     ) -> None:
         filename_to_asset_paths: MutableMapping[str, str] = {}
-        assert self.run(
-            t("a", "Link", href=link),
-            tmp_path=tmp_path,
-            source=tmp_path / source,
-            from_path=from_path,
-            filename_to_asset_paths=filename_to_asset_paths,
-        ) == t("a", "Link", href=exp_link)
+        assert (
+            self.run(
+                t("a", "Link", href=link),
+                tmp_path=tmp_path,
+                source=tmp_path / source,
+                from_path=from_path,
+                filename_to_asset_paths=filename_to_asset_paths,
+            )
+            == t("a", "Link", href=exp_link)
+        )
         assert filename_to_asset_paths == {
             tmp_path / file: path for file, path in exp_filename_to_asset_paths.items()
         }
@@ -208,13 +211,16 @@ class TestResolveLocalLinks:
     )
     def test_from_recipe_page(self, tmp_path: Path, link: str, exp_link: str) -> None:
         filename_to_asset_paths: MutableMapping[str, str] = {}
-        assert self.run(
-            t("a", "Link", href=link),
-            tmp_path=tmp_path,
-            source=tmp_path / "foo" / "bar" / "baz.md",
-            from_path="/serves123/bar/baz.html",
-            filename_to_asset_paths=filename_to_asset_paths,
-        ) == t("a", "Link", href=exp_link)
+        assert (
+            self.run(
+                t("a", "Link", href=link),
+                tmp_path=tmp_path,
+                source=tmp_path / "foo" / "bar" / "baz.md",
+                from_path="/serves123/bar/baz.html",
+                filename_to_asset_paths=filename_to_asset_paths,
+            )
+            == t("a", "Link", href=exp_link)
+        )
         assert filename_to_asset_paths == {}
 
     @pytest.mark.parametrize(
@@ -232,13 +238,16 @@ class TestResolveLocalLinks:
         self, tmp_path: Path, link: str, exp_link: str
     ) -> None:
         filename_to_asset_paths: MutableMapping[str, str] = {}
-        assert self.run(
-            t("a", "Link", href=link),
-            tmp_path=tmp_path,
-            source=tmp_path / "foo" / "bar" / "unscaled.md",
-            from_path="/categories/bar/unscaled.html",
-            filename_to_asset_paths=filename_to_asset_paths,
-        ) == t("a", "Link", href=exp_link)
+        assert (
+            self.run(
+                t("a", "Link", href=link),
+                tmp_path=tmp_path,
+                source=tmp_path / "foo" / "bar" / "unscaled.md",
+                from_path="/categories/bar/unscaled.html",
+                filename_to_asset_paths=filename_to_asset_paths,
+            )
+            == t("a", "Link", href=exp_link)
+        )
         assert filename_to_asset_paths == {}
 
     @pytest.mark.parametrize(
@@ -261,16 +270,22 @@ class TestResolveLocalLinks:
         ],
     )
     def test_from_scaled_category_page(
-        self, tmp_path: Path, link: str, exp_link: str,
+        self,
+        tmp_path: Path,
+        link: str,
+        exp_link: str,
     ) -> None:
         filename_to_asset_paths: MutableMapping[str, str] = {}
-        assert self.run(
-            t("a", "Link", href=link),
-            tmp_path=tmp_path,
-            source=tmp_path / "foo" / "bar" / "README.md",
-            from_path="/serves123/bar/index.html",
-            filename_to_asset_paths=filename_to_asset_paths,
-        ) == t("a", "Link", href=exp_link)
+        assert (
+            self.run(
+                t("a", "Link", href=link),
+                tmp_path=tmp_path,
+                source=tmp_path / "foo" / "bar" / "README.md",
+                from_path="/serves123/bar/index.html",
+                filename_to_asset_paths=filename_to_asset_paths,
+            )
+            == t("a", "Link", href=exp_link)
+        )
         assert filename_to_asset_paths == {}
 
     @pytest.mark.parametrize(
@@ -293,16 +308,22 @@ class TestResolveLocalLinks:
         ],
     )
     def test_from_unscaled_category_page(
-        self, tmp_path: Path, link: str, exp_link: str,
+        self,
+        tmp_path: Path,
+        link: str,
+        exp_link: str,
     ) -> None:
         filename_to_asset_paths: MutableMapping[str, str] = {}
-        assert self.run(
-            t("a", "Link", href=link),
-            tmp_path=tmp_path,
-            source=tmp_path / "foo" / "bar" / "README.md",
-            from_path="/categories/bar/index.html",
-            filename_to_asset_paths=filename_to_asset_paths,
-        ) == t("a", "Link", href=exp_link)
+        assert (
+            self.run(
+                t("a", "Link", href=link),
+                tmp_path=tmp_path,
+                source=tmp_path / "foo" / "bar" / "README.md",
+                from_path="/categories/bar/index.html",
+                filename_to_asset_paths=filename_to_asset_paths,
+            )
+            == t("a", "Link", href=exp_link)
+        )
         assert filename_to_asset_paths == {}
 
 
@@ -350,7 +371,8 @@ def test_add_recipe_scaling_links() -> None:
 
 class TestEmbedLocalLinksAsDataUrls:
     @pytest.mark.parametrize(
-        "url", ["http://example.com", "#foo"],
+        "url",
+        ["http://example.com", "#foo"],
     )
     def test_ignore_external_or_page_local_links(
         self, tmp_path: Path, url: str
@@ -403,14 +425,17 @@ class TestEmbedLocalLinksAsDataUrls:
     def test_valid(self, tmp_path: Path) -> None:
         (tmp_path / "bar.txt").open("w").write("foobar")
 
-        assert postprocess_html(
-            t("a", "foo", href="bar.txt"),
-            False,
-            [
-                partial(
-                    embed_local_links_as_data_urls,
-                    source=tmp_path / "foo.md",
-                    root=tmp_path,
-                ),
-            ],
-        ) == t("a", "foo", href="data:text/plain;base64,Zm9vYmFy")
+        assert (
+            postprocess_html(
+                t("a", "foo", href="bar.txt"),
+                False,
+                [
+                    partial(
+                        embed_local_links_as_data_urls,
+                        source=tmp_path / "foo.md",
+                        root=tmp_path,
+                    ),
+                ],
+            )
+            == t("a", "foo", href="data:text/plain;base64,Zm9vYmFy")
+        )

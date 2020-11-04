@@ -216,7 +216,8 @@ def test_render_ingredient(ingredient: Ingredient, exp: str) -> None:
 
 def test_generate_subrecipe_output_id() -> None:
     sub_recipe = SubRecipe(
-        Ingredient(SVS("spam")), (SVS("foo"), SVS(["foo bar ", 123, " baz?"])),
+        Ingredient(SVS("spam")),
+        (SVS("foo"), SVS(["foo bar ", 123, " baz?"])),
     )
     assert generate_subrecipe_output_id(sub_recipe, 0, "qux-") == "qux-foo"
     assert generate_subrecipe_output_id(sub_recipe, 1, "qux-") == "qux-foo-bar-123-baz"
@@ -333,13 +334,23 @@ class TestRenderCell:
 
     def test_colspan(self) -> None:
         assert (
-            render_cell(Cell(Ingredient(SVS("spam")), columns=3,),)
+            render_cell(
+                Cell(
+                    Ingredient(SVS("spam")),
+                    columns=3,
+                ),
+            )
             == '<td class="rg-ingredient" colspan="3">spam</td>'
         )
 
     def test_rowspan(self) -> None:
         assert (
-            render_cell(Cell(Step(SVS("fry"), (Ingredient(SVS("spam")),)), rows=3,),)
+            render_cell(
+                Cell(
+                    Step(SVS("fry"), (Ingredient(SVS("spam")),)),
+                    rows=3,
+                ),
+            )
             == '<td class="rg-step" rowspan="3">fry</td>'
         )
 
@@ -364,7 +375,8 @@ class TestRenderCell:
 
 
 @pytest.mark.parametrize(
-    "id, exp_attrs", [(None, ""), ("foo-bar", ' id="foo-bar"')],
+    "id, exp_attrs",
+    [(None, ""), ("foo-bar", ' id="foo-bar"')],
 )
 def test_render_table(id: Optional[str], exp_attrs: str) -> None:
     assert render_table(

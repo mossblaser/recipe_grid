@@ -114,7 +114,8 @@ class ScaledValueExpression(inline.InlineElement):  # type: ignore
                 (
                     (int(submatch["integer"]) if submatch["integer"] is not None else 0)
                     + Fraction(
-                        int(submatch["numerator"]), int(submatch["denominator"]),
+                        int(submatch["numerator"]),
+                        int(submatch["denominator"]),
                     )
                 )
                 if submatch["numerator"] is not None
@@ -321,7 +322,8 @@ class MarkdownRecipe:
         # Substitute scaled value strings
         for placeholder, svs in self.scaled_value_strings.items():
             html = html.replace(
-                placeholder, render_scaled_value_string(svs.scale(scale)),
+                placeholder,
+                render_scaled_value_string(svs.scale(scale)),
             )
 
         # Substitute scaled recipes
@@ -488,7 +490,9 @@ class RecipeGridRendererMixin:
         return placeholder
 
     def render_recipe_source_block(
-        self, element: Union[CodeBlock, FencedCode], in_fenced_block: bool,
+        self,
+        element: Union[CodeBlock, FencedCode],
+        in_fenced_block: bool,
     ) -> str:
         """
         Substitute recipe-containing code blocks with placeholders, capturing

@@ -250,7 +250,9 @@ class HomePage(Page):
 
     @classmethod
     def from_root_directory(
-        cls, root_directory: Path, max_servings: int = 10,
+        cls,
+        root_directory: Path,
+        max_servings: int = 10,
     ) -> "HomePage":
         """
         Create a complete hierarchy of pages from a root directory.
@@ -683,11 +685,16 @@ class RecipePage(Page):
             ],
         )
 
-        return recipe_template.render(body=body, **self.get_template_variables(),)
+        return recipe_template.render(
+            body=body,
+            **self.get_template_variables(),
+        )
 
 
 def generate_static_site(
-    input_directory: Path, output_directory: Path, max_servings: int = 10,
+    input_directory: Path,
+    output_directory: Path,
+    max_servings: int = 10,
 ) -> None:
     """
     Generate a static recipe website.
@@ -706,7 +713,8 @@ def generate_static_site(
     """
     # Generate the site
     home_page = HomePage.from_root_directory(
-        root_directory=input_directory, max_servings=max_servings,
+        root_directory=input_directory,
+        max_servings=max_servings,
     )
 
     # Render and write the pages

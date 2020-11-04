@@ -228,13 +228,24 @@ class TestRenderMarkdown:
         sr = SubRecipe(
             Step(
                 SVS("boil down"),
-                (Ingredient(SVS("tomatoes")), Ingredient(SVS("water")),),
+                (
+                    Ingredient(SVS("tomatoes")),
+                    Ingredient(SVS("water")),
+                ),
             ),
             (SVS("sauce"),),
         )
         r1 = Recipe((sr,))
         r2 = Recipe(
-            (Step(SVS("pour over"), (Ingredient(SVS("pasta")), Reference(sr),),),),
+            (
+                Step(
+                    SVS("pour over"),
+                    (
+                        Ingredient(SVS("pasta")),
+                        Reference(sr),
+                    ),
+                ),
+            ),
             follows=r1,
         )
 
@@ -268,13 +279,17 @@ class TestRenderMarkdown:
         )
 
         e1 = SubRecipe(
-            Ingredient(SVS("egg"), Quantity(1)), (SVS("egg"),), show_output_names=False,
+            Ingredient(SVS("egg"), Quantity(1)),
+            (SVS("egg"),),
+            show_output_names=False,
         )
         r1 = Recipe((e1,))
         r2 = Recipe((Step(SVS("fry"), (Reference(e1),)),), follows=r1)
 
         e2 = SubRecipe(
-            Ingredient(SVS("egg"), Quantity(2)), (SVS("egg"),), show_output_names=False,
+            Ingredient(SVS("egg"), Quantity(2)),
+            (SVS("egg"),),
+            show_output_names=False,
         )
         r3 = Recipe((e2,))
         r4 = Recipe((Step(SVS("boil"), (Reference(e2),)),), follows=r3)
@@ -331,7 +346,13 @@ class TestRenderMarkdown:
         "source, exp_title, exp_servings, exp_html, exp_html_10",
         [
             # No title
-            ("Hello", None, None, "<p>Hello</p>\n", "<p>Hello</p>\n",),
+            (
+                "Hello",
+                None,
+                None,
+                "<p>Hello</p>\n",
+                "<p>Hello</p>\n",
+            ),
             # First title is not a h1
             (
                 "## Hello\n# World",

@@ -497,11 +497,29 @@ from recipe_grid.parser.ast import (
         # Steps
         (
             "cook(spam)",
-            Recipe([Stmt(Step(String("cook"), [Reference(String("spam"), None)],))]),
+            Recipe(
+                [
+                    Stmt(
+                        Step(
+                            String("cook"),
+                            [Reference(String("spam"), None)],
+                        )
+                    )
+                ]
+            ),
         ),
         (
             "cook(spam,)",
-            Recipe([Stmt(Step(String("cook"), [Reference(String("spam"), None)],))]),
+            Recipe(
+                [
+                    Stmt(
+                        Step(
+                            String("cook"),
+                            [Reference(String("spam"), None)],
+                        )
+                    )
+                ]
+            ),
         ),
         (
             "cook(spam, eggs)",

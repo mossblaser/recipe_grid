@@ -430,7 +430,8 @@ class RecipeCompiler:
             # This is an ingredient
             if isinstance(ast_reference.quantity_or_proportion, ast.Proportion):
                 raise ProportionGivenForIngredientError.from_ast_reference(
-                    self._sources[self._current_recipe_index], ast_reference,
+                    self._sources[self._current_recipe_index],
+                    ast_reference,
                 )
             return Ingredient(
                 description=name,
@@ -442,7 +443,8 @@ class RecipeCompiler:
             )
 
     def _compile_quantity_or_proportion(
-        self, ast_quantity_or_proportion: Union[ast.Quantity, ast.Proportion, None],
+        self,
+        ast_quantity_or_proportion: Union[ast.Quantity, ast.Proportion, None],
     ) -> Union[Quantity, Proportion]:
         if isinstance(ast_quantity_or_proportion, ast.Quantity):
             return self._compile_quantity(ast_quantity_or_proportion)
