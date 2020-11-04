@@ -59,7 +59,7 @@ input nodes (children).</p>
 <p>A simple recipe might only consist of a single tree of <a class="reference internal" href="#recipe_grid.recipe.Ingredient" title="recipe_grid.recipe.Ingredient"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ingredient</span></code></a>
 and <a class="reference internal" href="#recipe_grid.recipe.Step" title="recipe_grid.recipe.Step"><code class="xref py py-class docutils literal notranslate"><span class="pre">Step</span></code></a> nodes. For example, here’s how a simple pasta meal might
 be represented.</p>
-digraph foo {
+<div class="graphviz"><img src="_images/graphviz-f90fa211730acb239d920c7be13f45872440432a.png" alt="digraph foo {
 
    subgraph {
        node [shape=ellipse]
@@ -90,13 +90,14 @@ digraph foo {
 
    mix -&gt; boildown;
    mix -&gt; boil;
-}<p>Sometimes a sub tree within a recipe might be identified as its own sub recipe
+}" class="graphviz" /></div>
+<p>Sometimes a sub tree within a recipe might be identified as its own sub recipe
 and given an emphasising border and title in the rendered recipe table.  For
 example, in the recipe above we might make the pasta sauce a sub recipe. To
 represent this, a <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a> node type is used which always has exactly one
 child and one or more named outputs. In this example, there is only one output
 (‘Pasta sauce’).  We’ll return to the case with multiple named outputs later.</p>
-digraph foo {
+<div class="graphviz"><img src="_images/graphviz-42e2a893c108cdb715c8c1b7df1ffb6ebf82f8d5.png" alt="digraph foo {
 
    subgraph {
        node [shape=ellipse]
@@ -135,13 +136,14 @@ digraph foo {
 
    mix -&gt; sauce:fs:n;
    mix -&gt; boil;
-}<p>In other cases, an ingredient or whole sub recipe may be split into parts and
+}" class="graphviz" /></div>
+<p>In other cases, an ingredient or whole sub recipe may be split into parts and
 used separately. In this case, a <a class="reference internal" href="#recipe_grid.recipe.Reference" title="recipe_grid.recipe.Reference"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reference</span></code></a> node may be used to
 refer to a <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a> which must be the root of a previous tree in the
 recipe. For example, in the recipe below, a Sub Recipe for grated cheese is
 referenced in two places, with 75% being mixed into the main recipe and 25%
 being used to top it:</p>
-digraph foo {
+<div class="graphviz"><img src="_images/graphviz-6e6d59a98bf11c0933b22921e6a96157bbec3f28.png" alt="digraph foo {
 
    subgraph {
        node [shape=ellipse]
@@ -188,12 +190,13 @@ digraph foo {
          refm:sw -&gt; grated_cheese:fc:n
          reft:sw -&gt; grated_cheese:fc:n
    }
-}<p>A final case is where a <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a> has more than one output. This might occur
+}" class="graphviz" /></div>
+<p>A final case is where a <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a> has more than one output. This might occur
 when, for example, when vegetables are boiled and both the vegetables and the
 water are reserved and used in a later step. Each output may then be referenced
 separately by <a class="reference internal" href="#recipe_grid.recipe.Reference" title="recipe_grid.recipe.Reference"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reference</span></code></a> nodes. <a class="reference internal" href="#recipe_grid.recipe.SubRecipe" title="recipe_grid.recipe.SubRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubRecipe</span></code></a> nodes with more than
 one output must be the root of a recipe tree.</p>
-digraph foo {
+<div class="graphviz"><img src="_images/graphviz-b88e751c26dffd45e54e77652caf5abe5c4e08cf.png" alt="digraph foo {
    subgraph {
        node [shape=ellipse]
 
@@ -237,7 +240,8 @@ digraph foo {
        refv:sw -&gt; boiled_veg:fv:n
        refw:sw -&gt; boiled_veg:fw:n
    }
-}</div>
+}" class="graphviz" /></div>
+</div>
 <div class="section" id="data-structures">
 <h2>Data structures<a class="headerlink" href="#data-structures" title="Permalink to this headline">¶</a></h2>
 <p>A Recipe is defined at its root by a <a class="reference internal" href="#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code></a> instance. In a simple
