@@ -434,9 +434,10 @@ And then the same recipe scaled up by a factor of two gives:
 
 .. note::
 
-    To get a literal ``{`` or ``}`` character you can use ``{\{}`` or ``{\}}``
-    respectively.
-
+    Within a recipe block, to get a literal ``{`` or ``}`` character you can
+    enclose it in quotes (e.g. ``"{"`` or ``"}"``). Within the rest of the
+    Markdown document, you can use a backslash to escape them (e.g. ``\{`` and
+    ``\}``).
 
 Linting
 -------
