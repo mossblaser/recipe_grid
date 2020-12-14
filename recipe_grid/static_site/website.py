@@ -635,7 +635,7 @@ class RecipePage(Page):
                 servings=servings,
                 native_servings=recipe.servings,
                 recipe_html=recipe.render(
-                    Fraction(servings, recipe.servings) if servings is not None else 1.0
+                    Fraction(servings, recipe.servings) if servings is not None else 1
                 ),
                 recipe_source=recipe_source,
                 other_scalings=other_scalings,
