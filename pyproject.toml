@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "recipe_grid"
-version = "2.0.1"
+version = "2.0.2"
 description = "A tool for generating table-based recipe descriptions."
 authors = ["Jonathan Heathcote"]
 homepage = "https://github.com/mossblaser/recipe_grid"
