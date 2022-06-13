@@ -713,7 +713,7 @@ def generate_static_site(
     """
     # Generate the site
     home_page = HomePage.from_root_directory(
-        root_directory=input_directory,
+        root_directory=input_directory.resolve(),
         max_servings=max_servings,
     )
 
