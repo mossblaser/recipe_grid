@@ -263,7 +263,6 @@ class NamedOutput:
 
 
 class RecipeCompiler:
-
     _sources: List[str]
     """
     The source code for each compiled recipe block. Used in the production of

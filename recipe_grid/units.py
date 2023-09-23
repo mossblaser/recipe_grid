@@ -115,7 +115,6 @@ class RelatedUnitSet:
         self._name_to_node = {}
         for i, unit in enumerate(self.units):
             node: UnitTreeNode
-            node_definition: Optional[Tuple[Number, UnitTreeNode]]
 
             if i == 0:
                 if unit.definition is not None:

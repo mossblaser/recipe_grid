@@ -698,7 +698,7 @@ def test_decimal_values_become_correct_types(number: str, exp_type: type) -> Non
 
     ref = cast(Reference, ast.stmts[0].expr)
     interp_value = cast(InterpolatedValue, ref.name.substrings[1])
-    assert type(interp_value.number) == exp_type
+    assert type(interp_value.number) is exp_type
 
 
 @pytest.mark.parametrize(

@@ -172,7 +172,6 @@ class SphinxRecipeCompileError(SphinxError):
 
 
 class RecipeDirective(SphinxDirective):
-
     has_content = True
 
     option_spec = {
