@@ -1,20 +1,18 @@
-
 <!DOCTYPE html>
 
-<html>
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>Recipe Grid Sphinx Extension &#8212; Recipe Grid 2.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=601dbdee" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css?v=22be8b51" />
+    <script src="_static/documentation_options.js?v=60dbed4a"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="recipe_grid.renderer: Rendering recipes as tables" href="rendering.html" /> 
@@ -41,8 +39,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-recipe_grid.sphinx_ext">
-<span id="recipe-grid-sphinx-extension"></span><h1>Recipe Grid Sphinx Extension<a class="headerlink" href="#module-recipe_grid.sphinx_ext" title="Permalink to this headline">¶</a></h1>
+  <section id="module-recipe_grid.sphinx_ext">
+<span id="recipe-grid-sphinx-extension"></span><h1>Recipe Grid Sphinx Extension<a class="headerlink" href="#module-recipe_grid.sphinx_ext" title="Link to this heading">¶</a></h1>
 <p>A Sphinx extension for embedding compiled recipes in HTML outputs.</p>
 <p>This extension is enabled by adding <code class="docutils literal notranslate"><span class="pre">&quot;recipe_grid.sphinx_ext&quot;</span></code> to your
 Sphinx extensions list.</p>
@@ -69,8 +67,8 @@ grid tables into (HTML-only) sphinx documentation. For example:</p>
       <td class="rg-step rg-border-bottom-sub-recipe">boiled</td>
     </tr>
   </table>
-</div><div class="section" id="referencing-earlier-recipes">
-<h2>Referencing earlier recipes<a class="headerlink" href="#referencing-earlier-recipes" title="Permalink to this headline">¶</a></h2>
+</div><section id="referencing-earlier-recipes">
+<h2>Referencing earlier recipes<a class="headerlink" href="#referencing-earlier-recipes" title="Link to this heading">¶</a></h2>
 <p>Recipes may be defined across several blocks with later blocks referencing
 outputs from earlier blocks. For example:</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">recipe</span><span class="p">::</span>
@@ -88,9 +86,9 @@ outputs from earlier blocks. For example:</p>
     </tr>
     <tr><td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe">more spam</td></tr>
   </table>
-</div></div>
-<div class="section" id="starting-a-new-recipe">
-<h2>Starting a new recipe<a class="headerlink" href="#starting-a-new-recipe" title="Permalink to this headline">¶</a></h2>
+</div></section>
+<section id="starting-a-new-recipe">
+<h2>Starting a new recipe<a class="headerlink" href="#starting-a-new-recipe" title="Link to this heading">¶</a></h2>
 <p>A new, independent recipe may be started by adding the <code class="docutils literal notranslate"><span class="pre">:start-new-recipe:</span></code>
 option enabling ingredient/output names to be reused without referring to
 earlier recipes. For example:</p>
@@ -107,9 +105,9 @@ earlier recipes. For example:</p>
       <td class="rg-step rg-border-right-sub-recipe rg-border-top-sub-recipe rg-border-bottom-sub-recipe">scrambled</td>
     </tr>
   </table>
-</div></div>
-<div class="section" id="scaling">
-<h2>Scaling<a class="headerlink" href="#scaling" title="Permalink to this headline">¶</a></h2>
+</div></section>
+<section id="scaling">
+<h2>Scaling<a class="headerlink" href="#scaling" title="Link to this heading">¶</a></h2>
 <p>Recipes can be scaled using the <code class="docutils literal notranslate"><span class="pre">:scale:</span></code> option:</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">recipe</span><span class="p">::</span>
     <span class="nc">:scale:</span> 3/2
@@ -139,9 +137,9 @@ earlier recipes. For example:</p>
 <code class="docutils literal notranslate"><span class="pre">:scale:</span></code> option must be repeated otherwise the displayed values will be
 inconsistent.</p>
 </div>
-</div>
-<div class="section" id="showing-sources">
-<h2>Showing sources<a class="headerlink" href="#showing-sources" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="showing-sources">
+<h2>Showing sources<a class="headerlink" href="#showing-sources" title="Link to this heading">¶</a></h2>
 <p>To facilitate writing of documentation examples for the recipe grid syntax, the
 <code class="docutils literal notranslate"><span class="pre">:show-source:</span></code> option may be used which will cause the rendered recipe grid
 table to be shown adjacent to the recipe grid source which defines it. For
@@ -177,9 +175,9 @@ slice(
     </tr>
     <tr><td class="rg-ingredient rg-border-left-sub-recipe rg-border-bottom-sub-recipe"><span class="rg-quantity-unitless rg-scaled-value">1</span> oven pizza</td></tr>
   </table>
-</div></div>
-<div class="section" id="internals">
-<h2>Internals<a class="headerlink" href="#internals" title="Permalink to this headline">¶</a></h2>
+</div></section>
+<section id="internals">
+<h2>Internals<a class="headerlink" href="#internals" title="Link to this heading">¶</a></h2>
 <p>This Sphinx extension runs as follows:</p>
 <ol class="arabic simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">builder-inited</span></code> Sphinx event is used to add the recipe grid CSS to the
@@ -200,8 +198,8 @@ stores these in the <code class="docutils literal notranslate"><span class="pre"
 <li><p>During HTML rendering, <code class="docutils literal notranslate"><span class="pre">pending_recipe_node</span></code> nodes are replaced with
 rendered recipe tables.</p></li>
 </ol>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -210,8 +208,9 @@ rendered recipe tables.</p></li>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Recipe Grid Sphinx Extension</a><ul>
 <li><a class="reference internal" href="#referencing-earlier-recipes">Referencing earlier recipes</a></li>
 <li><a class="reference internal" href="#starting-a-new-recipe">Starting a new recipe</a></li>
@@ -222,9 +221,12 @@ rendered recipe tables.</p></li>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="rendering.html"
-                        title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer</span></code>: Rendering recipes as tables</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="rendering.html"
+                          title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer</span></code>: Rendering recipes as tables</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -236,12 +238,12 @@ rendered recipe tables.</p></li>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -263,8 +265,8 @@ rendered recipe tables.</p></li>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Jonathan Heathcote.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.1.
+    &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>

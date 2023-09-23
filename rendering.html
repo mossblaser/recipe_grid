@@ -1,20 +1,18 @@
-
 <!DOCTYPE html>
 
-<html>
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>recipe_grid.renderer: Rendering recipes as tables &#8212; Recipe Grid 2.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=601dbdee" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css?v=22be8b51" />
+    <script src="_static/documentation_options.js?v=60dbed4a"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Recipe Grid Sphinx Extension" href="sphinx.html" />
@@ -45,8 +43,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-recipe_grid.renderer">
-<span id="recipe-grid-renderer-rendering-recipes-as-tables"></span><h1><a class="reference internal" href="#module-recipe_grid.renderer" title="recipe_grid.renderer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer</span></code></a>: Rendering recipes as tables<a class="headerlink" href="#module-recipe_grid.renderer" title="Permalink to this headline">¶</a></h1>
+  <section id="module-recipe_grid.renderer">
+<span id="recipe-grid-renderer-rendering-recipes-as-tables"></span><h1><a class="reference internal" href="#module-recipe_grid.renderer" title="recipe_grid.renderer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer</span></code></a>: Rendering recipes as tables<a class="headerlink" href="#module-recipe_grid.renderer" title="Link to this heading">¶</a></h1>
 <p>Recipes are rendered from their recipe data model descriptions
 (<a class="reference internal" href="data_model.html#module-recipe_grid.recipe" title="recipe_grid.recipe"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.recipe</span></code></a>) into tabular form for display.</p>
 <p>Table rendering is split into two parts. First an abstract tabular description
@@ -57,8 +55,8 @@ formats to be supported.</p>
 <a class="reference internal" href="#module-recipe_grid.renderer.table" title="recipe_grid.renderer.table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.table</span></code></a>, the recipe-to-table conversion in
 <a class="reference internal" href="#module-recipe_grid.renderer.recipe_to_table" title="recipe_grid.renderer.recipe_to_table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.recipe_to_table</span></code></a> and finally, table-to-HTML
 conversion in <a class="reference internal" href="#module-recipe_grid.renderer.html" title="recipe_grid.renderer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.html</span></code></a></p>
-<div class="section" id="module-recipe_grid.renderer.table">
-<span id="recipe-grid-renderer-table-abstract-table-description"></span><h2><a class="reference internal" href="#module-recipe_grid.renderer.table" title="recipe_grid.renderer.table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.table</span></code></a>: Abstract table description<a class="headerlink" href="#module-recipe_grid.renderer.table" title="Permalink to this headline">¶</a></h2>
+<section id="module-recipe_grid.renderer.table">
+<span id="recipe-grid-renderer-table-abstract-table-description"></span><h2><a class="reference internal" href="#module-recipe_grid.renderer.table" title="recipe_grid.renderer.table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.table</span></code></a>: Abstract table description<a class="headerlink" href="#module-recipe_grid.renderer.table" title="Link to this heading">¶</a></h2>
 <p>The following output-agnostic data structure is used to represent a recipe in
 tabular form.</p>
 <p>The basic data structure consists of a <a class="reference internal" href="#recipe_grid.renderer.table.Table" title="recipe_grid.renderer.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a> object which contains
@@ -72,108 +70,108 @@ with <a class="reference internal" href="#recipe_grid.renderer.table.ExtendedCel
 <a class="reference internal" href="#recipe_grid.renderer.table.Table.from_dict" title="recipe_grid.renderer.table.Table.from_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Table.from_dict()</span></code></a> class method is provided which can automatically fill
 in <a class="reference internal" href="#recipe_grid.renderer.table.ExtendedCell" title="recipe_grid.renderer.table.ExtendedCell"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtendedCell</span></code></a> instances when only :py:class`Cell`s are given.</p>
 <dl class="py class">
-<dt id="recipe_grid.renderer.table.Table">
-<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.renderer.table.</code><code class="sig-name descname">Table</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.renderer.table.Table" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.Table">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">recipe_grid.renderer.table.</span></span><span class="sig-name descname"><span class="pre">Table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#recipe_grid.renderer.table.Cell" title="recipe_grid.renderer.table.Cell"><span class="pre">recipe_grid.renderer.table.Cell</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#recipe_grid.renderer.table.ExtendedCell" title="recipe_grid.renderer.table.ExtendedCell"><span class="pre">recipe_grid.renderer.table.ExtendedCell</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.renderer.table.Table" title="Link to this definition">¶</a></dt>
 <dd><dl class="py attribute">
-<dt id="recipe_grid.renderer.table.Table.cells">
-<code class="sig-name descname">cells</code><em class="property">: Sequence<span class="p">[</span>Sequence<span class="p">[</span>Union<span class="p">[</span><a class="reference internal" href="#recipe_grid.renderer.table.Cell" title="recipe_grid.renderer.table.Cell">recipe_grid.renderer.table.Cell</a><span class="p">[</span>T<span class="p">]</span><span class="p">, </span><a class="reference internal" href="#recipe_grid.renderer.table.ExtendedCell" title="recipe_grid.renderer.table.ExtendedCell">recipe_grid.renderer.table.ExtendedCell</a><span class="p">[</span>T<span class="p">]</span><span class="p">]</span><span class="p">]</span><span class="p">]</span></em><a class="headerlink" href="#recipe_grid.renderer.table.Table.cells" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.Table.cells">
+<span class="sig-name descname"><span class="pre">cells</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#recipe_grid.renderer.table.Cell" title="recipe_grid.renderer.table.Cell"><span class="pre">Cell</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#recipe_grid.renderer.table.ExtendedCell" title="recipe_grid.renderer.table.ExtendedCell"><span class="pre">ExtendedCell</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#recipe_grid.renderer.table.Table.cells" title="Link to this definition">¶</a></dt>
 <dd><p>The table cells. A dense 2D array indexed as <code class="docutils literal notranslate"><span class="pre">cells[row][column]</span></code> with
 spaces covered by extended cells being denoted using
 <a class="reference internal" href="#recipe_grid.renderer.table.ExtendedCell" title="recipe_grid.renderer.table.ExtendedCell"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtendedCell</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="recipe_grid.renderer.table.Table.from_dict">
-<em class="property">classmethod </em><code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table_dict</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>Tuple<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">]</span><span class="p">, </span><a class="reference internal" href="#recipe_grid.renderer.table.Cell" title="recipe_grid.renderer.table.Cell">recipe_grid.renderer.table.Cell</a><span class="p">[</span>T<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#recipe_grid.renderer.table.Table" title="recipe_grid.renderer.table.Table">recipe_grid.renderer.table.Table</a><span class="p">[</span>T<span class="p">]</span><a class="headerlink" href="#recipe_grid.renderer.table.Table.from_dict" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.Table.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><span class="pre">Mapping</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#recipe_grid.renderer.table.Cell" title="recipe_grid.renderer.table.Cell"><span class="pre">Cell</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#recipe_grid.renderer.table.Table" title="recipe_grid.renderer.table.Table"><span class="pre">Table</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#recipe_grid.renderer.table.Table.from_dict" title="Link to this definition">¶</a></dt>
 <dd><p>Construct a <a class="reference internal" href="#recipe_grid.renderer.table.Table" title="recipe_grid.renderer.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a> from a dictionary mapping (row, column)
 to <a class="reference internal" href="#recipe_grid.renderer.table.Cell" title="recipe_grid.renderer.table.Cell"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cell</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="recipe_grid.renderer.table.Table.to_dict">
-<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Mapping<span class="p">[</span>Tuple<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">]</span><span class="p">, </span><a class="reference internal" href="#recipe_grid.renderer.table.Cell" title="recipe_grid.renderer.table.Cell">recipe_grid.renderer.table.Cell</a><span class="p">[</span>T<span class="p">]</span><span class="p">]</span><a class="headerlink" href="#recipe_grid.renderer.table.Table.to_dict" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.Table.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><span class="pre">Mapping</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#recipe_grid.renderer.table.Cell" title="recipe_grid.renderer.table.Cell"><span class="pre">Cell</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#recipe_grid.renderer.table.Table.to_dict" title="Link to this definition">¶</a></dt>
 <dd><p>Return a dictionary mapping from (row, column) to <a class="reference internal" href="#recipe_grid.renderer.table.Cell" title="recipe_grid.renderer.table.Cell"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cell</span></code></a>
 (omitting <a class="reference internal" href="#recipe_grid.renderer.table.ExtendedCell" title="recipe_grid.renderer.table.ExtendedCell"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtendedCell</span></code></a>s).</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="recipe_grid.renderer.table.Table.columns">
-<em class="property">property </em><code class="sig-name descname">columns</code><a class="headerlink" href="#recipe_grid.renderer.table.Table.columns" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.Table.columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></em><a class="headerlink" href="#recipe_grid.renderer.table.Table.columns" title="Link to this definition">¶</a></dt>
 <dd><p>Number of columns in this table</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="recipe_grid.renderer.table.Table.rows">
-<em class="property">property </em><code class="sig-name descname">rows</code><a class="headerlink" href="#recipe_grid.renderer.table.Table.rows" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.Table.rows">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rows</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></em><a class="headerlink" href="#recipe_grid.renderer.table.Table.rows" title="Link to this definition">¶</a></dt>
 <dd><p>Number of rows in this table</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="recipe_grid.renderer.table.Cell">
-<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.renderer.table.</code><code class="sig-name descname">Cell</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.renderer.table.Cell" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.Cell">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">recipe_grid.renderer.table.</span></span><span class="sig-name descname"><span class="pre">Cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value:</span> <span class="pre">~T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rows:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">border_left:</span> <span class="pre">recipe_grid.renderer.table.BorderType</span> <span class="pre">=</span> <span class="pre">&lt;BorderType.normal:</span> <span class="pre">2&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">border_right:</span> <span class="pre">recipe_grid.renderer.table.BorderType</span> <span class="pre">=</span> <span class="pre">&lt;BorderType.normal:</span> <span class="pre">2&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">border_top:</span> <span class="pre">recipe_grid.renderer.table.BorderType</span> <span class="pre">=</span> <span class="pre">&lt;BorderType.normal:</span> <span class="pre">2&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">border_bottom:</span> <span class="pre">recipe_grid.renderer.table.BorderType</span> <span class="pre">=</span> <span class="pre">&lt;BorderType.normal:</span> <span class="pre">2&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.renderer.table.Cell" title="Link to this definition">¶</a></dt>
 <dd><dl class="py attribute">
-<dt id="recipe_grid.renderer.table.Cell.value">
-<code class="sig-name descname">value</code><em class="property">: T</em><a class="headerlink" href="#recipe_grid.renderer.table.Cell.value" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.Cell.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">T</span></em><a class="headerlink" href="#recipe_grid.renderer.table.Cell.value" title="Link to this definition">¶</a></dt>
 <dd><p>The value contained in this cell.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.renderer.table.Cell.rows">
-<code class="sig-name descname">rows</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></em><em class="property"> = 1</em><a class="headerlink" href="#recipe_grid.renderer.table.Cell.rows" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.Cell.rows">
+<span class="sig-name descname"><span class="pre">rows</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#recipe_grid.renderer.table.Cell.rows" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.renderer.table.Cell.columns">
-<code class="sig-name descname">columns</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></em><em class="property"> = 1</em><a class="headerlink" href="#recipe_grid.renderer.table.Cell.columns" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.Cell.columns">
+<span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#recipe_grid.renderer.table.Cell.columns" title="Link to this definition">¶</a></dt>
 <dd><p>The number of columns (to the right) or rows (below) over which this cell
 extends.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.renderer.table.Cell.border_left">
-<code class="sig-name descname">border_left</code><em class="property">: <a class="reference internal" href="#recipe_grid.renderer.table.BorderType" title="recipe_grid.renderer.table.BorderType">recipe_grid.renderer.table.BorderType</a></em><em class="property"> = 2</em><a class="headerlink" href="#recipe_grid.renderer.table.Cell.border_left" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.Cell.border_left">
+<span class="sig-name descname"><span class="pre">border_left</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#recipe_grid.renderer.table.BorderType" title="recipe_grid.renderer.table.BorderType"><span class="pre">BorderType</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#recipe_grid.renderer.table.Cell.border_left" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.renderer.table.Cell.border_right">
-<code class="sig-name descname">border_right</code><em class="property">: <a class="reference internal" href="#recipe_grid.renderer.table.BorderType" title="recipe_grid.renderer.table.BorderType">recipe_grid.renderer.table.BorderType</a></em><em class="property"> = 2</em><a class="headerlink" href="#recipe_grid.renderer.table.Cell.border_right" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.Cell.border_right">
+<span class="sig-name descname"><span class="pre">border_right</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#recipe_grid.renderer.table.BorderType" title="recipe_grid.renderer.table.BorderType"><span class="pre">BorderType</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#recipe_grid.renderer.table.Cell.border_right" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.renderer.table.Cell.border_top">
-<code class="sig-name descname">border_top</code><em class="property">: <a class="reference internal" href="#recipe_grid.renderer.table.BorderType" title="recipe_grid.renderer.table.BorderType">recipe_grid.renderer.table.BorderType</a></em><em class="property"> = 2</em><a class="headerlink" href="#recipe_grid.renderer.table.Cell.border_top" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.Cell.border_top">
+<span class="sig-name descname"><span class="pre">border_top</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#recipe_grid.renderer.table.BorderType" title="recipe_grid.renderer.table.BorderType"><span class="pre">BorderType</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#recipe_grid.renderer.table.Cell.border_top" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.renderer.table.Cell.border_bottom">
-<code class="sig-name descname">border_bottom</code><em class="property">: <a class="reference internal" href="#recipe_grid.renderer.table.BorderType" title="recipe_grid.renderer.table.BorderType">recipe_grid.renderer.table.BorderType</a></em><em class="property"> = 2</em><a class="headerlink" href="#recipe_grid.renderer.table.Cell.border_bottom" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.Cell.border_bottom">
+<span class="sig-name descname"><span class="pre">border_bottom</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#recipe_grid.renderer.table.BorderType" title="recipe_grid.renderer.table.BorderType"><span class="pre">BorderType</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#recipe_grid.renderer.table.Cell.border_bottom" title="Link to this definition">¶</a></dt>
 <dd><p>The border styles for this cell.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="recipe_grid.renderer.table.ExtendedCell">
-<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.renderer.table.</code><code class="sig-name descname">ExtendedCell</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cell</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#recipe_grid.renderer.table.Cell" title="recipe_grid.renderer.table.Cell">recipe_grid.renderer.table.Cell</a><span class="p">[</span>T<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">drow</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">dcolumn</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.renderer.table.ExtendedCell" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.ExtendedCell">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">recipe_grid.renderer.table.</span></span><span class="sig-name descname"><span class="pre">ExtendedCell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#recipe_grid.renderer.table.Cell" title="recipe_grid.renderer.table.Cell"><span class="pre">Cell</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dcolumn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.renderer.table.ExtendedCell" title="Link to this definition">¶</a></dt>
 <dd><p>Represents parts of a table which are filled not with a new cell but with
 the extension of an adjacent cell. (Used as a ‘dummy’ value in
 <a class="reference internal" href="#recipe_grid.renderer.table.Table" title="recipe_grid.renderer.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>.)</p>
 <dl class="py attribute">
-<dt id="recipe_grid.renderer.table.ExtendedCell.cell">
-<code class="sig-name descname">cell</code><em class="property">: <a class="reference internal" href="#recipe_grid.renderer.table.Cell" title="recipe_grid.renderer.table.Cell">recipe_grid.renderer.table.Cell</a><span class="p">[</span>T<span class="p">]</span></em><a class="headerlink" href="#recipe_grid.renderer.table.ExtendedCell.cell" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.ExtendedCell.cell">
+<span class="sig-name descname"><span class="pre">cell</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#recipe_grid.renderer.table.Cell" title="recipe_grid.renderer.table.Cell"><span class="pre">Cell</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#recipe_grid.renderer.table.ExtendedCell.cell" title="Link to this definition">¶</a></dt>
 <dd><p>A reference to the cell which occludes this cell.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.renderer.table.ExtendedCell.drow">
-<code class="sig-name descname">drow</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></em><a class="headerlink" href="#recipe_grid.renderer.table.ExtendedCell.drow" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.ExtendedCell.drow">
+<span class="sig-name descname"><span class="pre">drow</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></em><a class="headerlink" href="#recipe_grid.renderer.table.ExtendedCell.drow" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.renderer.table.ExtendedCell.dcolumn">
-<code class="sig-name descname">dcolumn</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></em><a class="headerlink" href="#recipe_grid.renderer.table.ExtendedCell.dcolumn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.ExtendedCell.dcolumn">
+<span class="sig-name descname"><span class="pre">dcolumn</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></em><a class="headerlink" href="#recipe_grid.renderer.table.ExtendedCell.dcolumn" title="Link to this definition">¶</a></dt>
 <dd><p>The delta in coordinate from the cell this <a class="reference internal" href="#recipe_grid.renderer.table.ExtendedCell" title="recipe_grid.renderer.table.ExtendedCell"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtendedCell</span></code></a>
 resides.</p>
 </dd></dl>
@@ -183,42 +181,42 @@ resides.</p>
 <p>Cells have four borders whose display styles are dictated by the <code class="docutils literal notranslate"><span class="pre">border_*</span></code>
 attributes of the <a class="reference internal" href="#recipe_grid.renderer.table.Cell" title="recipe_grid.renderer.table.Cell"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cell</span></code></a>. The border styles are:</p>
 <dl class="py class">
-<dt id="recipe_grid.renderer.table.BorderType">
-<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.renderer.table.</code><code class="sig-name descname">BorderType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.renderer.table.BorderType" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.BorderType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">recipe_grid.renderer.table.</span></span><span class="sig-name descname"><span class="pre">BorderType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.renderer.table.BorderType" title="Link to this definition">¶</a></dt>
 <dd><p>An enumeration.</p>
 <dl class="py attribute">
-<dt id="recipe_grid.renderer.table.BorderType.none">
-<code class="sig-name descname">none</code><em class="property"> = 1</em><a class="headerlink" href="#recipe_grid.renderer.table.BorderType.none" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.BorderType.none">
+<span class="sig-name descname"><span class="pre">none</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#recipe_grid.renderer.table.BorderType.none" title="Link to this definition">¶</a></dt>
 <dd><p>No border. Used only for cells which are to be rendered ‘outside’ the
 table.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.renderer.table.BorderType.normal">
-<code class="sig-name descname">normal</code><em class="property"> = 2</em><a class="headerlink" href="#recipe_grid.renderer.table.BorderType.normal" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.BorderType.normal">
+<span class="sig-name descname"><span class="pre">normal</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#recipe_grid.renderer.table.BorderType.normal" title="Link to this definition">¶</a></dt>
 <dd><p>A normal border style which will surround most cells.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.renderer.table.BorderType.sub_recipe">
-<code class="sig-name descname">sub_recipe</code><em class="property"> = 3</em><a class="headerlink" href="#recipe_grid.renderer.table.BorderType.sub_recipe" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.table.BorderType.sub_recipe">
+<span class="sig-name descname"><span class="pre">sub_recipe</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#recipe_grid.renderer.table.BorderType.sub_recipe" title="Link to this definition">¶</a></dt>
 <dd><p>A border drawn round a sub recipe; typically thicker than the normal border
 style.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-recipe_grid.renderer.recipe_to_table">
-<span id="recipe-grid-renderer-recipe-to-table-recipe-to-table-transformation"></span><h2><a class="reference internal" href="#module-recipe_grid.renderer.recipe_to_table" title="recipe_grid.renderer.recipe_to_table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.recipe_to_table</span></code></a>: <a class="reference internal" href="data_model.html#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code></a> to <a class="reference internal" href="#recipe_grid.renderer.table.Table" title="recipe_grid.renderer.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a> transformation<a class="headerlink" href="#module-recipe_grid.renderer.recipe_to_table" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-recipe_grid.renderer.recipe_to_table">
+<span id="recipe-grid-renderer-recipe-to-table-recipe-to-table-transformation"></span><h2><a class="reference internal" href="#module-recipe_grid.renderer.recipe_to_table" title="recipe_grid.renderer.recipe_to_table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.recipe_to_table</span></code></a>: <a class="reference internal" href="data_model.html#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code></a> to <a class="reference internal" href="#recipe_grid.renderer.table.Table" title="recipe_grid.renderer.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a> transformation<a class="headerlink" href="#module-recipe_grid.renderer.recipe_to_table" title="Link to this heading">¶</a></h2>
 <p>The following routine converts a single recipe tree
 (<a class="reference internal" href="data_model.html#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecipeTreeNode</span></code></a>) into the equivalent
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code> form. It should be used to convert each recipe tree in
 <a class="reference internal" href="data_model.html#recipe_grid.recipe.Recipe.recipe_trees" title="recipe_grid.recipe.Recipe.recipe_trees"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Recipe.recipe_trees</span></code></a> into its own table in the
 rendered output.</p>
 <dl class="py function">
-<dt id="recipe_grid.renderer.recipe_to_table.recipe_tree_to_table">
-<code class="sig-prename descclassname">recipe_grid.renderer.recipe_to_table.</code><code class="sig-name descname">recipe_tree_to_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">recipe_tree</span><span class="p">:</span> <span class="n"><a class="reference internal" href="data_model.html#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode">recipe_grid.recipe.RecipeTreeNode</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#recipe_grid.renderer.table.Table" title="recipe_grid.renderer.table.Table">recipe_grid.renderer.table.Table</a><a class="headerlink" href="#recipe_grid.renderer.recipe_to_table.recipe_tree_to_table" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.recipe_to_table.recipe_tree_to_table">
+<span class="sig-prename descclassname"><span class="pre">recipe_grid.renderer.recipe_to_table.</span></span><span class="sig-name descname"><span class="pre">recipe_tree_to_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recipe_tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data_model.html#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode"><span class="pre">recipe_grid.recipe.RecipeTreeNode</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#recipe_grid.renderer.table.Table" title="recipe_grid.renderer.table.Table"><span class="pre">recipe_grid.renderer.table.Table</span></a></span></span><a class="headerlink" href="#recipe_grid.renderer.recipe_to_table.recipe_tree_to_table" title="Link to this definition">¶</a></dt>
 <dd><p>Convert a recipe tree into tabular form.</p>
 <p>To display the resulting <code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code>, cell contents should be
 rendered as indicated below.</p>
@@ -261,14 +259,14 @@ passed to this function is the root node of its recipe tree.</p>
 </div>
 </dd></dl>
 
-</div>
-<div class="section" id="module-recipe_grid.renderer.html">
-<span id="recipe-grid-renderer-html-html-table-renderer"></span><h2><a class="reference internal" href="#module-recipe_grid.renderer.html" title="recipe_grid.renderer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.html</span></code></a>: HTML Table Renderer<a class="headerlink" href="#module-recipe_grid.renderer.html" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-recipe_grid.renderer.html">
+<span id="recipe-grid-renderer-html-html-table-renderer"></span><h2><a class="reference internal" href="#module-recipe_grid.renderer.html" title="recipe_grid.renderer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.html</span></code></a>: HTML Table Renderer<a class="headerlink" href="#module-recipe_grid.renderer.html" title="Link to this heading">¶</a></h2>
 <p>This module implements <a class="reference internal" href="#recipe_grid.renderer.table.Table" title="recipe_grid.renderer.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a> to HTML
 conversion in the following routine:</p>
 <dl class="py function">
-<dt id="recipe_grid.renderer.html.render_recipe_tree">
-<code class="sig-prename descclassname">recipe_grid.renderer.html.</code><code class="sig-name descname">render_recipe_tree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">recipe_tree</span><span class="p">:</span> <span class="n"><a class="reference internal" href="data_model.html#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode">recipe_grid.recipe.RecipeTreeNode</a></span></em>, <em class="sig-param"><span class="n">id_prefix</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">'sub-recipe-'</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><a class="headerlink" href="#recipe_grid.renderer.html.render_recipe_tree" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.renderer.html.render_recipe_tree">
+<span class="sig-prename descclassname"><span class="pre">recipe_grid.renderer.html.</span></span><span class="sig-name descname"><span class="pre">render_recipe_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recipe_tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data_model.html#recipe_grid.recipe.RecipeTreeNode" title="recipe_grid.recipe.RecipeTreeNode"><span class="pre">RecipeTreeNode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sub-recipe-'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#recipe_grid.renderer.html.render_recipe_tree" title="Link to this definition">¶</a></dt>
 <dd><p>Render a recipe tree as a HTML table.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">id_prefix</span></code> argument may be used to specify the prefix added to all
 anchor IDs used in this recipe tree. The same prefix must be specified when
@@ -284,8 +282,8 @@ references may contain a <code class="docutils literal notranslate"><span class=
 <code class="docutils literal notranslate"><span class="pre">rg-quantity-conversions</span></code>) listing quantities using alternative units. This
 list may be styled using CSS as a mouse-over hint (for example) or hidden
 entirely, as required.</p>
-<div class="section" id="css-classes">
-<h3>CSS Classes<a class="headerlink" href="#css-classes" title="Permalink to this headline">¶</a></h3>
+<section id="css-classes">
+<h3>CSS Classes<a class="headerlink" href="#css-classes" title="Link to this heading">¶</a></h3>
 <p>In the generated HTML, the following CSS class names are used</p>
 <ul>
 <li><p>Top level (<code class="docutils literal notranslate"><span class="pre">&lt;table&gt;</span></code>) classes:</p>
@@ -362,249 +360,249 @@ in the recipe. For example, ingredient quantities or text wrapped in
 </dl>
 </li>
 </ul>
-</div>
-<div class="section" id="example-css-stylesheet">
-<h3>Example CSS stylesheet:<a class="headerlink" href="#example-css-stylesheet" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="example-css-stylesheet">
+<h3>Example CSS stylesheet:<a class="headerlink" href="#example-css-stylesheet" title="Link to this heading">¶</a></h3>
 <p>A sample stylesheet (actually, the one used by the Recipe Grid static site
 generator) is given below:</p>
-<div class="highlight-css notranslate"><div class="highlight"><pre><span></span>/**
- * CSS For styling recipe grid tables, and nothing else.
- */
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="c">/**</span>
+<span class="c"> * CSS For styling recipe grid tables, and nothing else.</span>
+<span class="c"> */</span>
 
 
-/**
- * Colour definitions.
- *
- * Warning: There are a couple of SVGs in data URLs below which unfortunately
- * have these colours hard-coded and so need to be changed. Search for
- * &#39;data:image/svg+xml;utf8&#39; in your editor...
- */
-:root {
-    --rg-table-normal-colour: var(--normal-colour, #000000);
-    --rg-table-accent-colour: var(--accent-colour, #FE5E41);
-    --rg-table-inverted-fg-colour: var(--inverted-fg-colour,#FFFFFF);
-}
+<span class="c">/**</span>
+<span class="c"> * Colour definitions.</span>
+<span class="c"> *</span>
+<span class="c"> * Warning: There are a couple of SVGs in data URLs below which unfortunately</span>
+<span class="c"> * have these colours hard-coded and so need to be changed. Search for</span>
+<span class="c"> * &#39;data:image/svg+xml;utf8&#39; in your editor...</span>
+<span class="c"> */</span>
+<span class="p">:</span><span class="nd">root</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">--rg-table-normal-colour</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--normal-colour</span><span class="p">,</span><span class="w"> </span><span class="mh">#000000</span><span class="p">);</span>
+<span class="w">    </span><span class="nv">--rg-table-accent-colour</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--accent-colour</span><span class="p">,</span><span class="w"> </span><span class="mh">#FE5E41</span><span class="p">);</span>
+<span class="w">    </span><span class="nv">--rg-table-inverted-fg-colour</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--inverted-fg-colour</span><span class="p">,</span><span class="mh">#FFFFFF</span><span class="p">);</span>
+<span class="p">}</span>
 
-/**
- * General table layout
- */
-table.rg-table {
-    margin-top: 8px;
-    margin-bottom: 8px;
-    
-    border-spacing : 0;
-    border-collapse : collapse;
-}
+<span class="c">/**</span>
+<span class="c"> * General table layout</span>
+<span class="c"> */</span>
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">margin-top</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">margin-bottom</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">border-spacing</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-collapse</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">collapse</span><span class="p">;</span>
+<span class="p">}</span>
 
-table.rg-table tr td {
-    text-align : left;
-    vertical-align: middle;
-    
-    margin : 0;
-    padding : 0;
-    
-    padding-left  : 10px;
-    padding-right : 10px;
-    padding-top   : 3px;
-    padding-bottom: 3px;
-    
-    border-style : solid;
-    border-width : 1px;
-    border-color : var(--rg-table-normal-colour);
-}
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">text-align</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">left</span><span class="p">;</span>
+<span class="w">    </span><span class="k">vertical-align</span><span class="p">:</span><span class="w"> </span><span class="kc">middle</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">margin</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">padding</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">padding-left</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">padding-right</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">padding-top</span><span class="w">   </span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">padding-bottom</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">border-style</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">solid</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-width</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-color</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--rg-table-normal-colour</span><span class="p">);</span>
+<span class="p">}</span>
 
-/**
- * Border specifying classes.
- */
+<span class="c">/**</span>
+<span class="c"> * Border specifying classes.</span>
+<span class="c"> */</span>
 
-table.rg-table tr td.rg-border-right-none { border-right-style: none; }
-table.rg-table tr td.rg-border-left-none { border-left-style: none; }
-table.rg-table tr td.rg-border-top-none { border-top-style: none; }
-table.rg-table tr td.rg-border-bottom-none { border-bottom-style: none; }
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-border-right-none</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">border-right-style</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-border-left-none</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">border-left-style</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-border-top-none</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">border-top-style</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-border-bottom-none</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">border-bottom-style</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-table.rg-table tr td.rg-border-right-sub-recipe { border-right-width: 3px; }
-table.rg-table tr td.rg-border-left-sub-recipe { border-left-width: 3px; }
-table.rg-table tr td.rg-border-top-sub-recipe { border-top-width: 3px; }
-table.rg-table tr td.rg-border-bottom-sub-recipe { border-bottom-width: 3px; }
-
-
-/**
- * Specialisations for cell types (e.g. ingredient or sub recipe header)
- */
-
-table.rg-table tr td.rg-ingredient {
-    font-weight: 600;
-}
-
-table.rg-table tr td.rg-reference {
-    font-style: italic;
-}
-
-table.rg-table tr td.rg-reference a:before {
-    content: &quot;\2196&quot;;
-}
-
-table.rg-table tr td.rg-sub-recipe-header {
-    background-color: var(--rg-table-normal-colour);
-    color: var(--rg-table-inverted-fg-colour);
-    border-color: var(--rg-table-normal-colour);
-    
-    border-top: none;
-}
-
-table.rg-table tr td.rg-sub-recipe-outputs {
-    padding: 0;
-}
-
-table.rg-table tr td.rg-sub-recipe-outputs ul {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: center;
-    
-    padding: 0;
-    margin: 0;
-}
-
-table.rg-table tr td.rg-sub-recipe-outputs ul li {
-    display: block;
-    font-weight: bold;
-    
-    margin: 0;
-    padding-left  : 32px;
-    padding-right : 8px;
-    padding-top   : 3px;
-    padding-bottom: 3px;
-    
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    
-    background-repeat: no-repeat;
-    background-position-x: left;
-    background-position-y: center;
-    /* NB: The fill colour in this image should be modified to be 
-     * the same as --rg-table-normal-colour */
-    background-image: url(&#39;data:image/svg+xml;utf8,&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;12&quot; viewBox=&quot;0 0 6.35 3.175&quot;&gt;&lt;path d=&quot;M4.058 0v1.191H0v.794h4.058v1.19L6.35 1.588 4.058 0z&quot; fill=&quot;%23000000&quot;/&gt;&lt;/svg&gt;&#39;);
-}
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-border-right-sub-recipe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">border-right-width</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="kt">px</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-border-left-sub-recipe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">border-left-width</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="kt">px</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-border-top-sub-recipe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">border-top-width</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="kt">px</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-border-bottom-sub-recipe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">border-bottom-width</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="kt">px</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
 
-/**
- * Unit conversion popups
- */
-.rg-quantity-with-conversions ul.rg-quantity-conversions {
-    position: absolute;
-    z-index: 999;
-    
-    margin: -8px;
-    margin-top: 4px;
-    padding: 8px;
-    
-    background-color: white;
-    
-    border-style: solid;
-    border-width: 2px;
-    border-color: black;
-    
-    border-radius: 4px;
-    
-    filter: drop-shadow(4px 4px 8px #00000033);
-    
-    list-style: none;
-    text-align: left;
-}
+<span class="c">/**</span>
+<span class="c"> * Specialisations for cell types (e.g. ingredient or sub recipe header)</span>
+<span class="c"> */</span>
 
-/* Draw an arrow pointing up at the value. */
-.rg-quantity-with-conversions ul.rg-quantity-conversions:before {
-    content: &quot;&quot;;
-    display: block;
-    position: absolute;
-    top: -16px;
-    
-    box-sizing: content-box;
-    width: 0;
-    height: 0;
-    
-    border-style: solid;
-    border-color: black;
-    border-width: 8px;
-    border-left-color: transparent;
-    border-right-color: transparent;
-    border-top-color: transparent;
-    
-}
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-ingredient</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">;</span>
+<span class="p">}</span>
 
-.rg-quantity-with-conversions ul.rg-quantity-conversions li {
-    padding-bottom: 8px;
-}
-.rg-quantity-with-conversions ul.rg-quantity-conversions li:last-child {
-    padding-bottom: 0;
-}
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-reference</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">font-style</span><span class="p">:</span><span class="w"> </span><span class="kc">italic</span><span class="p">;</span>
+<span class="p">}</span>
 
-/* Show on unit conversions on mouseover/focus */
-.rg-quantity-with-conversions:focus {
-    outline: none;
-}
-.rg-quantity-with-conversions .rg-quantity-conversions {
-    visibility: hidden;
-}
-.rg-quantity-with-conversions:hover .rg-quantity-conversions,
-.rg-quantity-with-conversions:focus-within .rg-quantity-conversions {
-    visibility: visible;
-    pointer-events: auto;
-}
-.rg-quantity-with-conversions:hover .rg-quantity-conversions {
-    z-index: 1000;
-    pointer-events: none;
-}
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-reference</span><span class="w"> </span><span class="nt">a</span><span class="p">:</span><span class="nd">before</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">content</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;\2196&quot;</span><span class="p">;</span>
+<span class="p">}</span>
 
-/* Hide conversions in print */
-@media print {
-    .rg-quantity-with-conversions .rg-quantity-conversions {
-        display: none;
-    }
-}
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-sub-recipe-header</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--rg-table-normal-colour</span><span class="p">);</span>
+<span class="w">    </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--rg-table-inverted-fg-colour</span><span class="p">);</span>
+<span class="w">    </span><span class="k">border-color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--rg-table-normal-colour</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">border-top</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-sub-recipe-outputs</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-sub-recipe-outputs</span><span class="w"> </span><span class="nt">ul</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">flex</span><span class="p">;</span>
+<span class="w">    </span><span class="k">flex-direction</span><span class="p">:</span><span class="w"> </span><span class="kc">column</span><span class="p">;</span>
+<span class="w">    </span><span class="k">align-items</span><span class="p">:</span><span class="w"> </span><span class="kc">start</span><span class="p">;</span>
+<span class="w">    </span><span class="k">justify-content</span><span class="p">:</span><span class="w"> </span><span class="kc">center</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-sub-recipe-outputs</span><span class="w"> </span><span class="nt">ul</span><span class="w"> </span><span class="nt">li</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">block</span><span class="p">;</span>
+<span class="w">    </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="kc">bold</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">padding-left</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="mi">32</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">padding-right</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">padding-top</span><span class="w">   </span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">padding-bottom</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">border-top-right-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-bottom-right-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">background-repeat</span><span class="p">:</span><span class="w"> </span><span class="kc">no-repeat</span><span class="p">;</span>
+<span class="w">    </span><span class="n">background-position-x</span><span class="p">:</span><span class="w"> </span><span class="kc">left</span><span class="p">;</span>
+<span class="w">    </span><span class="n">background-position-y</span><span class="p">:</span><span class="w"> </span><span class="kc">center</span><span class="p">;</span>
+<span class="w">    </span><span class="c">/* NB: The fill colour in this image should be modified to be </span>
+<span class="c">     * the same as --rg-table-normal-colour */</span>
+<span class="w">    </span><span class="k">background-image</span><span class="p">:</span><span class="w"> </span><span class="nb">url</span><span class="p">(</span><span class="s1">&#39;data:image/svg+xml;utf8,&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;12&quot; viewBox=&quot;0 0 6.35 3.175&quot;&gt;&lt;path d=&quot;M4.058 0v1.191H0v.794h4.058v1.19L6.35 1.588 4.058 0z&quot; fill=&quot;%23000000&quot;/&gt;&lt;/svg&gt;&#39;</span><span class="p">);</span>
+<span class="p">}</span>
 
 
-/**
- * Apply accent colouring when a table cell is targeted.
- */
+<span class="c">/**</span>
+<span class="c"> * Unit conversion popups</span>
+<span class="c"> */</span>
+<span class="p">.</span><span class="nc">rg-quantity-with-conversions</span><span class="w"> </span><span class="nt">ul</span><span class="p">.</span><span class="nc">rg-quantity-conversions</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">position</span><span class="p">:</span><span class="w"> </span><span class="kc">absolute</span><span class="p">;</span>
+<span class="w">    </span><span class="k">z-index</span><span class="p">:</span><span class="w"> </span><span class="mi">999</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">-8</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">margin-top</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="kc">white</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">border-style</span><span class="p">:</span><span class="w"> </span><span class="kc">solid</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-width</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-color</span><span class="p">:</span><span class="w"> </span><span class="kc">black</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">border-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">filter</span><span class="p">:</span><span class="w"> </span><span class="nb">drop-shadow</span><span class="p">(</span><span class="mi">4</span><span class="kt">px</span><span class="w"> </span><span class="mi">4</span><span class="kt">px</span><span class="w"> </span><span class="mi">8</span><span class="kt">px</span><span class="w"> </span><span class="mh">#000000</span><span class="mi">33</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">list-style</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
+<span class="w">    </span><span class="k">text-align</span><span class="p">:</span><span class="w"> </span><span class="kc">left</span><span class="p">;</span>
+<span class="p">}</span>
 
-table.rg-table:target {
-    border-color : var(--rg-table-accent-colour);
-}
-table.rg-table:target tr td.rg-border-right-sub-recipe {
-    border-right-color: var(--rg-table-accent-colour);
-}
-table.rg-table:target tr td.rg-border-left-sub-recipe {
-    border-left-color: var(--rg-table-accent-colour);
-}
-table.rg-table:target tr td.rg-border-top-sub-recipe {
-    border-top-color: var(--rg-table-accent-colour);
-}
-table.rg-table:target tr td.rg-border-bottom-sub-recipe {
-    border-bottom-color: var(--rg-table-accent-colour);
-}
+<span class="c">/* Draw an arrow pointing up at the value. */</span>
+<span class="p">.</span><span class="nc">rg-quantity-with-conversions</span><span class="w"> </span><span class="nt">ul</span><span class="p">.</span><span class="nc">rg-quantity-conversions</span><span class="p">:</span><span class="nd">before</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">content</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">block</span><span class="p">;</span>
+<span class="w">    </span><span class="k">position</span><span class="p">:</span><span class="w"> </span><span class="kc">absolute</span><span class="p">;</span>
+<span class="w">    </span><span class="k">top</span><span class="p">:</span><span class="w"> </span><span class="mi">-16</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">box-sizing</span><span class="p">:</span><span class="w"> </span><span class="kc">content-box</span><span class="p">;</span>
+<span class="w">    </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">height</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">border-style</span><span class="p">:</span><span class="w"> </span><span class="kc">solid</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-color</span><span class="p">:</span><span class="w"> </span><span class="kc">black</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-width</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-left-color</span><span class="p">:</span><span class="w"> </span><span class="kc">transparent</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-right-color</span><span class="p">:</span><span class="w"> </span><span class="kc">transparent</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-top-color</span><span class="p">:</span><span class="w"> </span><span class="kc">transparent</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nc">rg-quantity-with-conversions</span><span class="w"> </span><span class="nt">ul</span><span class="p">.</span><span class="nc">rg-quantity-conversions</span><span class="w"> </span><span class="nt">li</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">padding-bottom</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="kt">px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">rg-quantity-with-conversions</span><span class="w"> </span><span class="nt">ul</span><span class="p">.</span><span class="nc">rg-quantity-conversions</span><span class="w"> </span><span class="nt">li</span><span class="p">:</span><span class="nd">last-child</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">padding-bottom</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* Show on unit conversions on mouseover/focus */</span>
+<span class="p">.</span><span class="nc">rg-quantity-with-conversions</span><span class="p">:</span><span class="nd">focus</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">outline</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">rg-quantity-with-conversions</span><span class="w"> </span><span class="p">.</span><span class="nc">rg-quantity-conversions</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">visibility</span><span class="p">:</span><span class="w"> </span><span class="kc">hidden</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">rg-quantity-with-conversions</span><span class="p">:</span><span class="nd">hover</span><span class="w"> </span><span class="p">.</span><span class="nc">rg-quantity-conversions</span><span class="o">,</span>
+<span class="p">.</span><span class="nc">rg-quantity-with-conversions</span><span class="p">:</span><span class="nd">focus-within</span><span class="w"> </span><span class="p">.</span><span class="nc">rg-quantity-conversions</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">visibility</span><span class="p">:</span><span class="w"> </span><span class="kc">visible</span><span class="p">;</span>
+<span class="w">    </span><span class="k">pointer-events</span><span class="p">:</span><span class="w"> </span><span class="kc">auto</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">rg-quantity-with-conversions</span><span class="p">:</span><span class="nd">hover</span><span class="w"> </span><span class="p">.</span><span class="nc">rg-quantity-conversions</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">z-index</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
+<span class="w">    </span><span class="k">pointer-events</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* Hide conversions in print */</span>
+<span class="p">@</span><span class="k">media</span><span class="w"> </span><span class="nt">print</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="nc">rg-quantity-with-conversions</span><span class="w"> </span><span class="p">.</span><span class="nc">rg-quantity-conversions</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
 
-table.rg-table:target tr td.rg-sub-recipe-header {
-    background-color: var(--rg-table-accent-colour);
-    color: var(--rg-table-inverted-fg-colour);
-    border-color: var(--rg-table-accent-colour);
-}
+<span class="c">/**</span>
+<span class="c"> * Apply accent colouring when a table cell is targeted.</span>
+<span class="c"> */</span>
 
-table.rg-table tr td.rg-sub-recipe-outputs ul li:target {
-    color: var(--rg-table-inverted-fg-colour);
-    background-color: var(--rg-table-accent-colour);
-    
-    /* NB: The fill colour in this image should be modified to be 
-     * the same as --rg-table-inverted-fg-colour */
-    background-image: url(&#39;data:image/svg+xml;utf8,&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;12&quot; viewBox=&quot;0 0 6.35 3.175&quot;&gt;&lt;path d=&quot;M4.058 0v1.191H0v.794h4.058v1.19L6.35 1.588 4.058 0z&quot; fill=&quot;%23FFFFFF&quot;/&gt;&lt;/svg&gt;&#39;);
-}
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="p">:</span><span class="nd">target</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">border-color</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--rg-table-accent-colour</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="p">:</span><span class="nd">target</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-border-right-sub-recipe</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">border-right-color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--rg-table-accent-colour</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="p">:</span><span class="nd">target</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-border-left-sub-recipe</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">border-left-color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--rg-table-accent-colour</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="p">:</span><span class="nd">target</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-border-top-sub-recipe</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">border-top-color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--rg-table-accent-colour</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="p">:</span><span class="nd">target</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-border-bottom-sub-recipe</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">border-bottom-color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--rg-table-accent-colour</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="p">:</span><span class="nd">target</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-sub-recipe-header</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--rg-table-accent-colour</span><span class="p">);</span>
+<span class="w">    </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--rg-table-inverted-fg-colour</span><span class="p">);</span>
+<span class="w">    </span><span class="k">border-color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--rg-table-accent-colour</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">table</span><span class="p">.</span><span class="nc">rg-table</span><span class="w"> </span><span class="nt">tr</span><span class="w"> </span><span class="nt">td</span><span class="p">.</span><span class="nc">rg-sub-recipe-outputs</span><span class="w"> </span><span class="nt">ul</span><span class="w"> </span><span class="nt">li</span><span class="p">:</span><span class="nd">target</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--rg-table-inverted-fg-colour</span><span class="p">);</span>
+<span class="w">    </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--rg-table-accent-colour</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c">/* NB: The fill colour in this image should be modified to be </span>
+<span class="c">     * the same as --rg-table-inverted-fg-colour */</span>
+<span class="w">    </span><span class="k">background-image</span><span class="p">:</span><span class="w"> </span><span class="nb">url</span><span class="p">(</span><span class="s1">&#39;data:image/svg+xml;utf8,&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;12&quot; viewBox=&quot;0 0 6.35 3.175&quot;&gt;&lt;path d=&quot;M4.058 0v1.191H0v.794h4.058v1.19L6.35 1.588 4.058 0z&quot; fill=&quot;%23FFFFFF&quot;/&gt;&lt;/svg&gt;&#39;</span><span class="p">);</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -613,12 +611,49 @@ table.rg-table tr td.rg-sub-recipe-outputs ul li:target {
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer</span></code>: Rendering recipes as tables</a><ul>
-<li><a class="reference internal" href="#module-recipe_grid.renderer.table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.table</span></code>: Abstract table description</a></li>
-<li><a class="reference internal" href="#module-recipe_grid.renderer.recipe_to_table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.recipe_to_table</span></code>: <code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code> transformation</a></li>
+<li><a class="reference internal" href="#module-recipe_grid.renderer.table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.table</span></code>: Abstract table description</a><ul>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.Table"><code class="docutils literal notranslate"><span class="pre">Table</span></code></a><ul>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.Table.cells"><code class="docutils literal notranslate"><span class="pre">Table.cells</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.Table.from_dict"><code class="docutils literal notranslate"><span class="pre">Table.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.Table.to_dict"><code class="docutils literal notranslate"><span class="pre">Table.to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.Table.columns"><code class="docutils literal notranslate"><span class="pre">Table.columns</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.Table.rows"><code class="docutils literal notranslate"><span class="pre">Table.rows</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.Cell"><code class="docutils literal notranslate"><span class="pre">Cell</span></code></a><ul>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.Cell.value"><code class="docutils literal notranslate"><span class="pre">Cell.value</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.Cell.rows"><code class="docutils literal notranslate"><span class="pre">Cell.rows</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.Cell.columns"><code class="docutils literal notranslate"><span class="pre">Cell.columns</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.Cell.border_left"><code class="docutils literal notranslate"><span class="pre">Cell.border_left</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.Cell.border_right"><code class="docutils literal notranslate"><span class="pre">Cell.border_right</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.Cell.border_top"><code class="docutils literal notranslate"><span class="pre">Cell.border_top</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.Cell.border_bottom"><code class="docutils literal notranslate"><span class="pre">Cell.border_bottom</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.ExtendedCell"><code class="docutils literal notranslate"><span class="pre">ExtendedCell</span></code></a><ul>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.ExtendedCell.cell"><code class="docutils literal notranslate"><span class="pre">ExtendedCell.cell</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.ExtendedCell.drow"><code class="docutils literal notranslate"><span class="pre">ExtendedCell.drow</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.ExtendedCell.dcolumn"><code class="docutils literal notranslate"><span class="pre">ExtendedCell.dcolumn</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.BorderType"><code class="docutils literal notranslate"><span class="pre">BorderType</span></code></a><ul>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.BorderType.none"><code class="docutils literal notranslate"><span class="pre">BorderType.none</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.BorderType.normal"><code class="docutils literal notranslate"><span class="pre">BorderType.normal</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.renderer.table.BorderType.sub_recipe"><code class="docutils literal notranslate"><span class="pre">BorderType.sub_recipe</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-recipe_grid.renderer.recipe_to_table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.recipe_to_table</span></code>: <code class="xref py py-class docutils literal notranslate"><span class="pre">Recipe</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code> transformation</a><ul>
+<li><a class="reference internal" href="#recipe_grid.renderer.recipe_to_table.recipe_tree_to_table"><code class="docutils literal notranslate"><span class="pre">recipe_tree_to_table()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-recipe_grid.renderer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.renderer.html</span></code>: HTML Table Renderer</a><ul>
+<li><a class="reference internal" href="#recipe_grid.renderer.html.render_recipe_tree"><code class="docutils literal notranslate"><span class="pre">render_recipe_tree()</span></code></a></li>
 <li><a class="reference internal" href="#css-classes">CSS Classes</a></li>
 <li><a class="reference internal" href="#example-css-stylesheet">Example CSS stylesheet:</a></li>
 </ul>
@@ -627,12 +662,17 @@ table.rg-table tr td.rg-sub-recipe-outputs ul li:target {
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="linting.html"
-                        title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.lint</span></code>: Recipe linting</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="sphinx.html"
-                        title="next chapter">Recipe Grid Sphinx Extension</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="linting.html"
+                          title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.lint</span></code>: Recipe linting</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="sphinx.html"
+                          title="next chapter">Recipe Grid Sphinx Extension</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -644,12 +684,12 @@ table.rg-table tr td.rg-sub-recipe-outputs ul li:target {
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -674,8 +714,8 @@ table.rg-table tr td.rg-sub-recipe-outputs ul li:target {
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Jonathan Heathcote.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.1.
+    &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>

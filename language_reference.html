@@ -1,20 +1,18 @@
-
 <!DOCTYPE html>
 
-<html>
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>Recipe Description Language Reference &#8212; Recipe Grid 2.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=601dbdee" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css?v=22be8b51" />
+    <script src="_static/documentation_options.js?v=60dbed4a"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Formal Recipe Description Language Grammar" href="grammar.html" />
@@ -45,8 +43,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="recipe-description-language-reference">
-<span id="language-reference"></span><h1>Recipe Description Language Reference<a class="headerlink" href="#recipe-description-language-reference" title="Permalink to this headline">¶</a></h1>
+  <section id="recipe-description-language-reference">
+<span id="language-reference"></span><h1>Recipe Description Language Reference<a class="headerlink" href="#recipe-description-language-reference" title="Link to this heading">¶</a></h1>
 <p>This page provides a detailed and relatively low-level description of the
 recipe description language accepted by Recipe Grid.</p>
 <p>Unlike the formal definition of the recipe description language
@@ -62,10 +60,10 @@ you may prefer <a class="reference internal" href="tutorial.html#tutorial"><span
 <p class="admonition-title">Note</p>
 <p>It may be helpful to be aware of <a class="reference internal" href="data_model.html#data-model"><span class="std std-ref">the Recipe Grid data model</span></a> to understand certain details below.</p>
 </div>
-<div class="section" id="recipe-building-blocks">
-<h2>Recipe Building Blocks<a class="headerlink" href="#recipe-building-blocks" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="ingredients">
-<h3>Ingredients<a class="headerlink" href="#ingredients" title="Permalink to this headline">¶</a></h3>
+<section id="recipe-building-blocks">
+<h2>Recipe Building Blocks<a class="headerlink" href="#recipe-building-blocks" title="Link to this heading">¶</a></h2>
+<section id="ingredients">
+<h3>Ingredients<a class="headerlink" href="#ingredients" title="Link to this heading">¶</a></h3>
 <div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Ingredient <span class="o">::=</span> [Quantity [&quot;of&quot; | &quot;of the&quot;]] String
 </pre></div>
 </div>
@@ -84,9 +82,9 @@ useful for ingredients such as seasonings where no specific quantity is given.</
 <li><p><code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">onions</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">1tsp</span> <span class="pre">of</span> <span class="pre">chilli</span> <span class="pre">powder</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="references">
-<h3>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h3>
 <div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Reference <span class="o">::=</span> [(Quantity | Proportion) [&quot;of&quot; | &quot;of the&quot;]] String
 </pre></div>
 </div>
@@ -134,9 +132,9 @@ different block in documents which divide a recipe into multiple blocks.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">50%</span> <span class="pre">pastry</span></code> (half of the sub recipe ‘pastry’)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">remaining</span> <span class="pre">pastry</span></code> (any remaining amount of the sub recipe ‘pastry’)</p></li>
 </ul>
-</div>
-<div class="section" id="steps">
-<h3>Steps<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="steps">
+<h3>Steps<a class="headerlink" href="#steps" title="Link to this heading">¶</a></h3>
 <div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Step <span class="o">::=</span> String &quot;(&quot; Expression (&quot;,&quot; Expression)* [&quot;,&quot;]  &quot;)&quot;
 </pre></div>
 </div>
@@ -153,9 +151,9 @@ list of inputs. (Normally line breaks are not allowed.)</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">whip</span> <span class="pre">until</span> <span class="pre">thick</span> <span class="pre">(double</span> <span class="pre">cream)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">fry</span> <span class="pre">(1</span> <span class="pre">egg,</span> <span class="pre">oil)</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="quantities">
-<h3>Quantities<a class="headerlink" href="#quantities" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="quantities">
+<h3>Quantities<a class="headerlink" href="#quantities" title="Link to this heading">¶</a></h3>
 <div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Quantity <span class="o">::=</span> ImplicitQuantity | ExplicitQuantity
 ImplicitQuantity <span class="o">::=</span> Number [KnownUnit]
 ExplicitQuantity <span class="o">::=</span> &quot;{&quot; Number [StaticString] &quot;}&quot;
@@ -185,9 +183,9 @@ a Number. To force a ScaledValueString in this case, you could add <code class="
 <li><p><code class="docutils literal notranslate"><span class="pre">{2</span> <span class="pre">tsp}</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">{2</span> <span class="pre">large</span> <span class="pre">sacks}</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="proportions">
-<h3>Proportions<a class="headerlink" href="#proportions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="proportions">
+<h3>Proportions<a class="headerlink" href="#proportions" title="Link to this heading">¶</a></h3>
 <div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Proportion <span class="o">::=</span> (Number [&quot;*&quot; | &quot;%&quot;]) | Remainder
 Remainder <span class="o">::=</span> &quot;remaining&quot; | &quot;remainder&quot; | &quot;rest&quot; | &quot;left over&quot;
 </pre></div>
@@ -214,12 +212,12 @@ References are resolved in the References section above.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">50%</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">remaining</span></code></p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="top-level-structure">
-<h2>Top-Level Structure<a class="headerlink" href="#top-level-structure" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="expressions">
-<h3>Expressions<a class="headerlink" href="#expressions" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="top-level-structure">
+<h2>Top-Level Structure<a class="headerlink" href="#top-level-structure" title="Link to this heading">¶</a></h2>
+<section id="expressions">
+<h3>Expressions<a class="headerlink" href="#expressions" title="Link to this heading">¶</a></h3>
 <div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Expression <span class="o">::=</span> Ingredient | Reference | Step | &quot;(&quot; LTRExpression &quot;)&quot;
 </pre></div>
 </div>
@@ -233,9 +231,9 @@ used but it must be wrapped in parentheses.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">boil(egg)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">(2</span> <span class="pre">onions,</span> <span class="pre">chopped,</span> <span class="pre">fried)</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="left-to-right-expressions">
-<h3>Left-to-Right Expressions<a class="headerlink" href="#left-to-right-expressions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="left-to-right-expressions">
+<h3>Left-to-Right Expressions<a class="headerlink" href="#left-to-right-expressions" title="Link to this heading">¶</a></h3>
 <div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>LTRExpression <span class="o">::=</span> Expression (&quot;,&quot; String)*
 </pre></div>
 </div>
@@ -253,9 +251,9 @@ onions, chop, fry”.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">fry(bacon,</span> <span class="pre">oil),</span> <span class="pre">chop</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">can</span> <span class="pre">of</span> <span class="pre">spam</span></code> (no following steps, still technically a LTR expression)</p></li>
 </ul>
-</div>
-<div class="section" id="statements">
-<h3>Statements<a class="headerlink" href="#statements" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="statements">
+<h3>Statements<a class="headerlink" href="#statements" title="Link to this heading">¶</a></h3>
 <div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Statement <span class="o">::=</span> [OutputList (&quot;=&quot; | &quot;:=&quot;)] LTRExpression EndOfLine
 OutputList <span class="o">::=</span> String (&quot;,&quot; String)+
 </pre></div>
@@ -287,19 +285,19 @@ which will be outlined and labelled in the final recipe)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">fry(egg,</span> <span class="pre">oil)</span></code> (does <em>not</em> implicitly define a sub recipe as multiple
 ingredients involved)</p></li>
 </ul>
-</div>
-<div class="section" id="recipe-descriptions">
-<h3>Recipe Descriptions<a class="headerlink" href="#recipe-descriptions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="recipe-descriptions">
+<h3>Recipe Descriptions<a class="headerlink" href="#recipe-descriptions" title="Link to this heading">¶</a></h3>
 <div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>RecipeDescription <span class="o">::=</span> Statement+
 </pre></div>
 </div>
 <p>The root of the grammar, a series of statements.</p>
-</div>
-</div>
-<div class="section" id="literal-values">
-<h2>Literal Values<a class="headerlink" href="#literal-values" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="numbers">
-<h3>Numbers<a class="headerlink" href="#numbers" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="literal-values">
+<h2>Literal Values<a class="headerlink" href="#literal-values" title="Link to this heading">¶</a></h2>
+<section id="numbers">
+<h3>Numbers<a class="headerlink" href="#numbers" title="Link to this heading">¶</a></h3>
 <div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>Number <span class="o">::=</span> Decimal | Fraction
 Decimal <span class="o">::=</span> DIGITS [&quot;.&quot; DIGITS]
 Fraction <span class="o">::=</span> [DIGITS] DIGITS &quot;/&quot; DIGITS
@@ -314,9 +312,9 @@ two part fractions (e.g. “4/3”) or three part fractions (e.g. “1 1/3”).<
 <li><p><code class="docutils literal notranslate"><span class="pre">1/3</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">2/3</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="strings">
-<h3>Strings<a class="headerlink" href="#strings" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="strings">
+<h3>Strings<a class="headerlink" href="#strings" title="Link to this heading">¶</a></h3>
 <div class="highlight-bnf notranslate"><div class="highlight"><pre><span></span>String <span class="o">::=</span> (StaticString | ScaledValueString)+
 StaticString <span class="o">::=</span> (UnquotedString | SingleQuotedString | DoubleQuotedString)+
 </pre></div>
@@ -354,9 +352,9 @@ whitespace between them. For example the string <code class="docutils literal no
 <span class="pre">dog</span> <span class="pre">rolls</span> <span class="pre">(pre-sliced)</span></code> where the ‘8’ is a number which will be rescaled with
 the recipe.</p>
 <p>See also <a class="reference internal" href="scaled_value_string.html#module-recipe_grid.scaled_value_string" title="recipe_grid.scaled_value_string"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.scaled_value_string</span></code></a>.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -365,8 +363,9 @@ the recipe.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Recipe Description Language Reference</a><ul>
 <li><a class="reference internal" href="#recipe-building-blocks">Recipe Building Blocks</a><ul>
 <li><a class="reference internal" href="#ingredients">Ingredients</a></li>
@@ -392,12 +391,17 @@ the recipe.</p>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="markdown_reference.html"
-                        title="previous chapter">Markdown Recipe Syntax Reference</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="grammar.html"
-                        title="next chapter">Formal Recipe Description Language Grammar</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="markdown_reference.html"
+                          title="previous chapter">Markdown Recipe Syntax Reference</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="grammar.html"
+                          title="next chapter">Formal Recipe Description Language Grammar</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -409,12 +413,12 @@ the recipe.</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -439,8 +443,8 @@ the recipe.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Jonathan Heathcote.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.1.
+    &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>

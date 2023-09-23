@@ -1,20 +1,18 @@
-
 <!DOCTYPE html>
 
-<html>
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>Markdown Recipe Syntax Reference &#8212; Recipe Grid 2.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=601dbdee" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css?v=22be8b51" />
+    <script src="_static/documentation_options.js?v=60dbed4a"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Recipe Description Language Reference" href="language_reference.html" />
@@ -45,13 +43,13 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="markdown-recipe-syntax-reference">
-<span id="markdown-reference"></span><h1>Markdown Recipe Syntax Reference<a class="headerlink" href="#markdown-recipe-syntax-reference" title="Permalink to this headline">¶</a></h1>
+  <section id="markdown-recipe-syntax-reference">
+<span id="markdown-reference"></span><h1>Markdown Recipe Syntax Reference<a class="headerlink" href="#markdown-recipe-syntax-reference" title="Link to this heading">¶</a></h1>
 <p>Recipe Grid extends Markdown syntax to provide a convenient way of describing
 recipes within a document. The <a class="reference external" href="https://commonmark.org/">CommonMark</a> Markdown
 standard is supported with a small number of extensions described below.</p>
-<div class="section" id="embedded-recipes">
-<h2>Embedded recipes<a class="headerlink" href="#embedded-recipes" title="Permalink to this headline">¶</a></h2>
+<section id="embedded-recipes">
+<h2>Embedded recipes<a class="headerlink" href="#embedded-recipes" title="Link to this heading">¶</a></h2>
 <p>Recipes descriptions should be embedded either in indented code blocks or
 fenced codeblocks with <code class="docutils literal notranslate"><span class="pre">recipe</span></code> given as the ‘info string’.  For example:</p>
 <div class="highlight-md notranslate"><div class="highlight"><pre><span></span><span class="gh">A Sample Markdown File</span>
@@ -59,10 +57,10 @@ fenced codeblocks with <code class="docutils literal notranslate"><span class="p
 
 The following will be compiled as a recipe:
 
-<span class="sb">    fry(</span>
-<span class="sb">        1 egg,</span>
-<span class="sb">        1tsp oil,</span>
-<span class="sb">    )</span>
+    fry(
+        1 egg,
+        1tsp oil,
+    )
 
 So will:
 
@@ -83,19 +81,19 @@ able to reference sub recipes in earlier blocks. For example:</p>
 
 First make pizza sauce:
 
-<span class="sb">    pizza sauce = boil down(tomatos, herbs)</span>
+    pizza sauce = boil down(tomatos, herbs)
 
 Next put it on a pizza:
 
-<span class="sb">    top(1 pizza base, pizza sauce, cheese)</span>
+    top(1 pizza base, pizza sauce, cheese)
 </pre></div>
 </div>
 <p>If for some reason you wish to start a new recipe part way through your
 document (and prevent sub recipes being inadvertently redefined), start this
 new recipe with a fenced code block with <code class="docutils literal notranslate"><span class="pre">new-recipe</span></code> as the info string.</p>
-</div>
-<div class="section" id="scaleable-values">
-<h2>Scaleable values<a class="headerlink" href="#scaleable-values" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="scaleable-values">
+<h2>Scaleable values<a class="headerlink" href="#scaleable-values" title="Link to this heading">¶</a></h2>
 <p>In addition to embedding recipes within a Markdown document, it is also
 possible to mark up numbers within the document which will be scaled along with
 ingredient quantities when the recipe is scaled. This is achieved by enclosing
@@ -117,9 +115,9 @@ would be rewritten to contain ‘2 delicious burgers’ and ‘8 meat balls’.<
 unchanged.</p>
 <p>To write a literal curly brace, use <code class="docutils literal notranslate"><span class="pre">\{</span></code> for an opening brace and <code class="docutils literal notranslate"><span class="pre">\}</span></code> for
 a closing brace.</p>
-</div>
-<div class="section" id="titles">
-<h2>Titles<a class="headerlink" href="#titles" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="titles">
+<h2>Titles<a class="headerlink" href="#titles" title="Link to this heading">¶</a></h2>
 <p>If a Markdown document starts with a H1-level heading containing no special
 formatting, the title of the document will be inferred from this.</p>
 <p>When this heading ends with one of the following forms (where <code class="docutils literal notranslate"><span class="pre">&lt;N&gt;</span></code> is the
@@ -134,8 +132,8 @@ number of servings):</p>
 </ul>
 <p>The title will be inferred to be whatever came before this and the recipe will
 be assumed to be scaled to produce the specified number of servings.</p>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -144,8 +142,9 @@ be assumed to be scaled to produce the specified number of servings.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Markdown Recipe Syntax Reference</a><ul>
 <li><a class="reference internal" href="#embedded-recipes">Embedded recipes</a></li>
 <li><a class="reference internal" href="#scaleable-values">Scaleable values</a></li>
@@ -154,12 +153,17 @@ be assumed to be scaled to produce the specified number of servings.</p>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="tutorial.html"
-                        title="previous chapter">Recipe Grid Tutorial</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="language_reference.html"
-                        title="next chapter">Recipe Description Language Reference</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="tutorial.html"
+                          title="previous chapter">Recipe Grid Tutorial</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="language_reference.html"
+                          title="next chapter">Recipe Description Language Reference</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -171,12 +175,12 @@ be assumed to be scaled to produce the specified number of servings.</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -201,8 +205,8 @@ be assumed to be scaled to produce the specified number of servings.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Jonathan Heathcote.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.1.
+    &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>

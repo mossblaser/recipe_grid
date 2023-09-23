@@ -1,20 +1,18 @@
-
 <!DOCTYPE html>
 
-<html>
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>Recipe Grid Tutorial &#8212; Recipe Grid 2.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=601dbdee" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css?v=22be8b51" />
+    <script src="_static/documentation_options.js?v=60dbed4a"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Markdown Recipe Syntax Reference" href="markdown_reference.html" />
@@ -45,13 +43,13 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="recipe-grid-tutorial">
-<span id="tutorial"></span><h1>Recipe Grid Tutorial<a class="headerlink" href="#recipe-grid-tutorial" title="Permalink to this headline">¶</a></h1>
+  <section id="recipe-grid-tutorial">
+<span id="tutorial"></span><h1>Recipe Grid Tutorial<a class="headerlink" href="#recipe-grid-tutorial" title="Link to this heading">¶</a></h1>
 <p>This tutorial will give you an introduction to Recipe Grid including its recipe
 description language and tools for compiling recipes into stand-alone HTML
 pages or complete recipe websites.</p>
-<div class="section" id="recipe-description-basics">
-<h2>Recipe description basics<a class="headerlink" href="#recipe-description-basics" title="Permalink to this headline">¶</a></h2>
+<section id="recipe-description-basics">
+<h2>Recipe description basics<a class="headerlink" href="#recipe-description-basics" title="Link to this heading">¶</a></h2>
 <p>Recipes are not described directly in tabular form. Instead, these tables are
 generated from a simple textual description of the recipe within a <a class="reference external" href="https://commonmark.org/">Markdown</a> document.</p>
 <p>The following example shows a simple recipe Markdown file:</p>
@@ -60,15 +58,15 @@ generated from a simple textual description of the recipe within a <a class="ref
 
 A fairly boring recipe...
 
-<span class="sb">    boil for 3.5 minutes (</span>
-<span class="sb">        1 egg,</span>
-<span class="sb">        500ml water,</span>
-<span class="sb">    )</span>
+    boil for 3.5 minutes (
+        1 egg,
+        500ml water,
+    )
 </pre></div>
 </div>
 <p>This is compiled into HTML using the <a class="reference internal" href="recipe_grid_command.html#recipe-grid-command"><span class="std std-ref">recipe-grid</span></a>
 command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ recipe-grid path/to/my_recipe.md
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>recipe-grid<span class="w"> </span>path/to/my_recipe.md
 </pre></div>
 </div>
 <p>Which produces a file called <code class="docutils literal notranslate"><span class="pre">my_recipe.html</span></code> which looks like this:</p>
@@ -98,17 +96,17 @@ recipe into a standalone HTML page) a other commands are provided to, for
 example, produce a static ‘recipe book’ style website from a collection of
 recipes. We’ll return to look at these commands and options at the end of this
 tutorial.</p>
-</div>
-<div class="section" id="recipe-description-syntax">
-<h2>Recipe description syntax<a class="headerlink" href="#recipe-description-syntax" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="recipe-description-syntax">
+<h2>Recipe description syntax<a class="headerlink" href="#recipe-description-syntax" title="Link to this heading">¶</a></h2>
 <p>The central feature of Recipe Grid is its recipe description language which is
 compiled into the tabular form which appears in a compiled recipe. Lets take a
 look at this language.</p>
 <p>For brevity, in the examples below we’ll just show the recipe descriptions. To
 compile these you’ll need to place them in an indented block in a Markdown file
 and compile them using the <code class="docutils literal notranslate"><span class="pre">recipe-grid</span></code> command as illustrated above.</p>
-<div class="section" id="ingredients-and-steps">
-<h3>Ingredients and steps<a class="headerlink" href="#ingredients-and-steps" title="Permalink to this headline">¶</a></h3>
+<section id="ingredients-and-steps">
+<h3>Ingredients and steps<a class="headerlink" href="#ingredients-and-steps" title="Link to this heading">¶</a></h3>
 <p>Recipe Grid recipes are described in terms of <em>ingredients</em> and <em>steps</em> which
 are carried out on these ingredients.</p>
 <p>An ingredient is usually defined by writing a quantity next to a name, for
@@ -203,9 +201,9 @@ example:</p>
     </tr>
   </table>
 </div></div>
-</div>
-<div class="section" id="listing-ingredients-separately">
-<h3>Listing ingredients separately<a class="headerlink" href="#listing-ingredients-separately" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="listing-ingredients-separately">
+<h3>Listing ingredients separately<a class="headerlink" href="#listing-ingredients-separately" title="Link to this heading">¶</a></h3>
 <p>Often when you’re translating a traditional recipe into the recipe description
 syntax you already have a list of quantities and ingredients. Rather than
 manually transcribing these quantities, it is possible to copy-and-paste a list
@@ -305,9 +303,9 @@ descriptions purely to make them read better. This is completely optional
 as far as the recipe description language is concerned: ‘1 tsp of mixed
 herbs’ and ‘1 tsp mixed herbs’ are equally valid.</p>
 </div>
-</div>
-<div class="section" id="sub-recipes">
-<h3>Sub-recipes<a class="headerlink" href="#sub-recipes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="sub-recipes">
+<h3>Sub-recipes<a class="headerlink" href="#sub-recipes" title="Link to this heading">¶</a></h3>
 <p>Recipe Grid allows recipes to be broken up into sub-recipes which can make them
 easier to write. For example, we can break the pizza sauce from the previous
 recipe into its own sub-recipe like so:</p>
@@ -433,9 +431,9 @@ actually just a short-hand for creating a sub recipes. When a single
 ingredient (with any number of steps acting on it) is defined on its own, a
 sub recipe with the ingredient’s name is automatically created.</p>
 </div>
-</div>
-<div class="section" id="splitting-recipe-components-up">
-<h3>Splitting recipe components up<a class="headerlink" href="#splitting-recipe-components-up" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="splitting-recipe-components-up">
+<h3>Splitting recipe components up<a class="headerlink" href="#splitting-recipe-components-up" title="Link to this heading">¶</a></h3>
 <p>Sometimes recipes call for ingredients or sub recipes to be split into parts
 which are then used separately. For example in the following recipe for
 enchiladas, some of the sauce is mixed with the chicken and some is poured over
@@ -523,9 +521,9 @@ the references to the tomato sauce contain links to the sub recipe.</p>
 a quantity (e.g. <code class="docutils literal notranslate"><span class="pre">20g</span></code>) or proportion (e.g. <code class="docutils literal notranslate"><span class="pre">1/2</span> <span class="pre">of</span> <span class="pre">the</span></code> or <code class="docutils literal notranslate"><span class="pre">50%</span></code> or
 <code class="docutils literal notranslate"><span class="pre">remaining</span></code>)  followed by an optional preposition (e.g. ‘of the’) and then
 the name of the sub recipe being referenced.</p>
-</div>
-<div class="section" id="sub-recipes-with-multiple-outputs">
-<h3>Sub recipes with multiple outputs<a class="headerlink" href="#sub-recipes-with-multiple-outputs" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="sub-recipes-with-multiple-outputs">
+<h3>Sub recipes with multiple outputs<a class="headerlink" href="#sub-recipes-with-multiple-outputs" title="Link to this heading">¶</a></h3>
 <p>Sometimes a step may produce multiple things. For example, after boiling some
 vegetables you may wish to use both the vegetables and the water they were
 boiled in. To do this, you can define a sub recipe to have multiple outputs
@@ -577,9 +575,9 @@ pour over (
     <tr><td class="rg-reference rg-border-left-sub-recipe"><a href="#sub-recipe-7-veg-water">veg water</a></td></tr>
     <tr><td class="rg-reference rg-border-left-sub-recipe rg-border-bottom-sub-recipe" colspan="2"><a href="#sub-recipe-7-boiled-veg">boiled veg</a></td></tr>
   </table>
-</div></div>
-<div class="section" id="mixing-prose-and-recipe-tables">
-<h3>Mixing prose and recipe tables<a class="headerlink" href="#mixing-prose-and-recipe-tables" title="Permalink to this headline">¶</a></h3>
+</div></section>
+<section id="mixing-prose-and-recipe-tables">
+<h3>Mixing prose and recipe tables<a class="headerlink" href="#mixing-prose-and-recipe-tables" title="Link to this heading">¶</a></h3>
 <p>For particularly complicated recipes it is possible to split a recipe into sub
 recipes which appear at different points in the document. To do this, simply
 create multiple indented blocks in your markdown document which define sub
@@ -589,19 +587,19 @@ recipes which reference each other. For example:</p>
 
 First you should make some pizza sauce:
 
-<span class="sb">    pizza sauce = boil down (</span>
-<span class="sb">        400g chopped tomatoes,</span>
-<span class="sb">        1 tsp mixed herbs,</span>
-<span class="sb">        fried(finely chopped(1 onion)),</span>
-<span class="sb">    )</span>
+    pizza sauce = boil down (
+        400g chopped tomatoes,
+        1 tsp mixed herbs,
+        fried(finely chopped(1 onion)),
+    )
 
 Then once you&#39;ve done that you can go ahead and make some pizza:
 
-<span class="sb">    top (</span>
-<span class="sb">        grated(200g mozzarella),</span>
-<span class="sb">        pizza sauce,</span>
-<span class="sb">        1 pizza base,</span>
-<span class="sb">    )</span>
+    top (
+        grated(200g mozzarella),
+        pizza sauce,
+        1 pizza base,
+    )
 </pre></div>
 </div>
 <p>Will compile into:</p>
@@ -612,15 +610,15 @@ Then once you&#39;ve done that you can go ahead and make some pizza:
 description, or in an earlier indented block. Forward references are not
 allowed.</p>
 </div>
-</div>
-</div>
-<div class="section" id="scaling-recipes">
-<h2>Scaling recipes<a class="headerlink" href="#scaling-recipes" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="scaling-recipes">
+<h2>Scaling recipes<a class="headerlink" href="#scaling-recipes" title="Link to this heading">¶</a></h2>
 <p>Recipe Grid can automatically rescale quantities in recipes. Using the
 <code class="docutils literal notranslate"><span class="pre">recipe-grid</span></code> command, this is achieved by adding the <code class="docutils literal notranslate"><span class="pre">--scale</span></code> argument
 followed by a scaling factor. For example, to compile a recipe, halving all of
 the quantities we would write:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ recipe-grid --scale <span class="m">1</span>/2 path/to/recipe.md
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>recipe-grid<span class="w"> </span>--scale<span class="w"> </span><span class="m">1</span>/2<span class="w"> </span>path/to/recipe.md
 </pre></div>
 </div>
 <div class="admonition note">
@@ -633,7 +631,7 @@ to be shown as decimal numbers.</p>
 <p>When a recipe’s main title ends with a phrase like <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">3</span></code> or <code class="docutils literal notranslate"><span class="pre">serves</span> <span class="pre">7</span></code>,
 the <code class="docutils literal notranslate"><span class="pre">--servings</span></code> argument can be used instead, taking the desired number of
 servings to make (saving hand-calculating the appropriate scaling factor).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ recipe-grid --servings <span class="m">3</span> path/to/recipe.md
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>recipe-grid<span class="w"> </span>--servings<span class="w"> </span><span class="m">3</span><span class="w"> </span>path/to/recipe.md
 </pre></div>
 </div>
 <p>In either case, when the recipe is compiled, a subtitle is added indicating any
@@ -735,9 +733,9 @@ enclose it in quotes (e.g. <code class="docutils literal notranslate"><span clas
 Markdown document, you can use a backslash to escape them (e.g. <code class="docutils literal notranslate"><span class="pre">\{</span></code> and
 <code class="docutils literal notranslate"><span class="pre">\}</span></code>).</p>
 </div>
-</div>
-<div class="section" id="linting">
-<h2>Linting<a class="headerlink" href="#linting" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="linting">
+<h2>Linting<a class="headerlink" href="#linting" title="Link to this heading">¶</a></h2>
 <p>Recipe Grid provides a linting tool, <a class="reference internal" href="recipe_grid_lint_command.html#recipe-grid-lint-command"><span class="std std-ref">recipe-grid-lint</span></a>, which checks for common mistakes within recipes.</p>
 <p>For example, given the following recipe:</p>
 <div class="highlight-md notranslate"><div class="highlight"><pre><span></span><span class="gh">Boiled egg for 1</span>
@@ -745,8 +743,8 @@ Markdown document, you can use a backslash to escape them (e.g. <code class="doc
 
 A simple recipe, with a simple mistake...
 
-<span class="sb">    2 eggs</span>
-<span class="sb">    500ml water</span>
+    2 eggs
+    500ml water
 
     boil(egg, water)
 </pre></div>
@@ -758,9 +756,9 @@ referenced ‘egg’ and not ‘eggs’.</p>
 </pre></div>
 </div>
 <p>When no issues are found, the command exits without printing anything.</p>
-</div>
-<div class="section" id="generating-recipe-book-static-websites">
-<h2>Generating recipe book static websites<a class="headerlink" href="#generating-recipe-book-static-websites" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="generating-recipe-book-static-websites">
+<h2>Generating recipe book static websites<a class="headerlink" href="#generating-recipe-book-static-websites" title="Link to this heading">¶</a></h2>
 <p>As well as compiling individual recipes into standalone HTML pages, Recipe Grid
 can also compile collections of recipes into a complete recipe book website
 using the <a class="reference internal" href="recipe_grid_site_command.html#recipe-grid-site-command"><span class="std std-ref">recipe-grid-site</span></a> command. The generated
@@ -783,7 +781,7 @@ shown on the relevant recipe browsing pages.</p>
 </pre></div>
 </div>
 <p>A recipe website is then generated using the <a class="reference internal" href="recipe_grid_site_command.html#recipe-grid-site-command"><span class="std std-ref">recipe-grid-site</span></a> command as follows:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ recipe-grid-site path/to/recipes/dir/ path/to/output/dir/
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>recipe-grid-site<span class="w"> </span>path/to/recipes/dir/<span class="w"> </span>path/to/output/dir/
 </pre></div>
 </div>
 <p>The generated website can then be opened in a browser and used locally or
@@ -792,8 +790,8 @@ uploaded to a static web hosting service and used online.</p>
 <img alt="_images/site_example_categories.png" src="_images/site_example_categories.png" />
 <img alt="_images/site_example_category.png" src="_images/site_example_category.png" />
 <img alt="_images/site_example_recipe.png" src="_images/site_example_recipe.png" />
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -802,8 +800,9 @@ uploaded to a static web hosting service and used online.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Recipe Grid Tutorial</a><ul>
 <li><a class="reference internal" href="#recipe-description-basics">Recipe description basics</a></li>
 <li><a class="reference internal" href="#recipe-description-syntax">Recipe description syntax</a><ul>
@@ -822,12 +821,17 @@ uploaded to a static web hosting service and used online.</p>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="index.html"
-                        title="previous chapter">Recipe Grid</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="markdown_reference.html"
-                        title="next chapter">Markdown Recipe Syntax Reference</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">Recipe Grid</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="markdown_reference.html"
+                          title="next chapter">Markdown Recipe Syntax Reference</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -839,12 +843,12 @@ uploaded to a static web hosting service and used online.</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -869,8 +873,8 @@ uploaded to a static web hosting service and used online.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Jonathan Heathcote.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.1.
+    &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>

@@ -1,20 +1,18 @@
-
 <!DOCTYPE html>
 
-<html>
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>recipe_grid.markdown: Markdown recipe compiler &#8212; Recipe Grid 2.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=601dbdee" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css?v=22be8b51" />
+    <script src="_static/documentation_options.js?v=60dbed4a"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="recipe_grid.compiler: Recipe description language compiler" href="compiler.html" />
@@ -45,15 +43,15 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-recipe_grid.markdown">
-<span id="recipe-grid-markdown-markdown-recipe-compiler"></span><h1><a class="reference internal" href="#module-recipe_grid.markdown" title="recipe_grid.markdown"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.markdown</span></code></a>: Markdown recipe compiler<a class="headerlink" href="#module-recipe_grid.markdown" title="Permalink to this headline">¶</a></h1>
+  <section id="module-recipe_grid.markdown">
+<span id="recipe-grid-markdown-markdown-recipe-compiler"></span><h1><a class="reference internal" href="#module-recipe_grid.markdown" title="recipe_grid.markdown"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.markdown</span></code></a>: Markdown recipe compiler<a class="headerlink" href="#module-recipe_grid.markdown" title="Link to this heading">¶</a></h1>
 <p>Recipe Grid extends Markdown syntax to provide a convenient way of describing
 recipes within a document. See the <a class="reference internal" href="markdown_reference.html#markdown-reference"><span class="std std-ref">Markdown Recipe Syntax Reference</span></a> for an overview of
 these extensions.</p>
 <p>A recipe markdown document is compiled using:</p>
 <dl class="py function">
-<dt id="recipe_grid.markdown.compile_markdown">
-<code class="sig-prename descclassname">recipe_grid.markdown.</code><code class="sig-name descname">compile_markdown</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">markdown_source</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe" title="recipe_grid.markdown.MarkdownRecipe">recipe_grid.markdown.MarkdownRecipe</a><a class="headerlink" href="#recipe_grid.markdown.compile_markdown" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.markdown.compile_markdown">
+<span class="sig-prename descclassname"><span class="pre">recipe_grid.markdown.</span></span><span class="sig-name descname"><span class="pre">compile_markdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">markdown_source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe" title="recipe_grid.markdown.MarkdownRecipe"><span class="pre">MarkdownRecipe</span></a></span></span><a class="headerlink" href="#recipe_grid.markdown.compile_markdown" title="Link to this definition">¶</a></dt>
 <dd><p>Compile a recipe grid flavoured markdown document, producing a
 <a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe" title="recipe_grid.markdown.MarkdownRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">MarkdownRecipe</span></code></a> which may be rescaled and rendered into the
 final HTML form as required.</p>
@@ -65,16 +63,16 @@ encountered.</p>
 <p>This produces a <a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe" title="recipe_grid.markdown.MarkdownRecipe"><code class="xref py py-class docutils literal notranslate"><span class="pre">MarkdownRecipe</span></code></a> object which in turn may be compiled
 into a final HTML form using its <a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe.render" title="recipe_grid.markdown.MarkdownRecipe.render"><code class="xref py py-meth docutils literal notranslate"><span class="pre">MarkdownRecipe.render()</span></code></a> method.</p>
 <dl class="py class">
-<dt id="recipe_grid.markdown.MarkdownRecipe">
-<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.markdown.</code><code class="sig-name descname">MarkdownRecipe</code><span class="sig-paren">(</span><em class="sig-param">html: str = ''</em>, <em class="sig-param">title: Optional[str] = None</em>, <em class="sig-param">servings: Optional[int] = None</em>, <em class="sig-param">pre_title_placeholder: Optional[str] = None</em>, <em class="sig-param">post_title_placeholder: Optional[str] = None</em>, <em class="sig-param">scaled_value_strings: MutableMapping[str</em>, <em class="sig-param">recipe_grid.scaled_value_string.ScaledValueString] = &lt;factory&gt;</em>, <em class="sig-param">recipe_placeholders: MutableMapping[str</em>, <em class="sig-param">recipe_grid.recipe.Recipe] = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.markdown.MarkdownRecipe">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">recipe_grid.markdown.</span></span><span class="sig-name descname"><span class="pre">MarkdownRecipe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">html:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">servings:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_title_placeholder:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post_title_placeholder:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaled_value_strings:</span> <span class="pre">~typing.MutableMapping[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~recipe_grid.scaled_value_string.ScaledValueString]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recipe_placeholders:</span> <span class="pre">~typing.MutableMapping[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~recipe_grid.recipe.Recipe]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe" title="Link to this definition">¶</a></dt>
 <dd><p>The result of parsing a recipe grid markdown file.</p>
 <p>Most users should refer directly to the <a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe.render" title="recipe_grid.markdown.MarkdownRecipe.render"><code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code></a> method which will
 produce a complete HTML listing for the recipe, optionally after scaling by
 a given factor. Other metadata (e.g. <a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe.title" title="recipe_grid.markdown.MarkdownRecipe.title"><code class="xref py py-attr docutils literal notranslate"><span class="pre">title</span></code></a> and
 <a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe.servings" title="recipe_grid.markdown.MarkdownRecipe.servings"><code class="xref py py-attr docutils literal notranslate"><span class="pre">servings</span></code></a>) may also be useful for indexing purposes.</p>
 <dl class="py attribute">
-<dt id="recipe_grid.markdown.MarkdownRecipe.html">
-<code class="sig-name descname">html</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><em class="property"> = ''</em><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.html" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.markdown.MarkdownRecipe.html">
+<span class="sig-name descname"><span class="pre">html</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.html" title="Link to this definition">¶</a></dt>
 <dd><p>The compiled HTML for the markdown document with placeholders for various
 recipe-related values.</p>
 <p>Specifically the following placeholders should be replaced with suitable
@@ -96,8 +94,8 @@ tag and the addition of notes about how the recipe was scaled.</p></li>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.markdown.MarkdownRecipe.title">
-<code class="sig-name descname">title</code><em class="property">: Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></em><em class="property"> = None</em><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.title" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.markdown.MarkdownRecipe.title">
+<span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.title" title="Link to this definition">¶</a></dt>
 <dd><p>The title of the recipe (with the serving count and prepositions removed,
 if present).</p>
 <p>For example, given the markdown title “# Spam for 2”, this field will
@@ -106,42 +104,42 @@ become “Spam”.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.markdown.MarkdownRecipe.servings">
-<code class="sig-name descname">servings</code><em class="property">: Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">]</span></em><em class="property"> = None</em><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.servings" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.markdown.MarkdownRecipe.servings">
+<span class="sig-name descname"><span class="pre">servings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.servings" title="Link to this definition">¶</a></dt>
 <dd><p>The number of servings this recipe is for, if known from the title.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.markdown.MarkdownRecipe.post_title_placeholder">
-<code class="sig-name descname">post_title_placeholder</code><em class="property">: Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></em><em class="property"> = None</em><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.post_title_placeholder" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.markdown.MarkdownRecipe.post_title_placeholder">
+<span class="sig-name descname"><span class="pre">post_title_placeholder</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.post_title_placeholder" title="Link to this definition">¶</a></dt>
 <dd><p>Strings which may be substituted with content to insert before and after
 the title-containing &lt;h1&gt;, if one was identified successfully.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.markdown.MarkdownRecipe.scaled_value_strings">
-<code class="sig-name descname">scaled_value_strings</code><em class="property">: MutableMapping<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference internal" href="scaled_value_string.html#recipe_grid.scaled_value_string.ScaledValueString" title="recipe_grid.scaled_value_string.ScaledValueString">recipe_grid.scaled_value_string.ScaledValueString</a><span class="p">]</span></em><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.scaled_value_strings" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.markdown.MarkdownRecipe.scaled_value_strings">
+<span class="sig-name descname"><span class="pre">scaled_value_strings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.MutableMapping" title="(in Python v3.11)"><span class="pre">MutableMapping</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="scaled_value_string.html#recipe_grid.scaled_value_string.ScaledValueString" title="recipe_grid.scaled_value_string.ScaledValueString"><span class="pre">ScaledValueString</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.scaled_value_strings" title="Link to this definition">¶</a></dt>
 <dd><p>Scaled value strings to be substituted within the recipe text. A mapping
 from placeholder string to corresponding <code class="xref py py-class docutils literal notranslate"><span class="pre">ScaledValueString</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="recipe_grid.markdown.MarkdownRecipe.recipe_placeholders">
-<code class="sig-name descname">recipe_placeholders</code><em class="property">: MutableMapping<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference internal" href="data_model.html#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe">recipe_grid.recipe.Recipe</a><span class="p">]</span></em><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.recipe_placeholders" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.markdown.MarkdownRecipe.recipe_placeholders">
+<span class="sig-name descname"><span class="pre">recipe_placeholders</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.MutableMapping" title="(in Python v3.11)"><span class="pre">MutableMapping</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="data_model.html#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe"><span class="pre">Recipe</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.recipe_placeholders" title="Link to this definition">¶</a></dt>
 <dd><p>Compiled recipes, one per recipe code block, alongside the placeholder
 string.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="recipe_grid.markdown.MarkdownRecipe.recipes">
-<em class="property">property </em><code class="sig-name descname">recipes</code><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.recipes" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="recipe_grid.markdown.MarkdownRecipe.recipes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">recipes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_model.html#recipe_grid.recipe.Recipe" title="recipe_grid.recipe.Recipe"><span class="pre">Recipe</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.recipes" title="Link to this definition">¶</a></dt>
 <dd><p>An convenience view of :py;attr:<cite>recipe_placeholders</cite> containing just
 the recipes without placeholder strings.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="recipe_grid.markdown.MarkdownRecipe.render">
-<code class="sig-name descname">render</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scale</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.9)">fractions.Fraction</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">1</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.render" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.markdown.MarkdownRecipe.render">
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.11)"><span class="pre">Fraction</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#recipe_grid.markdown.MarkdownRecipe.render" title="Link to this definition">¶</a></dt>
 <dd><p>Render this recipe scaled by a given factor.</p>
 </dd></dl>
 
@@ -150,11 +148,11 @@ the recipes without placeholder strings.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Unfortunately, though internally Recipe Grid’s Markdown parser is built as
-a <a class="reference external" href="https://marko-py.readthedocs.io/en/latest/api.html#module-marko" title="(in Marko v0.10.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">marko</span></code></a> extension, due to limitations of the <a class="reference external" href="https://marko-py.readthedocs.io/en/latest/api.html#module-marko" title="(in Marko v0.10.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">marko</span></code></a>
+a <a class="reference external" href="https://marko-py.readthedocs.io/en/latest/api.html#module-marko" title="(in Marko v2.0.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">marko</span></code></a> extension, due to limitations of the <a class="reference external" href="https://marko-py.readthedocs.io/en/latest/api.html#module-marko" title="(in Marko v2.0.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">marko</span></code></a>
 extension API, this extension is not readily composible with other
 extensions. As a result, this extension is not exposed as a public API.</p>
 </div>
-</div>
+</section>
 
 
             <div class="clearer"></div>
@@ -163,12 +161,37 @@ extensions. As a result, this extension is not exposed as a public API.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="recipe_grid_lint_command.html"
-                        title="previous chapter"><code class="docutils literal notranslate"><span class="pre">recipe-grid-lint</span></code>: Recipe linter</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="compiler.html"
-                        title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.compiler</span></code>: Recipe description language compiler</a></p>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.markdown</span></code>: Markdown recipe compiler</a><ul>
+<li><a class="reference internal" href="#recipe_grid.markdown.compile_markdown"><code class="docutils literal notranslate"><span class="pre">compile_markdown()</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe"><code class="docutils literal notranslate"><span class="pre">MarkdownRecipe</span></code></a><ul>
+<li><a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe.html"><code class="docutils literal notranslate"><span class="pre">MarkdownRecipe.html</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe.title"><code class="docutils literal notranslate"><span class="pre">MarkdownRecipe.title</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe.servings"><code class="docutils literal notranslate"><span class="pre">MarkdownRecipe.servings</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe.post_title_placeholder"><code class="docutils literal notranslate"><span class="pre">MarkdownRecipe.post_title_placeholder</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe.scaled_value_strings"><code class="docutils literal notranslate"><span class="pre">MarkdownRecipe.scaled_value_strings</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe.recipe_placeholders"><code class="docutils literal notranslate"><span class="pre">MarkdownRecipe.recipe_placeholders</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe.recipes"><code class="docutils literal notranslate"><span class="pre">MarkdownRecipe.recipes</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.markdown.MarkdownRecipe.render"><code class="docutils literal notranslate"><span class="pre">MarkdownRecipe.render()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="recipe_grid_lint_command.html"
+                          title="previous chapter"><code class="docutils literal notranslate"><span class="pre">recipe-grid-lint</span></code>: Recipe linter</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="compiler.html"
+                          title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.compiler</span></code>: Recipe description language compiler</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -180,12 +203,12 @@ extensions. As a result, this extension is not exposed as a public API.</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -210,8 +233,8 @@ extensions. As a result, this extension is not exposed as a public API.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Jonathan Heathcote.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.1.
+    &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>

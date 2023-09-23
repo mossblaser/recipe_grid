@@ -1,20 +1,18 @@
-
 <!DOCTYPE html>
 
-<html>
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>recipe_grid.units: Unit conversions &#8212; Recipe Grid 2.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=601dbdee" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="_static/recipe_grid_tables.css?v=22be8b51" />
+    <script src="_static/documentation_options.js?v=60dbed4a"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="recipe_grid.lint: Recipe linting" href="linting.html" />
@@ -45,8 +43,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-recipe_grid.units">
-<span id="recipe-grid-units-unit-conversions"></span><span id="units"></span><h1><a class="reference internal" href="#module-recipe_grid.units" title="recipe_grid.units"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.units</span></code></a>: Unit conversions<a class="headerlink" href="#module-recipe_grid.units" title="Permalink to this headline">¶</a></h1>
+  <section id="module-recipe_grid.units">
+<span id="recipe-grid-units-unit-conversions"></span><span id="units"></span><h1><a class="reference internal" href="#module-recipe_grid.units" title="recipe_grid.units"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.units</span></code></a>: Unit conversions<a class="headerlink" href="#module-recipe_grid.units" title="Link to this heading">¶</a></h1>
 <p>Recipe Grid has a simple understanding of various cooking-related units and can
 perform simple conversions between units of the same kind. The complete list of
 units is:</p>
@@ -120,43 +118,43 @@ units is:</p>
 together are aliases for one another.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This system is much less sophisticated than things like <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#module-pint" title="(in pint v0.16.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pint</span></code></a> but
+<p>This system is much less sophisticated than things like <code class="xref py py-mod docutils literal notranslate"><span class="pre">pint</span></code> but
 consequently easier to understand and use for non-unit-conversion-related
 tasks and also for less conventional measures (e.g. ‘cloves’).</p>
 </div>
-<div class="section" id="internal-api">
-<h2>Internal API<a class="headerlink" href="#internal-api" title="Permalink to this headline">¶</a></h2>
+<section id="internal-api">
+<h2>Internal API<a class="headerlink" href="#internal-api" title="Link to this heading">¶</a></h2>
 <p>The Unit system is available in the <code class="xref py py-data docutils literal notranslate"><span class="pre">recipe_grid.units.UNIT_SYSTEM</span></code>
 which is an instance of the following class:</p>
 <dl class="py class">
-<dt id="recipe_grid.units.UnitSystem">
-<em class="property">class </em><code class="sig-prename descclassname">recipe_grid.units.</code><code class="sig-name descname">UnitSystem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">unit_sets</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>recipe_grid.units.RelatedUnitSet<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.units.UnitSystem" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.units.UnitSystem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">recipe_grid.units.</span></span><span class="sig-name descname"><span class="pre">UnitSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_sets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><span class="pre">Mapping</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">RelatedUnitSet</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#recipe_grid.units.UnitSystem" title="Link to this definition">¶</a></dt>
 <dd><p>A container of unit conversions.</p>
 <dl class="py method">
-<dt id="recipe_grid.units.UnitSystem.iter_names">
-<code class="sig-name descname">iter_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Iterator<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><a class="headerlink" href="#recipe_grid.units.UnitSystem.iter_names" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.units.UnitSystem.iter_names">
+<span class="sig-name descname"><span class="pre">iter_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.11)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#recipe_grid.units.UnitSystem.iter_names" title="Link to this definition">¶</a></dt>
 <dd><p>Iterate over all defined unit names and aliases.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="recipe_grid.units.UnitSystem.iter_conversions_from">
-<code class="sig-name descname">iter_conversions_from</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">from_unit</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span> &#x2192; Iterator<span class="p">[</span>Tuple<span class="p">[</span>Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.9)">fractions.Fraction</a><span class="p">]</span><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><span class="p">]</span><a class="headerlink" href="#recipe_grid.units.UnitSystem.iter_conversions_from" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.units.UnitSystem.iter_conversions_from">
+<span class="sig-name descname"><span class="pre">iter_conversions_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.11)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.11)"><span class="pre">Fraction</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#recipe_grid.units.UnitSystem.iter_conversions_from" title="Link to this definition">¶</a></dt>
 <dd><p>Iterate over all possible conversions from the provided unit to all
 other compatible units. Iterates over pairs of multiplicative
 conversion factor and other unit names.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="recipe_grid.units.UnitSystem.convert_between">
-<code class="sig-name descname">convert_between</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">from_unit</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">to_unit</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.9)">fractions.Fraction</a><span class="p">]</span><a class="headerlink" href="#recipe_grid.units.UnitSystem.convert_between" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="recipe_grid.units.UnitSystem.convert_between">
+<span class="sig-name descname"><span class="pre">convert_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.11)"><span class="pre">Fraction</span></a></span></span><a class="headerlink" href="#recipe_grid.units.UnitSystem.convert_between" title="Link to this definition">¶</a></dt>
 <dd><p>Find the multiplicative conversion factor to convert from one unit
 to another.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -165,20 +163,34 @@ to another.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.units</span></code>: Unit conversions</a><ul>
-<li><a class="reference internal" href="#internal-api">Internal API</a></li>
+<li><a class="reference internal" href="#internal-api">Internal API</a><ul>
+<li><a class="reference internal" href="#recipe_grid.units.UnitSystem"><code class="docutils literal notranslate"><span class="pre">UnitSystem</span></code></a><ul>
+<li><a class="reference internal" href="#recipe_grid.units.UnitSystem.iter_names"><code class="docutils literal notranslate"><span class="pre">UnitSystem.iter_names()</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.units.UnitSystem.iter_conversions_from"><code class="docutils literal notranslate"><span class="pre">UnitSystem.iter_conversions_from()</span></code></a></li>
+<li><a class="reference internal" href="#recipe_grid.units.UnitSystem.convert_between"><code class="docutils literal notranslate"><span class="pre">UnitSystem.convert_between()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="scaled_value_string.html"
-                        title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.scaled_value_string</span></code>: Scaled Value Strings</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="linting.html"
-                        title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.lint</span></code>: Recipe linting</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scaled_value_string.html"
+                          title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.scaled_value_string</span></code>: Scaled Value Strings</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="linting.html"
+                          title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">recipe_grid.lint</span></code>: Recipe linting</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -190,12 +202,12 @@ to another.</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -220,8 +232,8 @@ to another.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Jonathan Heathcote.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.1.
+    &#169; Copyright 2020, Jonathan Heathcote.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>
