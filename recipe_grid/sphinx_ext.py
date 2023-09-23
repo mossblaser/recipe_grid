@@ -227,7 +227,7 @@ def compile_recipes(app: Sphinx, doctree: nodes.Node) -> None:
 
     docname = env.docname
 
-    page_recipes = env.recipe_sources[docname]  # type: ignore
+    page_recipes = env.recipe_sources[docname]
 
     for i, page_recipe_blocks in enumerate(page_recipes):
         sources = [source for source, _node in page_recipe_blocks]
@@ -242,7 +242,7 @@ def compile_recipes(app: Sphinx, doctree: nodes.Node) -> None:
             node.recipe = recipe
 
 
-class pending_recipe_node(nodes.Element):  # type: ignore
+class pending_recipe_node(nodes.Element):
     # Set when the node is created by RecipeDirective.run
     scale: Union[int, float, Fraction]
 

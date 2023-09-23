@@ -10,7 +10,7 @@ authors = ["Jonathan Heathcote"]
 homepage = "https://github.com/mossblaser/recipe_grid"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 lxml = "^4.6.1"
 marko = "^0.9.1"
 peggie = "^0.2.0"
@@ -18,10 +18,11 @@ jinja2 = "^3.1.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.0"
-mypy = "^0.790"
+mypy = "^1.5"
 pre-commit = "^2.8.2"
 sphinx = "^3.3.0"
 numpydoc = "^1.1.0"
+types-docutils = "^0.17.0"
 
 [tool.poetry.scripts]
 recipe-grid = "recipe_grid.scripts.recipe_grid:main"

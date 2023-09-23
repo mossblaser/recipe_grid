@@ -147,7 +147,7 @@ class LogPosMixin:
     pos: int
 
     def __init__(self, *args: Any, pos: int, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)  # type: ignore
+        super().__init__(*args, **kwargs)
         self.pos = pos
 
     @classmethod
@@ -436,7 +436,7 @@ class RecipeGridRendererMixin:
     """
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)  # type: ignore
+        super().__init__(*args, **kwargs)
 
         self.output = MarkdownRecipe()
         self.independent_recipe_source_blocks = []

@@ -376,7 +376,7 @@ def set_border_around_table(table: Table[T], border_type: BorderType) -> Table[T
             changes["border_bottom"] = border_type
 
         if changes:
-            return replace(cell, **changes)
+            return replace(cell, **changes)  # type: ignore
         else:
             return cell
 

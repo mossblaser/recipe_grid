@@ -96,7 +96,7 @@ def format_fraction(
 def format_number(
     number: Union[float, int, Fraction],
     format_float: Callable[[float], str] = format_float,
-    format_fraction: Callable[[Fraction], str] = format_fraction,
+    format_fraction: Callable[[Union[int, Fraction]], str] = format_fraction,
 ) -> str:
     """
     Format a number in a human-friendly way.

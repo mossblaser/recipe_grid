@@ -589,7 +589,7 @@ class Reference(RecipeTreeNode):
         else:
             return replace(
                 self,
-                sub_recipe=cast(Reference, self.sub_recipe.substitute(old, new)),
+                sub_recipe=cast(SubRecipe, self.sub_recipe.substitute(old, new)),
             )
 
     def scale(self, factor: Union[int, float, Fraction]) -> "Reference":
