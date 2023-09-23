@@ -425,6 +425,24 @@ class TestRenderMarkdown:
                     "servings</span>.</p></header>\n"
                 ),
             ),
+            # Title with longer preposition if only for the lack of a space
+            (
+                "# Risotto serves 3",
+                "Risotto",
+                3,
+                (
+                    '<header><h1 class="rg-title-scalable">Risotto '
+                    '<span class="rg-serving-count">serves '
+                    '<span class="rg-scaled-value">3</span></span></h1></header>\n'
+                ),
+                (
+                    '<header><h1 class="rg-title-scalable">Risotto '
+                    '<span class="rg-serving-count">serves '
+                    '<span class="rg-scaled-value">30</span></span></h1>'
+                    '<p>Rescaled from <span class="rg-original-servings">3 '
+                    "servings</span>.</p></header>\n"
+                ),
+            ),
             # Original serving count was 1
             (
                 "# Food & drink for 1",

@@ -392,6 +392,7 @@ class RecipeGridRendererMixin:
 
     title_serving_count_pattern = re.compile(
         (
+            r"(?P<space>\s+)"
             r"(?P<preposition>((to\s+)?serves?|for|makes|serving)\s+)"
             r"(?P<servings>[0-9]+)\s*"
             r"$"
@@ -463,7 +464,7 @@ class RecipeGridRendererMixin:
                 self.output.title = html.unescape(text.strip())
                 attrs = ' class="rg-title-unscalable"'
             else:
-                title = text[: match.start()]
+                title = text[: match.start()] + match["space"]
                 self.output.title = html.unescape(title.strip())
                 self.output.servings = int(match["servings"])
                 placeholder = generate_placeholder()
