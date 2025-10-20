@@ -1,33 +1,33 @@
 [build-system]
-requires = ["poetry_core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
 
-[tool.poetry]
+[project]
 name = "recipe_grid"
-version = "2.0.4"
 description = "A tool for generating table-based recipe descriptions."
-authors = ["Jonathan Heathcote"]
-homepage = "https://github.com/mossblaser/recipe_grid"
+authors = [
+    {name = "Jonathan Heathcote", email = "mail@jhnet.co.uk"},
+]
+readme = "README.rst"
+license-files = ["LICENSE"]
+dependencies = [
+    "lxml",
+    "marko~=0.9.1",
+    "peggie",
+    "jinja2",
+]
+dynamic = ["version"]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-lxml = "^4.6.1"
-marko = "^0.9.1"
-peggie = "^0.2.0"
-jinja2 = "^3.1.2"
+[project.urls]
+source = "https://github.com/mossblaser/recipe_grid"
 
-[tool.poetry.dev-dependencies]
-pytest = "^6.0"
-mypy = "^1.5"
-pre-commit = "^2.8.2"
-sphinx = "^7.2.0"
-numpydoc = "^1.1.0"
-types-docutils = "^0.17.0"
-
-[tool.poetry.scripts]
+[project.scripts]
 recipe-grid = "recipe_grid.scripts.recipe_grid:main"
 recipe-grid-lint = "recipe_grid.scripts.recipe_grid_lint:main"
 recipe-grid-site = "recipe_grid.scripts.recipe_grid_site:main"
 
-[tool.black]
-target-version = ['py37']
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = {attr = "recipe_grid.__version__"}

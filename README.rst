@@ -59,18 +59,23 @@ into the `main documentation <https://mossblaser.github.io/recipe_grid/>`_.
 Development
 -----------
 
-Recipe Grid is packaged using `Poetry <https://python-poetry.org/>`_ and a
-development environment can be created from this repository using::
+Development dependencies, and an editable install can be setup using::
 
-    $ poetry install
+    $ pip install -e .
+    $ pip install -r requirements-test.txt
 
-You can run the test suite using::
+Tests can be run using::
 
-    $ poetry run pytest
+    $ pytest
+
+Other pre-commit hooks can be run using::
+
+    $ pre-commit run -a
 
 And build the documentation using::
 
-    $ poetry run make -C docs html
+    $ pip install -r requirements-docs.txt
+    $ make -C docs html
 
 
 What about version 1?
