@@ -12,7 +12,7 @@ readme = "README.rst"
 license-files = ["LICENSE"]
 dependencies = [
     "lxml",
-    "marko~=0.9.1",
+    "marko ~= 2.0.0",
     "peggie",
     "jinja2",
 ]

@@ -26,6 +26,7 @@ into a final HTML form using its :py:meth:`MarkdownRecipe.render` method.
 from typing import Optional, List, MutableMapping, Union, Any, NamedTuple, Match, cast
 
 from marko import Markdown, block, inline, helpers  # type: ignore
+from marko.source import Source  # type: ignore
 
 import re
 
@@ -137,42 +138,48 @@ class ScaledValueExpression(inline.InlineElement):  # type: ignore
         )
 
 
-class LogPosMixin:
-    """
-    A mixin for :py:mod:`marko.block` classes which logs the source offset in
-    the :py:attr:`pos` attribute when parsing commences ('pos' in marko
-    terminology).
-    """
-
-    pos: int
-
-    def __init__(self, *args: Any, pos: int, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-        self.pos = pos
-
-    @classmethod
-    def parse(cls, source: helpers.Source) -> "LogPosMixin":
-        pos = source.pos
-        code = super().parse(source)  # type: ignore
-        return cls(code, pos=pos)
-
-
-class CodeBlock(LogPosMixin, block.CodeBlock):  # type: ignore
+class CodeBlock(block.CodeBlock):  # type: ignore
     """Marko extension: Adds 'pos' attribute to CodeBlock elements."""
 
     override = True
 
+    pos: int
 
-class FencedCode(LogPosMixin, block.FencedCode):  # type: ignore
+    def __init__(self, pos_lines: tuple[int, str]) -> None:
+        pos, lines = pos_lines
+        super().__init__(lines)
+        self.pos = pos
+
+    @classmethod
+    def parse(cls, source: Source) -> tuple[int, str]:
+        pos = source.pos
+        args = super().parse(source)  # type: ignore
+        return (pos, args)
+
+
+class FencedCode(block.FencedCode):  # type: ignore
     """Marko extension: Adds 'pos' attribute to FencedCode elements."""
 
     override = True
 
+    pos: int
+
+    def __init__(self, pos_match: tuple[int, tuple[str, str, str]]) -> None:
+        pos, match = pos_match
+        super().__init__(match)
+        self.pos = pos
+
+    @classmethod
+    def parse(cls, source: Source) -> tuple[int, tuple[str, str, str]]:
+        pos = source.pos
+        match = super().parse(source)  # type: ignore
+        return (pos, match)
+
 
 class Document(block.Document):  # type: ignore
     """
-    Marko extension: Makes a copy of the original markdown source in the
-    :py:attr:`text` attribute.
+    Like a regular block, but with a copy of the original markdown source in the
+    :py:attr:`text` attribute (added by the ParserMixin below).
     """
 
     override = True
@@ -181,10 +188,6 @@ class Document(block.Document):  # type: ignore
     """
     A copy of the original markdown source provided to Marko.
     """
-
-    def __init__(self, text: str) -> None:
-        super().__init__(text)
-        self.text = text
 
 
 class RecipeSourceBlock(NamedTuple):
@@ -379,6 +382,19 @@ class MarkdownRecipe:
         return html
 
 
+class RecipeGridParserMixin:
+    """
+    Mixin for :py:class:`marko.renderer.Renderer` which captures the original
+    markdown source text for use by the renderer to correct line numbers in
+    recipe sources (facilitating useful error messages).
+    """
+
+    def parse(self, text: str) -> Document:
+        doc = super().parse(text)
+        doc.text = text
+        return doc
+
+
 class RecipeGridRendererMixin:
     """
     Mixin for :py:class:`marko.renderer.Renderer` which collects recipe code
@@ -553,15 +569,16 @@ class RecipeGridRendererMixin:
         return self.output
 
 
-class RecipeGrid:
-    """
-    A :py:mod:`marko` extension which causes the renderer to output a
-    :py:class:`MarkdownRecipe` object containing the parsed recipe grid
-    markdown document ready to later be scaled and rendered as final HTML.
-    """
-
-    elements = [ScaledValueExpression, Document, CodeBlock, FencedCode]
-    renderer_mixins = [RecipeGridRendererMixin]
+RecipeGrid = helpers.MarkoExtension(
+    elements=[ScaledValueExpression, Document, CodeBlock, FencedCode],
+    parser_mixins=[RecipeGridParserMixin],
+    renderer_mixins=[RecipeGridRendererMixin],
+)
+"""
+A :py:mod:`marko` extension which causes the renderer to output a
+:py:class:`MarkdownRecipe` object containing the parsed recipe grid markdown
+document ready to later be scaled and rendered as final HTML.
+"""
 
 
 def compile_markdown(markdown_source: str) -> MarkdownRecipe:
