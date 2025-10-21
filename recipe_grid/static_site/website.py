@@ -664,25 +664,29 @@ class RecipePage(Page):
         source_to_page_paths: Mapping[Path, Tuple[str, bool]],
         filename_to_asset_paths: MutableMapping[Path, str],
     ) -> str:
-        body = postprocess_html(
-            self.recipe_html,
-            complete_document=False,
-            stages=[
-                self.get_resolve_local_links_stage(
-                    source=self.recipe_source,
-                    source_to_page_paths=source_to_page_paths,
-                    filename_to_asset_paths=filename_to_asset_paths,
-                ),
+        stages = [
+            self.get_resolve_local_links_stage(
+                source=self.recipe_source,
+                source_to_page_paths=source_to_page_paths,
+                filename_to_asset_paths=filename_to_asset_paths,
+            ),
+        ]
+        if self.native_servings is not None:
+            stages.append(
                 partial(
                     add_recipe_scaling_links,
                     from_path=self.path,
                     scaled_paths={
-                        num_servings: recipe_page.path
+                        cast(int, num_servings): recipe_page.path
                         for num_servings, recipe_page in self.other_scalings.items()
                     },
                     native_servings=self.native_servings,
-                ),
-            ],
+                )
+            )
+        body = postprocess_html(
+            self.recipe_html,
+            complete_document=False,
+            stages=stages,
         )
 
         return recipe_template.render(

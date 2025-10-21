@@ -20,7 +20,7 @@ from functools import lru_cache
 
 import re
 
-import marko  # type: ignore
+import marko
 
 from html import unescape
 

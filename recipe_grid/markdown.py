@@ -25,8 +25,8 @@ into a final HTML form using its :py:meth:`MarkdownRecipe.render` method.
 
 from typing import Optional, List, MutableMapping, Union, Any, NamedTuple, Match, cast
 
-from marko import Markdown, block, inline, helpers  # type: ignore
-from marko.source import Source  # type: ignore
+from marko import Markdown, block, inline, helpers
+from marko.source import Source
 
 import re
 
@@ -67,7 +67,7 @@ def generate_placeholder(num_random_chars: int = 32) -> str:
     return f"%{slug}%"
 
 
-class ScaledValueExpression(inline.InlineElement):  # type: ignore
+class ScaledValueExpression(inline.InlineElement):
     """
     Marko syntax extension: adds the recipe grid curly-bracket based scalable
     value syntax.
@@ -138,7 +138,7 @@ class ScaledValueExpression(inline.InlineElement):  # type: ignore
         )
 
 
-class CodeBlock(block.CodeBlock):  # type: ignore
+class CodeBlock(block.CodeBlock):
     """Marko extension: Adds 'pos' attribute to CodeBlock elements."""
 
     override = True
@@ -151,13 +151,13 @@ class CodeBlock(block.CodeBlock):  # type: ignore
         self.pos = pos
 
     @classmethod
-    def parse(cls, source: Source) -> tuple[int, str]:
+    def parse(cls, source: Source) -> tuple[int, str]:  # type: ignore[override]
         pos = source.pos
-        args = super().parse(source)  # type: ignore
+        args = super().parse(source)
         return (pos, args)
 
 
-class FencedCode(block.FencedCode):  # type: ignore
+class FencedCode(block.FencedCode):
     """Marko extension: Adds 'pos' attribute to FencedCode elements."""
 
     override = True
@@ -170,13 +170,13 @@ class FencedCode(block.FencedCode):  # type: ignore
         self.pos = pos
 
     @classmethod
-    def parse(cls, source: Source) -> tuple[int, tuple[str, str, str]]:
+    def parse(cls, source: Source) -> tuple[int, tuple[str, str, str]]:  # type: ignore[override]
         pos = source.pos
-        match = super().parse(source)  # type: ignore
+        match = super().parse(source)
         return (pos, match)
 
 
-class Document(block.Document):  # type: ignore
+class Document(block.Document):
     """
     Like a regular block, but with a copy of the original markdown source in the
     :py:attr:`text` attribute (added by the ParserMixin below).
@@ -390,7 +390,7 @@ class RecipeGridParserMixin:
     """
 
     def parse(self, text: str) -> Document:
-        doc = super().parse(text)
+        doc: Document = super().parse(text)  # type: ignore
         doc.text = text
         return doc
 
@@ -517,7 +517,7 @@ class RecipeGridRendererMixin:
         """
         # Capture the recipe
         recipe_source_block = RecipeSourceBlock(
-            source=element.children[0].children,
+            source=cast(inline.RawText, element.children[0]).children,
             pos=element.pos,
             in_fenced_block=in_fenced_block,
             start_of_new_recipe=element.lang == "new-recipe",

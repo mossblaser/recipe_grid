@@ -251,6 +251,7 @@ class pending_recipe_node(nodes.Element):
 
 
 def visit_pending_recipe_node(self: HTMLTranslator, node: nodes.Node) -> None:
+    assert isinstance(node, pending_recipe_node)
     self.body.append(
         t(
             "div",

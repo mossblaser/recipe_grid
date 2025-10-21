@@ -92,7 +92,7 @@ class TestResolveLocalLinks:
         tmp_path: Path,
         source: Path,
         from_path: str,
-        filename_to_asset_paths: MutableMapping[str, str],
+        filename_to_asset_paths: MutableMapping[Path, str],
     ) -> str:
         d = tmp_path / "foo" / "bar"
         d.mkdir(parents=True, exist_ok=True)
@@ -174,11 +174,11 @@ class TestResolveLocalLinks:
         tmp_path: Path,
         link: str,
         exp_link: str,
-        exp_filename_to_asset_paths: Mapping[str, str],
+        exp_filename_to_asset_paths: Mapping[Path, str],
         source: Path,
         from_path: str,
     ) -> None:
-        filename_to_asset_paths: MutableMapping[str, str] = {}
+        filename_to_asset_paths: MutableMapping[Path, str] = {}
         assert self.run(
             t("a", "Link", href=link),
             tmp_path=tmp_path,
@@ -207,7 +207,7 @@ class TestResolveLocalLinks:
         ],
     )
     def test_from_recipe_page(self, tmp_path: Path, link: str, exp_link: str) -> None:
-        filename_to_asset_paths: MutableMapping[str, str] = {}
+        filename_to_asset_paths: MutableMapping[Path, str] = {}
         assert self.run(
             t("a", "Link", href=link),
             tmp_path=tmp_path,
@@ -231,7 +231,7 @@ class TestResolveLocalLinks:
     def test_from_unscaled_recipe_page(
         self, tmp_path: Path, link: str, exp_link: str
     ) -> None:
-        filename_to_asset_paths: MutableMapping[str, str] = {}
+        filename_to_asset_paths: MutableMapping[Path, str] = {}
         assert self.run(
             t("a", "Link", href=link),
             tmp_path=tmp_path,
@@ -266,7 +266,7 @@ class TestResolveLocalLinks:
         link: str,
         exp_link: str,
     ) -> None:
-        filename_to_asset_paths: MutableMapping[str, str] = {}
+        filename_to_asset_paths: MutableMapping[Path, str] = {}
         assert self.run(
             t("a", "Link", href=link),
             tmp_path=tmp_path,
@@ -301,7 +301,7 @@ class TestResolveLocalLinks:
         link: str,
         exp_link: str,
     ) -> None:
-        filename_to_asset_paths: MutableMapping[str, str] = {}
+        filename_to_asset_paths: MutableMapping[Path, str] = {}
         assert self.run(
             t("a", "Link", href=link),
             tmp_path=tmp_path,
